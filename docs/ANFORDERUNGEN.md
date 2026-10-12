@@ -1,0 +1,91 @@
+# OrdiSchool Anforderungen
+
+**Status:** Zielanforderungen, fachlich noch weiter zu spezifizieren  
+**Version:** 0.0.1  
+**Normative Wörter:** „MUSS“ bezeichnet eine Abnahmeanforderung. „SOLL“ bezeichnet ein Ziel, dessen Abweichung begründet wird. „OFFEN“ bezeichnet eine noch nicht fachlich beschlossene Ausgestaltung.
+
+## A. Planung
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| PLAN-001 | Stundenpläne müssen erstellt, bearbeitet, kopiert, zeitlich befristet, versioniert und freigegeben werden können. | 0.3.0 |
+| PLAN-002 | Unterrichtsstunden müssen Klasse/Kurs, Fach, Lehrkraft, Zeit, Raum und optionale Doppelstunden/Teilungsgruppen verknüpfen. | 0.3.0 |
+| PLAN-003 | Raumplanung muss Kapazität, Ausstattung, Fachraumtyp, Verfügbarkeit, Sperrzeiten und Prioritäten berücksichtigen. | 0.4.0 |
+| PLAN-004 | Planprüfung muss Mehrfachbelegungen, fehlende Räume, Kapazitätsüberschreitungen und weitere bekannte Konflikte anzeigen. | 0.3.0–0.5.0 |
+| PLAN-005 | Raum-, Stunden-, Vertretungs- und Terminplan müssen auf gemeinsame Planstände und Stammdaten zugreifen. | 0.3.0–0.10.0 |
+| PLAN-006 | Bindende Regeln, schulinterne Regeln und weiche Optimierungswünsche müssen unterscheidbar sein. | 0.5.0 |
+| PLAN-007 | Regelprofile müssen Bundesland, Schulform, Gültigkeit, Quelle, Versionsstand und Prüfstatus speichern. | 0.5.0 |
+| PLAN-008 | Thüringer Vorgaben sind zuerst zu erfassen; konkrete Regeln müssen vor Nutzung anhand aktueller offizieller Quellen fachlich geprüft und freigegeben werden. | 0.0.3 / 0.5.0 |
+| PLAN-009 | Änderungsvorschläge müssen Begründung, erfüllte/verletzte Bedingungen und Folgen für betroffene Pläne zeigen. | 0.6.0 |
+| PLAN-010 | Kein kritischer Planvorschlag darf ohne Freigabe einer berechtigten Person veröffentlicht werden. | 0.6.0 |
+| PLAN-011 | Vertretungsvorschläge SOLLEN Abwesenheit, Verfügbarkeit, Fachbezug, Belastung, Raum und Folgewirkungen berücksichtigen, soweit die Daten freigegeben und definiert sind. | 0.6.0 |
+
+## B. Sitzpläne und Klassenbuch
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| SITZ-001 | Sitzpläne müssen pro Klasse, Kurs oder Raum erstellt, geändert, dupliziert und zeitlich eingeordnet werden können. | 0.7.0 |
+| SITZ-002 | Sichtbarkeit, Ausdruck und Export von Sitzplänen müssen berechtigungs- und zweckbezogen sein. | 0.7.0 |
+| KB-001 | Ein Klassenbucheintrag muss Datum, Zeit, Stunde, Fachlehrkraft, Vertretungsstatus, Klasse, Doppelstunde und Stundenthema abbilden. | 0.8.0 |
+| KB-002 | Anwesenheit muss mindestens „anwesend“, „abwesend“, „entschuldigt“ und „verspätet“ mit Verspätungsminuten und einer berechtigungsgesteuerten Notiz unterstützen. | 0.8.0 |
+| KB-003 | Hausaufgaben müssen im Klassenbucheintrag erfasst werden können. | 0.8.0 |
+| KB-004 | Das Klassenbuch muss Einträge mit Stunden- und Vertretungsplan abgleichen und fehlende oder abweichende Einträge erkennen. | 0.8.0 |
+| KB-005 | Klassenleitungen müssen eine nachvollziehbare Übersicht offener Klassenbuchhinweise erhalten können. | 0.8.0 |
+| KB-006 | Hinweise dürfen Einträge nicht automatisch ändern oder löschen; Korrekturen müssen Bearbeiter, Zeitpunkt und Änderungsgrund nachvollziehbar halten. | 0.8.0 |
+
+## C. Aufgaben, Termine und Zusammenarbeit
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| AUF-001 | Aufgaben müssen mit einem Klassenbucheintrag verknüpft oder unabhängig angelegt werden können. | 0.9.0 |
+| AUF-002 | Aufgaben müssen Text, Fach, Verantwortliche, betroffene Klasse/Gruppe oder Lernende, Terminierung und Anhänge unterstützen. | 0.9.0 |
+| AUF-003 | Dateianhänge müssen privat gespeichert und bei jedem Zugriff gegen die Berechtigungen des Inhalts geprüft werden. | 0.9.0 |
+| GRP-001 | Gruppenräume müssen Blogbeiträge und Materialien mit gruppenbezogener Berechtigungssteuerung bereitstellen. | 0.11.0 |
+| WIKI-001 | Wikis müssen versionierte, durchsuchbare Inhalte mit abgestuften Lese- und Bearbeitungsrechten ermöglichen. | 0.11.0 |
+| MSG-001 | Das Nachrichtensystem muss Einzel- und Gruppennachrichten samt Anhängen unterstützen. | 0.11.0 |
+| MSG-002 | Berechtigungen müssen definieren, welche Gruppe welche Gruppe/Rolle anschreiben darf. | 0.11.0 |
+| MSG-003 | Gruppen- und Leitungsmitteilungen müssen zielgruppengerecht veröffentlicht und von privaten Nachrichten unterscheidbar sein. | 0.11.0 |
+| TERM-001 | Ein Terminplan muss eigene, Gruppen- und Leitungstermine sowie Sichtbarkeit, Verantwortliche und Änderungen abbilden. | 0.10.0 |
+| TERM-002 | Termine müssen mit Stundenplänen verbunden werden können; Konflikte sind vor Freigabe anzuzeigen. | 0.10.0 |
+| TERM-003 | Persönliche Stundenpläne müssen freigegebene Vertretungen, Raumänderungen und relevante Terminnotizen übernehmen. | 0.10.0 |
+| DASH-001 | Ein Dashboard muss je Rolle anstehende Aufgaben, Planänderungen, Klassenbuchhinweise, Mitteilungen und Termine anzeigen. | 0.14.0 |
+
+## D. Bewertung und Zeugnisse
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| NOTE-001 | Das Notensystem muss mehrere auswählbare und fachlich freigegebene Berechnungsverfahren unterstützen. | 0.12.0 |
+| NOTE-002 | Berechnungsverfahren müssen Notenarten, Gewichtungen, Rundung, fehlende Leistungen, Halbjahres- und Endnoten sowie Gültigkeitszeitraum abbilden. | 0.12.0 |
+| NOTE-003 | Jede Berechnung muss Eingaben, Rechenschritte, Gewichte, Rundung und Verfahrensversion nachvollziehbar darstellen. | 0.12.0 |
+| NOTE-004 | Änderungen eines Verfahrens dürfen abgeschlossene Ergebnisse nicht stillschweigend rückwirkend verändern. | 0.12.0 |
+| NOTE-005 | Notenänderungen und Freigaben müssen rollenbasiert und nachvollziehbar sein. | 0.12.0 |
+| RADAR-001 | Notenfreie Bewertung muss fachbezogene Dimensionen für eine Radarspinne unterstützen. | 0.13.0 |
+| RADAR-002 | Dimensionen, Skalen, Beobachtung, Interpretation, Sichtbarkeit und Verwendung im Zeugnis bleiben bis zu einer gesonderten Spezifikation OFFEN. | 0.13.0 |
+| ZG-001 | Zeugnisse müssen mit freigegebenen Vorlagen, Datenfeldern, Korrekturläufen, Freigaben und PDF-Ausgabe erzeugt werden können. | 0.14.0 |
+| ZG-002 | Zeugnisvorlagen müssen für die jeweilige Schulform und den konkreten Einsatz fachlich/rechtlich geprüft werden, bevor sie produktiv freigegeben werden. | 0.14.0 / 1.0.0 |
+
+## E. Datenschutz, Sicherheit und Betrieb
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| PRIV-001 | Für jeden Datenbereich müssen Zweck, verantwortliche Stelle, Datenarten, Empfänger, Zugriff und Lösch-/Aufbewahrungsregel dokumentiert werden. | ab 0.0.4 |
+| PRIV-002 | Entwicklung und Tests müssen synthetische Daten verwenden; Produktivdaten dürfen nicht in lokale Entwicklungsumgebungen kopiert werden. | alle Versionen |
+| PRIV-003 | Die Software darf Rechtsgrundlage, Einwilligung oder Aufbewahrungsdauer nicht allein aus einer Funktion ableiten. | alle Versionen |
+| PRIV-004 | Vor Pilot/Produktion müssen Verantwortlichkeit, Rechtsgrundlagen, Datenschutzinformationen, Auftragsverarbeitung, Hosting und gegebenenfalls Folgenabschätzung geprüft werden. | 0.0.4 / 0.16.0 |
+| PRIV-005 | Betroffenenanfragen, Berichtigung, Export, Einschränkung und Löschung müssen durch die verantwortliche Stelle im anwendbaren Rahmen bearbeitbar und nachvollziehbar sein. | 0.15.0–1.0.0 |
+| SEC-001 | Rollen und Gruppenrechte müssen bei Anzeige, Suche, Direktlinks, Anhängen, Benachrichtigungen und Export erneut geprüft werden. | ab 0.1.0 |
+| SEC-002 | Zugangsdaten und Schlüssel dürfen nicht im Repository gespeichert werden. | alle Versionen |
+| SEC-003 | Sicherheits- und Adminereignisse müssen protokolliert werden; Passwörter, Sitzungstokens und unnötige Schülernotizen dürfen nicht in Logs erscheinen. | ab 0.1.0 |
+| SEC-004 | Dateien müssen auf Typ/Größe geprüft, privat gespeichert und kontrolliert gelöscht werden; ausführbare Uploads sind auszuschließen. | 0.9.0 |
+| SEC-005 | Backups, Restore, Updates, Abhängigkeiten, Vorfallverfahren und Rollback müssen vor Produktivbetrieb dokumentiert und geprüft sein. | 0.1.0–1.0.0 |
+| SEC-006 | Externe KI-Dienste dürfen nicht standardmäßig Schüler-, Noten-, Anwesenheits- oder Nachrichtendaten erhalten. | alle Versionen |
+| OPS-001 | Datenbankänderungen müssen versioniert migrierbar und mit geprüfter Sicherungs-/Wiederherstellungsstrategie verbunden sein. | ab 0.1.0 |
+| OPS-002 | Hosting und Unterauftragnehmer müssen vor Auswahl hinsichtlich Standort, Zugriffen, Backups, Löschung, Sicherheit und Vertragsbedingungen geprüft werden. | 0.0.7 / 0.16.0 |
+
+## Nicht-Ziele von v0.0.1
+
+- Keine Anwendungscode- oder Datenbankimplementierung.
+- Keine Verwendung echter Schüler-, Noten-, Anwesenheits- oder Nachrichtendaten.
+- Keine ungeprüften Rechts- oder Thüringer Regelprofile.
+- Keine endgültige Festlegung von Hosting, Stack, Rollen oder Mehrschulbetrieb.
+- Keine finalen Notenalgorithmen, Radarspinnen-Dimensionen oder Zeugnisvorlagen.

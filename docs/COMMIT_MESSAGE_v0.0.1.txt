@@ -1,0 +1,9 @@
+docs(v0.0.1): define OrdiSchool project scope and requirements
+
+- add repository README and version metadata
+- record functional and privacy/security requirements with stable IDs
+- map requirements to the v0.0.1–v1.0.0 roadmap
+- document assumptions and unresolved decisions
+- include the detailed project plan as the source of truth
+
+No application code or production data is included in this release.
