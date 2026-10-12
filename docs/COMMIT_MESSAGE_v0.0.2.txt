@@ -1,0 +1,1 @@
+docs(v0.0.2): define roles, permissions, and workflows

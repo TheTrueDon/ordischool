@@ -1,5 +1,18 @@
 # Änderungsprotokoll
 
+## [0.0.2] – 2026-10-13
+
+### Hinzugefügt
+- Vorläufiges Rollenmodell mit begrenzten fachlichen Zuständigkeiten und Rechte-Matrix.
+- Arbeitsabläufe für Planung, Vertretung, Klassenbuch, Aufgaben, Bewertung, Zeugnisse, Kommunikation, Termine und Konten.
+- Datenschutzleitplanken für Sichtbarkeit, Freigaben, Anhänge, Protokollierung und Korrekturen.
+- Offene Entscheidungen und Abnahmekriterien für diese Version.
+
+### Noch nicht enthalten
+- Verbindlich durch eine konkrete Schule oder Schulbehörde freigegebene Rollen.
+- Rechtsverbindliche Festlegung von Löschfristen, Verantwortlichkeit oder Thüringer Genehmigungswegen.
+- Ausführbarer Anwendungscode.
+
 ## [0.0.1] – 2026-10-13
 
 ### Hinzugefügt

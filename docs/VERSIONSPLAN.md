@@ -5,7 +5,7 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | Version | Liefergegenstand |
 |---|---|
 | 0.0.1 | Projektdefinition, Anforderungen, Datenschutzleitplanken und offene Entscheidungen |
-| 0.0.2 | Rollen und Arbeitsabläufe |
+| 0.0.2 | Rollen- und Rechteentwurf, Kernabläufe, Sichtbarkeit, Prüfung/Freigabe und offene Schulentscheidungen |
 | 0.0.3 | Thüringer Regeln und Planungsbedingungen mit Quellenregister |
 | 0.0.4 | Datenschutz- und Datenflussentwurf |
 | 0.0.5 | Interaktionsprototyp |
@@ -28,3 +28,11 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - v0.x.0 liefert aufeinander aufbauende, noch veränderbare Funktionen.
 - v1.0.0 ist erst freigabefähig, wenn fachliche Abnahme, Betrieb, Sicherheit und Datenschutz für den konkreten Einsatz dokumentiert sind.
 - Jede Version erhält einen Commit mit `docs(...)`, `feat(...)`, `fix(...)` oder einem passenden Typ und Versionsbezug.
+
+### Abnahme v0.0.2
+
+- Rollen- und Rechte-Matrix deckt Planung, Vertretung, Klassenbuch, Aufgaben, Bewertungen, Zeugnisse, Kommunikation, Kalender und Konten ab.
+- Prozessdokumentation benennt pro Kernvorgang Ausführende, Sichtbarkeit, Freigabe und wesentliche Ausnahmen.
+- Offene Rollen- und Schulentscheidungen sind als vorläufig gekennzeichnet.
+- Datenschutzanforderungen an Scope, Anhänge, Benachrichtigungen, Exporte und Protokollierung sind dokumentiert.
+- Kein ausführbarer Code und keine echten personenbezogenen Daten sind Teil dieser Version.

@@ -1,7 +1,7 @@
 # OrdiSchool Anforderungen
 
 **Status:** Zielanforderungen, fachlich noch weiter zu spezifizieren  
-**Version:** 0.0.1  
+**Version:** 0.0.2
 **Normative Wörter:** „MUSS“ bezeichnet eine Abnahmeanforderung. „SOLL“ bezeichnet ein Ziel, dessen Abweichung begründet wird. „OFFEN“ bezeichnet eine noch nicht fachlich beschlossene Ausgestaltung.
 
 ## A. Planung
@@ -64,7 +64,23 @@
 | ZG-001 | Zeugnisse müssen mit freigegebenen Vorlagen, Datenfeldern, Korrekturläufen, Freigaben und PDF-Ausgabe erzeugt werden können. | 0.14.0 |
 | ZG-002 | Zeugnisvorlagen müssen für die jeweilige Schulform und den konkreten Einsatz fachlich/rechtlich geprüft werden, bevor sie produktiv freigegeben werden. | 0.14.0 / 1.0.0 |
 
-## E. Datenschutz, Sicherheit und Betrieb
+## E. Rollen, Freigaben und Arbeitsabläufe
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| IAM-001 | Rollen müssen auf Schule, Klasse, Kurs, Fach, Funktion und Gültigkeitszeitraum begrenzt werden können; ein Rollentitel allein begründet keinen globalen Zugriff. | 0.1.0–0.2.0 |
+| IAM-002 | Erstellen, Bearbeiten, Prüfen und Veröffentlichen müssen für fachlich relevante Vorgänge unterscheidbar und pro Zuständigkeit zuweisbar sein. | 0.2.0 |
+| IAM-003 | Berechtigungsprüfungen müssen bei Ansichten, Suchen, Direktlinks, Anhängen, Benachrichtigungen, Exporten und APIs greifen. | ab 0.1.0 |
+| IAM-004 | Technische Systemadministration darf standardmäßig keinen pädagogischen Lesezugriff auf Schüler-, Noten-, Anwesenheits- oder Nachrichteninhalte erhalten. | ab 0.1.0 |
+| IAM-005 | Freigaben, Rollenänderungen, Exporte, Korrekturen und administrative Notfallzugriffe müssen nachvollziehbar protokolliert und im Umfang begrenzt werden. | ab 0.1.0 |
+| IAM-006 | Entzug oder Änderung einer Zuständigkeit muss für aktive Sitzungen und alle Zugriffspfade wirksam werden. | ab 0.1.0 |
+| FLOW-001 | Planungs- und Vertretungsvorschläge dürfen Pläne nicht ohne Prüfung und Freigabe einer berechtigten Person veröffentlichen. | 0.3.0–0.6.0 |
+| FLOW-002 | Klassenbuchhinweise müssen prüfbar sein, dürfen aber keinen Eintrag automatisch ändern oder löschen. | 0.8.0 |
+| FLOW-003 | Sichtbarkeit und Empfänger einer Aufgabe, Mitteilung oder eines Termins müssen vor Veröffentlichung erkennbar sein. | 0.9.0–0.11.0 |
+| FLOW-004 | Bewertungsverfahren müssen fachlich freigegeben und versioniert sein; Änderungen dürfen abgeschlossene Ergebnisse nicht still rückwirkend verändern. | 0.12.0–0.13.0 |
+| FLOW-005 | Zeugnisfreigabe und Ausgabe müssen rollenbezogen, nachvollziehbar und an die für Schule/Schulform bestätigte Vorlage gebunden sein. | 0.14.0 |
+
+## F. Datenschutz, Sicherheit und Betrieb
 
 | ID | Anforderung | Zielversion |
 |---|---|---:|
@@ -82,7 +98,7 @@
 | OPS-001 | Datenbankänderungen müssen versioniert migrierbar und mit geprüfter Sicherungs-/Wiederherstellungsstrategie verbunden sein. | ab 0.1.0 |
 | OPS-002 | Hosting und Unterauftragnehmer müssen vor Auswahl hinsichtlich Standort, Zugriffen, Backups, Löschung, Sicherheit und Vertragsbedingungen geprüft werden. | 0.0.7 / 0.16.0 |
 
-## Nicht-Ziele von v0.0.1
+## Nicht-Ziele von v0.0.2
 
 - Keine Anwendungscode- oder Datenbankimplementierung.
 - Keine Verwendung echter Schüler-, Noten-, Anwesenheits- oder Nachrichtendaten.
