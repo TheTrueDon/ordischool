@@ -1,5 +1,20 @@
 # Änderungsprotokoll
 
+## [0.0.8] – 2026-10-13
+
+### Hinzugefügt
+- Risikobasiertes Bedrohungsmodell für Personen-/Schuldaten, Rollen, Anhänge, Pläne, Bewertung, Logs und Backups.
+- Teststrategie mit Matrix für Berechtigungen, Planregeln, Klassenbuch, Noten, Dateien, Export, Löschung, Migration und Restore.
+- Merge-, Pilot- und Produktionsgates mit Blockierung bei kritischen/hohen Sicherheitsbefunden.
+- Vorgabe synthetischer Daten für Entwicklung und CI.
+- Referenz auf OWASP ASVS 5.0.0 und NIST SSDF 1.1.
+
+### Grenzen
+- Sicherheits- und Abnahmetests sind geplant, aber noch nicht ausgeführt.
+- Keine externe Sicherheitsprüfung, DSFA oder Produktivfreigabe.
+- Keine echten Personen- oder Schuldaten.
+
+
 ## [0.0.7] – 2026-10-13
 
 ### Hinzugefügt

@@ -155,3 +155,19 @@
 | ARCH-007 | Mehrschul-/SaaS-Betrieb darf erst nach Mandantentrennungs-, Berechtigungs-, Restore- und Datenschutzfreigabe aktiviert werden. | vor Mehrschulbetrieb |
 | ARCH-008 | Vor Produktivdaten müssen Hosting, Verantwortlichkeit, Datenregionen, Supportzugriffe, Unterauftragnehmer, Backup/Restore, Löschung und gegebenenfalls DSFA geprüft sein. | vor Pilot |
 | ARCH-009 | Deployment und Schemaänderungen müssen reproduzierbar versioniert sein und Sicherungs-/Rückfallgrenzen berücksichtigen. | ab 0.1.0 |
+
+
+## I. Sicherheits- und Teststrategie
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| TEST-001 | Sicherheits- und fachliche Tests erhalten stabile IDs und Bezug zu Anforderungen, Datenbereichen und Release. | ab 0.0.8 |
+| TEST-002 | Autorisierung wird für Rolle, Aktion, Scope und alle Zugriffspfade mit Positiv-/Negativtests verifiziert. | ab 0.0.8 / 0.1.0 |
+| TEST-003 | Entwicklung, CI und Testumgebungen verwenden synthetische Daten und keine Produktivkopien. | alle Versionen |
+| TEST-004 | Änderungen an Berechtigungen, Export, Anhängen, Bewertungen, Planfreigaben und Löschung lösen risikobasierte Regressionstests aus. | ab 0.0.8 |
+| TEST-005 | Kritische und hohe offene Sicherheitsbefunde blockieren Release, Pilot und Produktivfreigabe. | ab 0.0.8 |
+| TEST-006 | Bewertungsverfahren werden gegen unabhängig berechnete, fachlich freigegebene Referenzfälle geprüft. | vor v0.12.0 |
+| TEST-007 | Export, Löschung, Anhänge, Backup und Restore werden über betroffene Speicherorte getestet. | ab 0.0.8 / vor Pilot |
+| TEST-008 | Externe Sicherheitstests, Restore- und Vorfallablauf werden vor Produktivfreigabe im Zielbetrieb bewertet. | vor Pilot/Produktion |
+| TEST-009 | Sicherheitslogs enthalten nötige Ereignismetadaten, aber keine Passwörter, Tokens oder unnötigen pädagogischen Inhalte. | ab 0.0.8 |
+| TEST-010 | Nicht anwendbare Kontrollen und akzeptierte Restrisiken erhalten Begründung, Verantwortliche und Frist. | ab 0.0.8 |

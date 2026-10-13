@@ -11,7 +11,7 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.0.5 | Interaktionsprototyp |
 | 0.0.6 | Fachliches Datenmodell, Datenwörterbuch, Versionierung sowie erste Migrations-/Löschstrategie |
 | 0.0.7 | Zielarchitektur, Technologie-/Hostingbewertung und Anbieter-Prüfliste |
-| 0.0.8 | Sicherheits- und Teststrategie |
+| 0.0.8 | Bedrohungsmodell, Sicherheits-/Testfallmatrix und Freigabegates |
 | 0.0.9 | Priorisiertes Backlog und Freigabeumfang für v0.1.0 |
 | 0.1.0 | Technisches Grundgerüst und Anmeldung |
 | 0.2.0 | Schulstammdaten und Rollen |
@@ -84,3 +84,13 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Einzelschulbetrieb ist Startumfang; Mehrschulbetrieb setzt eigene Trennungs- und Datenschutzprüfung voraus.
 - Daten-/Dateifluss, Worker, Updates, Backups und Restore sind skizziert.
 - Produktivfreigabe setzt Verantwortlichen, AVV soweit einschlägig, Datenstandort-/Zugriffsnachweise, Restore-Test und DSFA-Prüfung voraus.
+
+
+### Abnahme v0.0.8
+
+- Bedrohungsmodell benennt Schutzobjekte, Akteure, Vertrauensgrenzen und priorisierte Szenarien.
+- Tests für Rechte, Planregeln, Bewertungen, Export, Löschung, Anhänge und Restore sind Anforderungen zugeordnet.
+- Merge-, Pilot- und Produktionsgates blockieren Freigabe bei kritischen/hohen Sicherheitslücken.
+- Testdatenstrategie schließt echte Schülerdaten in Entwicklung/CI aus.
+- OWASP ASVS 5.0.0 und NIST SSDF 1.1 sind mit Version/Quelle referenziert.
+- Tests sind als geplant und nicht durchgeführt markiert; keine Zertifizierung wird behauptet.

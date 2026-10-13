@@ -91,3 +91,14 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 | D-041 | Ein vorhandener STRATO-Webspace ist für synthetische Entwicklung/Demo prüfbar; Produktiveignung ist wegen konkreter Datenbank-/Worker-/Backupbedingungen nicht festgestellt. | bedingt / Paketprüfung offen |
 | D-042 | RPO, RTO, Verfügbarkeit, Bereitschaft und technische Supportrolle bestimmt der spätere Betreiber. | offen vor Pilot |
 | D-043 | Mehrschul-/SaaS-Betrieb ist nicht Teil des ersten Release und benötigt eigene Rechts-/Sicherheits-/Architekturfreigabe. | nicht freigegeben |
+
+
+## Sicherheits- und Testarbeitsstand v0.0.8
+
+| ID | Arbeitsentscheidung / offener Punkt | Status |
+|---|---|---|
+| D-044 | OWASP ASVS 5.0.0 ist die versionierte Prüfbasis; relevante Level-2-Kontrollen bilden das anfängliche Zielprofil. | vorläufig; Kontrollauswahl durch Security Review |
+| D-045 | Automatisierte/manuelle Tests verwenden synthetische Daten; Produktivdatenkopien sind ausgeschlossen. | Arbeitsgrundsatz |
+| D-046 | Kritische/hohe Sicherheitsbefunde blockieren Release/Pilot; mittlere Befunde benötigen dokumentierte Risikoakzeptanz und Frist. | Freigabegrundsatz |
+| D-047 | Unabhängiger Penetrationstest und Restore-/Incident-Probe sind Gates vor Pilot/Produktivbetrieb. | geplant; Umfang/Prüfer/Betreiber offen |
+| D-048 | Radar, Eltern, externe E-Mail/Push, KI und Mehrschulrisiken werden bei konkreter Aktivierung neu bewertet. | weiterhin offen/nicht freigegeben |
