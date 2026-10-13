@@ -1,6 +1,6 @@
 # Entscheidungen und offene Punkte
 
-**Version:** 0.0.3
+**Version:** 0.0.4
 
 ## Bestätigte Arbeitsannahmen
 
@@ -34,6 +34,11 @@
 | D-021 | Welche lokalen Nachweise bestimmen zulässige Raumkapazitäten, Ausstattung, Zugänglichkeit und verbindliche Nutzungsbeschränkungen? | vor Raumplanung/Regelengine |
 | D-022 | Welche Schulart, Bildungsgänge, Jahrgänge, Kurse und Übergangskohorten werden im ersten Thüringen-Profil tatsächlich unterstützt? | v0.0.5/v0.0.6 |
 | D-023 | Wie erhält OrdiSchool den jeweils gültigen Volltext schuljahresbezogener Verwaltungsvorschriften und Lehrpläne und wer bestätigt die Aktualisierung? | vor v0.5.0 |
+| D-024 | Wer ist im gewählten Betriebsmodell Verantwortlicher, welche Stelle führt/freigibt VVT und Datenschutzhinweise? | vor Architektur-/Pilotfreigabe |
+| D-025 | Welche OrdiSchool-Datenfelder sind im konkreten staatlichen oder privaten Schulbetrieb für welchen Zweck rechtlich vorgesehen? | vor jeweiligem Modul/Pilot |
+| D-026 | Welche Aufbewahrungs-/Einschränkungsregeln gelten zusätzlich zur einschlägigen Fassung von ThürSchulO/Schuldatenschutzrecht für Aufgaben, Nachrichten, Anhänge, Pläne und Logs? | vor Produktivbetrieb |
+| D-027 | Ist im konkreten Betriebsmodell eine vollständige DSFA nach Art. 35 DSGVO erforderlich, und wer zeichnet diese Entscheidung? | vor Pilot |
+| D-028 | Ist der 2025 dokumentierte Entwurf einer ThürSchulDSVO später in Kraft getreten oder geändert worden? | vor rechtlicher Profilfreigabe |
 
 ## Entscheidungsregel
 
@@ -45,6 +50,13 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 - Übergänge zwischen den ab 2024 geltenden und älteren Rahmenstundentafeln erfordern eine Kohorten-/Gültigkeitsprüfung.
 - Landesweite Quellen begründen keine im Release belastbar festgestellte allgemeine Raumkapazität oder allgemeine Fachraumrangfolge. Diese Werte müssen lokal belegt und bestätigt werden.
 - Die VVOrgS 2026/27 ist als aktuelle Schuljahresvorschrift identifiziert; der Volltext wurde im Recherchezugang nicht inhaltlich verifiziert und wird daher nicht als maschinenlesbare Regel verwendet.
+
+## Datenschutz-Arbeitsstand v0.0.4
+
+- § 57 ThürSchulG verknüpft schulische Datenverarbeitung mit den gesetzlich zugewiesenen Aufgaben und der Erforderlichkeit; nähere Bereiche sind spezialgesetzlich geregelt.
+- Die Thüringer Schulordnung enthält in § 136 konkrete schulische Daten- und Aufbewahrungsregeln. Diese werden nicht pauschal auf alle OrdiSchool-Module übertragen.
+- Die Rechtsgrundlage, Rollenverteilung, Auftragsverarbeitung, Informationspflichten und Fristen sind je Betrieb und Datensatz zu bestätigen.
+- Ein DSFA-Screening ist begonnen; eine rechtliche Entscheidung oder vollständige DSFA liegt nicht vor.
 
 ## In v0.0.2 vorgeschlagene Arbeitsannahmen
 

@@ -45,3 +45,12 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Raumkapazität/Fachraumpriorität werden nur mit lokalem Nachweis aktiviert.
 - Ungeprüfte oder nicht abgerufene Quellentexte sind sichtbar und nicht als aktive Softwareregel ausgegeben.
 - Kein ausführbarer Code und keine echten personenbezogenen Daten sind Teil dieser Version.
+
+### Abnahme v0.0.4
+
+- Dateninventar deckt alle geplanten Kernmodule, Betroffene, Zwecke, Datenarten, Sichtbarkeiten und logischen Speicherklassen ab.
+- Datenflüsse für Eingabe, Nutzung, Anbieter, Anhänge, Logs, Export, Backup/Restore und Löschung sind beschrieben.
+- Rechtsgrundlage, Verantwortlichkeit und Aufbewahrung bleiben sichtbar offene Einzelfallentscheidungen.
+- Thüringer Schuldatenschutzquellen einschließlich Spezialregeln und ihres Anwendungsbereichs sind eingetragen.
+- DSFA-Screening benennt Risiken, Verantwortliche und den Freigabepunkt vor Pilot/Produktivbetrieb.
+- Kein ausführbarer Code und keine echten personenbezogenen Daten sind Teil dieser Version.

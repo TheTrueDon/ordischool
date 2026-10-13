@@ -1,5 +1,21 @@
 # Änderungsprotokoll
 
+## [0.0.4] – 2026-10-13
+
+### Hinzugefügt
+- Vorläufiges Dateninventar der Konten-, Planungs-, Klassenbuch-, Aufgaben-, Kommunikations-, Bewertungs- und Betriebsdaten.
+- Logische Datenflussbeschreibung einschließlich Dienstleistern, Anhängen, Sicherungen, Exporten und Löschpfad.
+- Vorläufiges Screening der Datenschutz-Folgenabschätzung (DSFA) mit Freigabeschritten.
+- Datenschutz-Quellenregister mit DSGVO, ThürSchulG, ThürSchulO, ministeriellen Schul-FAQ und Statushinweis auf einen Verordnungsentwurf.
+- Neue Anforderungen an Verarbeitungstransparenz, Rechtsgrundlagen, Speicherfristen, Anbieter und Rechtebearbeitung.
+
+### Noch nicht enthalten
+- Bestimmung einer konkreten verantwortlichen Stelle oder Auftragsverarbeiterrolle.
+- Vollständiges VVT oder abgeschlossene DSFA für einen realen Schulbetrieb.
+- Festgelegte Hostinganbieter, Datenstandorte, Unterauftragsverarbeiter oder konkrete Rechtsgrundlagen.
+- Verbindliche Löschfristen außerhalb der anwendbaren schulrechtlichen Spezialregeln.
+- Produktive Nutzung echter personenbezogener Daten.
+
 ## [0.0.3] – 2026-10-13
 
 ### Hinzugefügt

@@ -1,6 +1,6 @@
 # OrdiSchool
 
-**Version:** 0.0.3 – Thüringer Regeln und Quellenregister  
+**Version:** 0.0.4 – Datenschutz- und Datenflussentwurf  
 **Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
 **Stand:** 13. Oktober 2026
 
@@ -8,7 +8,7 @@ OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretu
 
 ## Stand dieser Version
 
-v0.0.3 ergänzt die Projektdefinition um ein recherchiertes Thüringer Regelprofil für Planung und ein nachvollziehbares Quellenregister. Landesrecht, schulische Beschlüsse, lokale Gebäudevorgaben und Optimierungspräferenzen werden getrennt. Die Quellen und Übergangsregeln sind noch vor konkretem Einsatz fachlich zu prüfen. Es gibt weiterhin keinen ausführbaren Anwendungscode.
+v0.0.4 ergänzt die Projektdefinition um ein vorläufiges Dateninventar, logische Datenflüsse und ein DSFA-Screening. Rechtsgrundlagen, Verantwortlichkeiten, Speicherorte, Aufbewahrung und Löschfristen bleiben für den konkreten Betrieb zu bestätigen. Es gibt weiterhin keinen ausführbaren Anwendungscode und keine Freigabe als DSGVO-konform.
 
 ## Projektdateien
 
@@ -18,11 +18,15 @@ v0.0.3 ergänzt die Projektdefinition um ein recherchiertes Thüringer Regelprof
 - [`docs/ABLAEUFE.md`](docs/ABLAEUFE.md) – fachliche Abläufe mit Sichtbarkeit, Prüfung und Freigabe
 - [`docs/REGELPROFIL_THUERINGEN.md`](docs/REGELPROFIL_THUERINGEN.md) – Planungsbedingungen, Regelklassen und Umsetzungshinweise für Thüringen
 - [`docs/QUELLENREGISTER.md`](docs/QUELLENREGISTER.md) – geprüfte Quellen, Gültigkeit, Fundstellen und offene Abrufe
+- [`docs/DATENINVENTAR.md`](docs/DATENINVENTAR.md) – Datenarten, Zwecke, Rollen, Speicherklassen und offene Prüfungen
+- [`docs/DATENFLUSS.md`](docs/DATENFLUSS.md) – logische Flüsse, Empfänger, Anbieter und Lebenszyklus
+- [`docs/DSFA_SCREENING.md`](docs/DSFA_SCREENING.md) – vorläufige Risikofaktoren und Prüfschritte zur Datenschutz-Folgenabschätzung
+- [`docs/DATENSCHUTZ_QUELLENREGISTER.md`](docs/DATENSCHUTZ_QUELLENREGISTER.md) – DSGVO- und Thüringer Schuldatenschutzquellen
 - [`docs/VERSIONSPLAN.md`](docs/VERSIONSPLAN.md) – Entwicklungsstufen und Zuordnung der Anforderungen
 - [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
 - [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
 - [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.3.txt`](docs/COMMIT_MESSAGE_v0.0.3.txt) – vorgeschlagene Git-Commit-Nachricht
+- [`docs/COMMIT_MESSAGE_v0.0.4.txt`](docs/COMMIT_MESSAGE_v0.0.4.txt) – vorgeschlagene Git-Commit-Nachricht
 
 ## Arbeitsregeln
 
@@ -34,6 +38,7 @@ v0.0.3 ergänzt die Projektdefinition um ein recherchiertes Thüringer Regelprof
 6. Jede Version erhält eine passende Commit-Nachricht, Änderungsnotizen und klare Abnahmekriterien.
 7. Berechtigungen gelten für Listen, Suche, Direktlinks, Anhänge, Benachrichtigungen und Exporte gleichermaßen.
 8. Regelprofile speichern Quelle, Gültigkeit, Schulform, Bildungsgang, Jahrgang und Kohorte; nicht belegte Regeln werden nicht als Landesvorgabe ausgegeben.
+9. Jedes personenbezogene Datenfeld benötigt vor einer produktiven Nutzung einen dokumentierten Zweck, Berechtigungsumfang und eine bestätigte Rechts-/Aufbewahrungsentscheidung.
 
 ## Datenschutz-Hinweis
 

@@ -1,7 +1,7 @@
 # OrdiSchool Anforderungen
 
 **Status:** Zielanforderungen, fachlich noch weiter zu spezifizieren  
-**Version:** 0.0.3
+**Version:** 0.0.4
 **Normative Wörter:** „MUSS“ bezeichnet eine Abnahmeanforderung. „SOLL“ bezeichnet ein Ziel, dessen Abweichung begründet wird. „OFFEN“ bezeichnet eine noch nicht fachlich beschlossene Ausgestaltung.
 
 ## A. Planung
@@ -94,6 +94,15 @@
 | PRIV-003 | Die Software darf Rechtsgrundlage, Einwilligung oder Aufbewahrungsdauer nicht allein aus einer Funktion ableiten. | alle Versionen |
 | PRIV-004 | Vor Pilot/Produktion müssen Verantwortlichkeit, Rechtsgrundlagen, Datenschutzinformationen, Auftragsverarbeitung, Hosting und gegebenenfalls Folgenabschätzung geprüft werden. | 0.0.4 / 0.16.0 |
 | PRIV-005 | Betroffenenanfragen, Berichtigung, Export, Einschränkung und Löschung müssen durch die verantwortliche Stelle im anwendbaren Rahmen bearbeitbar und nachvollziehbar sein. | 0.15.0–1.0.0 |
+| PRIV-006 | Für jede Verarbeitung personenbezogener Daten müssen Datenarten, Zweck, Betroffene, Empfänger, Geltungsbereich, Speicherklassen und verantwortliche Freigabe dokumentiert werden. | ab 0.0.4 |
+| PRIV-007 | Rechtsgrundlagen und Informationspflichten müssen je konkretem Verantwortlichen, Zweck und Datenbereich freigegeben werden; sie dürfen nicht als Produktstandard unterstellt werden. | ab 0.0.4 |
+| PRIV-008 | Aufbewahrungs-, Einschränkungs-, Lösch- und Archivierungsregeln müssen pro Datensatzklasse festgelegt und auf Exporte, Anhänge, Sicherungen und Unterauftragsverarbeiter abgestimmt sein. | 0.0.4 / ab 0.1.0 |
+| PRIV-009 | Externe Empfänger und Anbieter müssen einschließlich Rolle, Weisung, Unterauftragsverarbeitern, Zugriffsorten, Drittlandbezug, Rückgabe und Löschung dokumentiert und vor Aktivierung freigegeben sein. | vor Pilot |
+| PRIV-010 | Vor Pilot muss ein dokumentiertes DSFA-Screening durch die verantwortliche Stelle erfolgen; erforderliche DSFA und ggf. vorherige Konsultation müssen vor Beginn abgeschlossen sein. | 0.0.4 / 0.16.0 |
+| PRIV-011 | Informations-, Auskunfts-, Berichtigungs-, Einschränkungs-, Widerspruchs-, Export- und Löschvorgänge müssen durch berechtigte Verantwortliche bearbeitbar sein und Spezial-Aufbewahrungsregeln berücksichtigen. | 0.0.4 / 0.15.0–1.0.0 |
+| PRIV-012 | Daten besonderer Kategorien oder zusätzliche Freitextangaben dürfen nicht ohne bestätigte Erforderlichkeit, Rechtsgrundlage, Zweck, Zugriff und Aufbewahrungsregel als allgemeine Standardfelder aktiviert werden. | ab 0.0.4 |
+| PRIV-013 | Externe KI-, Analyse- oder Benachrichtigungsdienste erhalten standardmäßig keine Noten-, Anwesenheits-, Schülernachrichten- oder sonstigen pädagogischen Inhaltsdaten. | alle Versionen |
+| PRIV-014 | Produktiv- und Nichtproduktivumgebungen müssen getrennte Zugänge, Speicher und Protokolle verwenden; Produktivdaten dürfen nicht in Testumgebungen kopiert werden. | ab 0.1.0 |
 | SEC-001 | Rollen und Gruppenrechte müssen bei Anzeige, Suche, Direktlinks, Anhängen, Benachrichtigungen und Export erneut geprüft werden. | ab 0.1.0 |
 | SEC-002 | Zugangsdaten und Schlüssel dürfen nicht im Repository gespeichert werden. | alle Versionen |
 | SEC-003 | Sicherheits- und Adminereignisse müssen protokolliert werden; Passwörter, Sitzungstokens und unnötige Schülernotizen dürfen nicht in Logs erscheinen. | ab 0.1.0 |
@@ -103,7 +112,7 @@
 | OPS-001 | Datenbankänderungen müssen versioniert migrierbar und mit geprüfter Sicherungs-/Wiederherstellungsstrategie verbunden sein. | ab 0.1.0 |
 | OPS-002 | Hosting und Unterauftragnehmer müssen vor Auswahl hinsichtlich Standort, Zugriffen, Backups, Löschung, Sicherheit und Vertragsbedingungen geprüft werden. | 0.0.7 / 0.16.0 |
 
-## Nicht-Ziele von v0.0.3
+## Nicht-Ziele von v0.0.4
 
 - Keine Anwendungscode- oder Datenbankimplementierung.
 - Keine Verwendung echter Schüler-, Noten-, Anwesenheits- oder Nachrichtendaten.
