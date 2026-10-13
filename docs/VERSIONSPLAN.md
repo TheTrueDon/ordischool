@@ -22,6 +22,19 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.16.0–0.18.0 | Pilot, kontrollierte Beta und Release Candidate |
 | 1.0.0 | Stabile, konkret freigegebene Produktversion |
 
+## Abnahme v0.1.0 – technisches Grundgerüst und Anmeldung
+
+- Projektstruktur und lokale Startanleitung sind enthalten; Zugangsdaten/Schlüssel werden nicht als echte Werte eingecheckt.
+- Getrennte Umgebungsprofile `local`, `test` und `production`; Produktionsmigration und Produktions-Adminbootstrap sind zusätzlich gesperrt.
+- MySQL-Verbindung und versionierte technische Migrationen für Konten und Login-Throttle sind vorhanden.
+- Initiale technische Rolle entsteht nur über einen einmaligen CLI-Prozess und erhält keine pädagogischen Datenrechte.
+- Anmeldung verlangt sicheres Passwort, verwendet Passwort-Hashing, Session-ID-Wechsel, CSRF-Schutz, sichere Produktionscookies und Login-Begrenzung.
+- Nicht angemeldete Personen werden vom geschützten Platzhalter zur Anmeldung geleitet; inaktive/entzogene Konten verlieren den Zugriff.
+- CI enthält Syntax-, Migrationswiederholungs-, Authentifizierungs-, CSRF-, HTTP-Smoke- und synthetische Restore-Prüfungen.
+- Entwicklungs-/CI-Daten sind synthetisch. Lokale PHP-/Datenbankläufe gelten erst als bestanden, wenn CI ausgeführt wurde.
+- Update-, Backup- und Restore-Schritte sind dokumentiert; produktives Backup-/Restoreverfahren bleibt vor echtem Betrieb zu prüfen.
+- v0.1.0 behauptet keine DSGVO-Konformität. Verantwortung, Rechtsgrundlagen, Aufbewahrung, Hosting und DSFA-Entscheidung bleiben konkrete Freigabepunkte.
+
 ## Versionsregeln
 
 - v0.0.x dokumentiert und prüft Anforderungen, Architektur und Freigaben; sie ist noch keine produktive Software.

@@ -1,5 +1,20 @@
 # Änderungsprotokoll
 
+## [0.1.0] – 2026-10-13
+
+### Hinzugefügt
+- Modulares PHP-Grundgerüst mit validierter Umgebungs-/Datenbankkonfiguration und PDO-Verbindung.
+- Versionierte technische MySQL-Migrationen für Benutzerkonten und pseudonymisierte Login-Begrenzung.
+- Anmeldung/Abmeldung, Argon2id sofern verfügbar (sonst PHP-Standard), generische Fehlermeldungen, Sessionwechsel, CSRF-Schutz und Login-Begrenzung.
+- Einmaliger CLI-Bootstrap für eine technische Systemadministration ohne Standardpasswort.
+- Geschützte Platzhalterseite, lokale Compose-Datenbank, CI mit Syntax-, Integrations-, Web-Smoke- und Restore-Smoke-Tests.
+- Entwicklungs-, Datenschutz-, Test- und Update-/Restore-Anleitungen.
+
+### Grenzen
+- v0.1.0 ist eine technische Entwicklungsfassung und nicht für reale schulische oder personenbezogene Fachdaten freigegeben.
+- PHP- und Datenbanktests müssen in der eingerichteten CI bzw. einer passenden lokalen Laufzeit ausgeführt werden; der hier verwendete Arbeitscontainer enthält PHP/Docker nicht.
+- Keine unabhängige Sicherheitsprüfung, DSFA oder konkrete Betriebs-/Datenschutzfreigabe.
+
 ## [0.0.9] – 2026-10-13
 
 ### Hinzugefügt

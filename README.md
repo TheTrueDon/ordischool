@@ -1,54 +1,105 @@
 # OrdiSchool
 
-**Version:** 0.0.9 – Backlog und Releasefreigabe  
-**Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
-**Stand:** 13. Oktober 2026
+**Ordinatio Scholae – technische Basis v0.1.0**
 
-OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretungsplanung, Sitzpläne, Klassenbuch, Aufgaben, Termine, Kommunikation und Bewertung werden. Thüringen ist der erste fachliche Bezugspunkt. Datenschutz und Sicherheit sind Anforderungen für jede Entwicklungsstufe.
+OrdiSchool ist als integrierte Schulsoftware für Planung, Vertretung, Klassenbuch, Aufgaben, Kommunikation und Bewertung geplant. Diese Version liefert ausschließlich eine lokale technische Basis mit Datenbankmigrationen und Anmeldung. Sie enthält keine schulischen Fachmodule und ist nicht für echte Schul- oder Schülerdaten freigegeben.
 
-## Stand dieser Version
+## Voraussetzungen
 
-v0.0.9 priorisiert die Umsetzung, weist Zuständigkeiten und grobe Aufwände aus und grenzt v0.1.0 als technisches Grundgerüst mit Anmeldung ab. Es werden keine echten Schülerdaten verarbeitet.
+- PHP 8.5 CLI mit `pdo_mysql` (Zielversion gemäß Architekturentscheidung)
+- MySQL 8.4 LTS
+- optional Docker Compose v2 zum lokalen Start der Datenbank
+- Bash und MySQL-Client nur für den Restore-Smoke-Test
 
-## Projektdateien
+Es gibt keine PHP-Paketabhängigkeiten von Drittanbietern. Die Anwendung nutzt PHP-Core, PDO und die MySQL-Erweiterung.
 
-- [BACKLOG_RELEASEFREIGABE.md](docs/BACKLOG_RELEASEFREIGABE.md) – priorisierte Arbeit, Aufwand, Zuständigkeiten, Releaseumfang und Änderungsverfahren
-- [SICHERHEITS_UND_TESTSTRATEGIE.md](docs/SICHERHEITS_UND_TESTSTRATEGIE.md) – Testebenen, Testfallmatrix und Release-/Pilotgates
-- [BEDROHUNGSMODELL.md](docs/BEDROHUNGSMODELL.md) – Schutzobjekte, Angreifer, Szenarien und Risikopriorisierung
-- [ARCHITEKTUR_HOSTINGENTSCHEIDUNG.md](docs/ARCHITEKTUR_HOSTINGENTSCHEIDUNG.md) – Architektur, Technologievergleich, Hosting, Datenschutzgates
-- [HOSTING_PRUEFLISTE.md](docs/HOSTING_PRUEFLISTE.md) – Checkliste für konkrete Anbieter und Tarife
-- [FACHLICHES_DATENMODELL.md](docs/FACHLICHES_DATENMODELL.md) – Entitäten, Beziehungen, Datenwörterbuch, Versionierung und Lifecycle
-- [ANFORDERUNGEN.md](docs/ANFORDERUNGEN.md) – funktionale und nicht-funktionale Anforderungen mit IDs
-- [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md) – bestätigte Arbeitsannahmen und offene Entscheidungen
-- [`docs/ROLLEN_RECHTEMATRIX.md`](docs/ROLLEN_RECHTEMATRIX.md) – Rollen, Geltungsbereiche und Rechte
-- [`docs/ABLAEUFE.md`](docs/ABLAEUFE.md) – fachliche Abläufe mit Sichtbarkeit, Prüfung und Freigabe
-- [`docs/REGELPROFIL_THUERINGEN.md`](docs/REGELPROFIL_THUERINGEN.md) – Planungsbedingungen, Regelklassen und Umsetzungshinweise für Thüringen
-- [`docs/QUELLENREGISTER.md`](docs/QUELLENREGISTER.md) – geprüfte Quellen, Gültigkeit, Fundstellen und offene Abrufe
-- [`docs/DATENINVENTAR.md`](docs/DATENINVENTAR.md) – Datenarten, Zwecke, Rollen, Speicherklassen und offene Prüfungen
-- [`docs/DATENFLUSS.md`](docs/DATENFLUSS.md) – logische Flüsse, Empfänger, Anbieter und Lebenszyklus
-- [`docs/DSFA_SCREENING.md`](docs/DSFA_SCREENING.md) – vorläufige Risikofaktoren und Prüfschritte zur Datenschutz-Folgenabschätzung
-- [`docs/DATENSCHUTZ_QUELLENREGISTER.md`](docs/DATENSCHUTZ_QUELLENREGISTER.md) – DSGVO- und Thüringer Schuldatenschutzquellen
-- [`prototype/index.html`](prototype/index.html) – lokal klickbarer Frontend-Prototyp
-- [`prototype/README.md`](prototype/README.md) – Start, Demo-Abläufe und Grenzen des Prototyps
-- [`docs/FEEDBACK_OFFENE_FRAGEN.md`](docs/FEEDBACK_OFFENE_FRAGEN.md) – Feedbackprotokoll, Durchsicht-Aufgaben und Usability-Fragen
-- [`docs/VERSIONSPLAN.md`](docs/VERSIONSPLAN.md) – Entwicklungsstufen und Zuordnung der Anforderungen
-- [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
-- [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
-- [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.9.txt`](docs/COMMIT_MESSAGE_v0.0.9.txt) – vorgeschlagene Git-Commit-Nachricht
+## Lokaler Start
 
-## Arbeitsregeln
+1. Projekt lokal auschecken, `.env.example` als `.env` kopieren und die Datei schützen:
 
-1. Anforderungen erhalten stabile Kennungen und werden einer Version zugeordnet.
-2. Änderungen an Plänen, Bewertungsverfahren und Regelprofilen müssen nachvollziehbar versioniert werden.
-3. Planungsvorschläge werden vor Veröffentlichung durch eine berechtigte Person geprüft und freigegeben.
-4. Entwicklung und Tests verwenden synthetische Daten. Echte Schülerdaten werden erst nach Freigabe des konkreten Betriebs berücksichtigt.
-5. Eine Rechtsgrundlage, Löschfrist oder schulrechtliche Regel wird nicht aus der Softwarefunktion abgeleitet. Zuständige Stellen prüfen sie für den jeweiligen Einsatz.
-6. Jede Version erhält eine passende Commit-Nachricht, Änderungsnotizen und klare Abnahmekriterien.
-7. Berechtigungen gelten für Listen, Suche, Direktlinks, Anhänge, Benachrichtigungen und Exporte gleichermaßen.
-8. Regelprofile speichern Quelle, Gültigkeit, Schulform, Bildungsgang, Jahrgang und Kohorte; nicht belegte Regeln werden nicht als Landesvorgabe ausgegeben.
-9. Jedes personenbezogene Datenfeld benötigt vor einer produktiven Nutzung einen dokumentierten Zweck, Berechtigungsumfang und eine bestätigte Rechts-/Aufbewahrungsentscheidung.
+   ```sh
+   cp .env.example .env
+   chmod 600 .env
+   ```
+2. Einen Schlüssel erzeugen und in `.env` als `ORDI_APP_KEY` eintragen:
 
-## Datenschutz-Hinweis
+   ```sh
+   php bin/generate-key.php
+   ```
 
-Dieses Repository dokumentiert ein Entwicklungsziel und ist keine Rechtsberatung oder Konformitätsbescheinigung. Die DSGVO-Prüfung hängt vom konkreten Verantwortlichen, Einsatz, Datenfluss, Hosting und den Verträgen ab.
+3. Datenbankname, Nutzer, Passwort und ein separates Root-Passwort in `.env` setzen. Für lokale Entwicklung mindestens 32 zufällige Zeichen je Passwort verwenden.
+4. Datenbank starten (oder eine eigene lokale MySQL-8.4-Instanz konfigurieren):
+
+   ```sh
+   docker compose up -d db
+   ```
+
+   Der Container bindet den Port nur an `127.0.0.1`. Compose ist ausschließlich für lokale Entwicklung gedacht.
+5. Migrationen anwenden:
+
+   ```sh
+   php bin/migrate.php
+   ```
+
+6. Einmaliges technisches Administratorkonto aus einem vertrauenswürdigen Terminal anlegen. Das Passwort steht nicht in der Shell-History und darf nicht in `.env` geschrieben werden:
+
+   ```sh
+   read -r -p 'Admin-E-Mail: ' ORDI_BOOTSTRAP_ADMIN_EMAIL
+   read -r -s -p 'Admin-Passwort (mindestens 14 Zeichen): ' ORDI_BOOTSTRAP_ADMIN_PASSWORD
+   printf '\n'
+   export ORDI_BOOTSTRAP_ADMIN_EMAIL ORDI_BOOTSTRAP_ADMIN_PASSWORD
+   php bin/create-admin.php
+   unset ORDI_BOOTSTRAP_ADMIN_EMAIL ORDI_BOOTSTRAP_ADMIN_PASSWORD
+   ```
+
+7. Anwendung lokal starten:
+
+   ```sh
+   php -S 127.0.0.1:8080 -t public public/router.php
+   ```
+
+8. `http://127.0.0.1:8080/login` im Browser öffnen. Der lokale HTTP-Modus ist ausschließlich für Loopback-Entwicklung; produktive Sessions erfordern HTTPS und sichere Cookies.
+
+Die Migrationen sind versioniert. Da MySQL-DDL nicht transaktional ist, prüfe nach einem fehlgeschlagenen Migrationslauf das Schema, bevor du erneut startest. Produktionsmigrationen sind standardmäßig gesperrt und benötigen ein geprüftes Backup sowie eine bewusste zusätzliche Freigabevariable.
+
+## Tests
+
+Die CI prüft PHP-Syntax, wendet Migrationen auf eine leere MySQL-Testdatenbank zweimal an, testet Passwort-, Login-, Session- und CSRF-Grundverhalten, prüft die Weiterleitung unangemeldeter Zugriffe und führt einen synthetischen Datenbank-Backup/Restore-Smoke-Test aus.
+
+Für lokale Tests muss eine **separate, wegwerfbare Testdatenbank** verwendet werden. `ORDI_ENV=test` verhindert das Laden der lokalen `.env`; Werte müssen explizit gesetzt werden:
+
+```sh
+export ORDI_ENV=test
+export ORDI_APP_KEY="$(php bin/generate-key.php)"
+export ORDI_SESSION_SECURE_COOKIE=false
+export ORDI_DB_HOST=127.0.0.1 ORDI_DB_PORT=3306
+export ORDI_DB_NAME=ordischool_test ORDI_DB_USER=ordischool_test
+export ORDI_DB_PASSWORD='nur-fuer-diese-testdatenbank'
+php bin/migrate.php
+php bin/migrate.php
+php tests/run.php
+bash bin/restore-smoke.sh
+```
+
+Der Restore-Smoke-Test verlangt `ORDI_ENV=test` und einen Datenbanknamen mit `_test` am Ende. Er legt eine synthetische Prüftabelle an, sichert sie, löscht sie, stellt sie wieder her und entfernt sie danach. Er ist kein Produktions-Backupverfahren.
+
+## Datenschutz- und Sicherheitsgrenzen v0.1.0
+
+- Gespeichert werden nur technische Administrations-E-Mail, Passwort-Hash, Rolle, Aktivstatus und technische Zeitstempel.
+- Login-Begrenzungen speichern HMAC-pseudonymisierte IP-/E-Mail-Buckets. Roh-IP und Klartext-E-Mail werden hierfür nicht in der Throttle-Tabelle gespeichert. Abgelaufene Einträge werden bei Login-Aufrufen gelöscht; ohne weiteren Login-Aufruf bleiben sie bis zur nächsten Bereinigung erhalten. 24 Stunden ist nur der technische Löschschwellenwert, keine rechtlich geprüfte Aufbewahrungsfrist.
+- Session-Cookies sind `HttpOnly`, `SameSite=Lax` und im Produktionsprofil `Secure`; nach erfolgreicher Anmeldung wird die Session-ID erneuert. Formulare verwenden CSRF-Tokens.
+- Kein Telemetrie-, Analyse-, CDN-, E-Mail- oder sonstiger externer Dienst ist eingebunden.
+- Es gibt keine Datenschutz-Zertifizierung und keine pauschale DSGVO-Konformitätszusage. Verantwortlichkeit, Rechtsgrundlage, Information, Aufbewahrung, Hosting, Verträge und eine mögliche DSFA sind vor einem konkreten Schulbetrieb durch die zuständigen Stellen zu prüfen.
+- Ausschließlich synthetische Testdaten verwenden. Keine echten Schülerinnen-/Schüler-, Beschäftigten- oder Schuldaten in Entwicklung/CI einbringen.
+
+## Dokumentation
+
+- [Umsetzungsstand und Datenschutzinventar v0.1.0](docs/IMPLEMENTIERUNGSSTAND_v0.1.0.md)
+- [Testprotokoll v0.1.0](docs/TESTPROTOKOLL_v0.1.0.md)
+- [Update-, Backup- und Restore-Ablauf](docs/UPDATE_UND_RESTORE_v0.1.0.md)
+- [Projektanforderungen](docs/ANFORDERUNGEN.md)
+- [Versionsplan](docs/VERSIONSPLAN.md)
+- [Änderungsprotokoll](CHANGELOG.md)
+- [Commit-Vorschlag](docs/COMMIT_MESSAGE_v0.1.0.txt)
+
+Die früheren Planungs-, Rollen-, Thüringen-, Datenmodell-, Datenschutz- und Sicherheitsdokumente bleiben Teil des Projektstands; sie sind Entwurfs-/Prüfgrundlagen und keine fachliche oder rechtliche Freigabe.

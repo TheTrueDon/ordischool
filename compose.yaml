@@ -1,0 +1,21 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ${ORDI_DB_NAME:?Set ORDI_DB_NAME in .env}
+      MYSQL_USER: ${ORDI_DB_USER:?Set ORDI_DB_USER in .env}
+      MYSQL_PASSWORD: ${ORDI_DB_PASSWORD:?Set ORDI_DB_PASSWORD in .env}
+      MYSQL_ROOT_PASSWORD: ${ORDI_DB_ROOT_PASSWORD:?Set ORDI_DB_ROOT_PASSWORD in .env}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci"]
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ordidb:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  ordidb:

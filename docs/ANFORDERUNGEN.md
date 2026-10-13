@@ -4,6 +4,23 @@
 **Version:** 0.0.5
 **Normative Wörter:** „MUSS“ bezeichnet eine Abnahmeanforderung. „SOLL“ bezeichnet ein Ziel, dessen Abweichung begründet wird. „OFFEN“ bezeichnet eine noch nicht fachlich beschlossene Ausgestaltung.
 
+## G. Technisches Grundgerüst und Anmeldung (v0.1.0)
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| APP-001 | Laufzeit-, Konfigurations-, Infrastruktur- und Anwendungsdateien müssen nachvollziehbar getrennt und lokal startbar sein. | 0.1.0 |
+| APP-002 | Konfiguration muss `local`, `test` und `production` unterstützen; Schlüssel und Zugangsdaten dürfen nicht mit echten Werten versioniert werden. | 0.1.0 |
+| APP-003 | Datenbankzugriff erfolgt mit PDO, vorbereiteten Abfragen und deaktivierten emulierten Prepared Statements. | 0.1.0 |
+| APP-004 | Datenbankschemaänderungen müssen geordnet versioniert, wiederholbar ausführbar und als angewendet erkennbar sein. | 0.1.0 |
+| APP-005 | Ersteinrichtung der technischen Administration muss CLI-basiert, einmalig, ohne Standardpasswort und ohne pädagogische Berechtigungen erfolgen. | 0.1.0 |
+| APP-006 | Anmeldung muss angemessen gehashte Passwörter, generische Fehler, CSRF-Schutz, Session-ID-Erneuerung und Logout bieten. | 0.1.0 |
+| APP-007 | Loginversuche müssen begrenzt werden; Throttle-Metadaten sollen keine rohe IP-Adresse oder E-Mail-Adresse speichern. | 0.1.0 |
+| APP-008 | Geschützte Bereiche müssen ohne aktive Anmeldung unerreichbar sein; Kontosperre/-deaktivierung muss den Zugriff entziehen. | 0.1.0 |
+| APP-009 | CI muss Syntax-, Migration-, Anmelde-, CSRF-, HTTP-Zugriffsschutz- und Restore-Smoke-Tests mit synthetischen Daten ausführen. | 0.1.0 |
+| APP-010 | Vor produktiven Migrationen sind Backup und bewusste Freigabe erforderlich; Migrationsfehler müssen ohne Datenbankdetails an Webnutzende ausgegeben werden. | 0.1.0 |
+| APP-011 | Fehlerausgaben für Nutzende dürfen keine Passwörter, Schlüssel, SQL-Inhalte, Stacktraces oder personenbezogenen Eingaben enthalten. | 0.1.0 |
+| APP-012 | Entwicklungs- und CI-Umgebungen dürfen keine echten schulischen Produktivdaten verwenden. | alle Versionen |
+
 ## A. Planung
 
 | ID | Anforderung | Zielversion |
