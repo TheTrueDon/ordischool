@@ -28,9 +28,9 @@ function loginPage(string $error = ''): never
     $content = '<section class="card narrow"><p class="eyebrow">Technischer Zugang</p><h1>Anmelden</h1>' . $notice
         . '<form method="post" action="/login" autocomplete="on">'
         . '<input type="hidden" name="csrf_token" value="' . $token . '">'
-        . '<label for="email">E-Mail-Adresse</label><input id="email" name="email" type="email" maxlength="254" autocomplete="username" required autofocus>'
+        . '<label for="email">Benutzername oder Benutzername oder E-Mail-Adresse</label><input id="email" name="email" type="text" maxlength="254" autocomplete="username" required autofocus>'
         . '<label for="password">Passwort</label><input id="password" name="password" type="password" maxlength="1024" autocomplete="current-password" required>'
-        . '<button type="submit">Anmelden</button></form><p class="muted">v0.1.0 enthält nur technische Administration. Es gibt noch keine Schüler- oder Schuldaten.</p></section>';
+        . '<button type="submit">Anmelden</button></form><p class="muted">v0.1.2 enthält nur technische Administration. Es gibt noch keine Schüler- oder Schuldaten.</p></section>';
     Html::page('Anmelden', $content);
     exit;
 }
@@ -67,7 +67,7 @@ if ($path === '/login' && $method === 'POST') {
     $password = is_string($_POST['password'] ?? null) ? $_POST['password'] : '';
     try {
         $pdo = Database::connect($config);
-        $users = new UserRepository($pdo);
+        $users = new UserRepository($pdo, $config->tablePrefix);
         $auth = new Authenticator($users, new RateLimiter($pdo, $config));
         $ip = is_string($_SERVER['REMOTE_ADDR'] ?? null) ? $_SERVER['REMOTE_ADDR'] : 'unknown';
         $user = $auth->authenticate($email, $password, $ip);
@@ -101,7 +101,7 @@ if ($path === '/' && $method === 'GET') {
         exit;
     }
     try {
-        $user = (new UserRepository(Database::connect($config)))->findActiveById((int) $userId);
+        $user = (new UserRepository(Database::connect($config), $config->tablePrefix))->findActiveById((int) $userId);
     } catch (Throwable $exception) {
         $reference = bin2hex(random_bytes(6));
         error_log('OrdiSchool session check failure ' . $reference . ' (' . get_class($exception) . ')');
@@ -114,11 +114,11 @@ if ($path === '/' && $method === 'GET') {
     }
     $token = Html::escape(Csrf::token());
     $content = '<section class="card"><p class="eyebrow">Geschützter Bereich · technische Administration</p><h1>Willkommen bei OrdiSchool</h1>'
-        . '<p>Das technische Grundgerüst v0.1.0 ist gestartet. Fachmodule und schulische Daten sind noch nicht enthalten.</p>'
-        . '<p class="muted">Angemeldet als ' . Html::escape((string) $user['email']) . '</p>'
+        . '<p>Das technische Grundgerüst v0.1.2 ist gestartet. Fachmodule und schulische Daten sind noch nicht enthalten.</p>'
+        . '<p class="muted">Angemeldet als ' . Html::escape(str_ends_with((string) $user['email'], '@ordischool.invalid') ? substr((string) $user['email'], 0, -strlen('@ordischool.invalid')) : (string) $user['email']) . '</p>'
         . '<form method="post" action="/logout"><input type="hidden" name="csrf_token" value="' . $token . '"><button class="secondary" type="submit">Abmelden</button></form></section>';
     Html::page('Dashboard', $content);
     exit;
 }
 
-respondError(404, 'Seite nicht gefunden', 'Diese Seite ist in v0.1.0 nicht vorhanden.');
+respondError(404, 'Seite nicht gefunden', 'Diese Seite ist in v0.1.2 nicht vorhanden.');

@@ -30,13 +30,13 @@ try {
     if ($lock !== 1) {
         throw new RuntimeException('Bootstrap-Sperre konnte nicht erworben werden.');
     }
-    $exists = (bool) $pdo->query("SELECT EXISTS(SELECT 1 FROM users WHERE role = 'system_admin')")->fetchColumn();
+    $exists = (bool) $pdo->query("SELECT EXISTS(SELECT 1 FROM {$config->tablePrefix}users WHERE role = 'system_admin')")->fetchColumn();
     if ($exists) {
         fwrite(STDERR, "Ein technisches Administratorkonto existiert bereits. Bootstrap ist einmalig.\n");
         $exitCode = 3;
     } else {
         $hash = PasswordHasher::hash($password);
-        $statement = $pdo->prepare("INSERT INTO users (email, password_hash, role, is_active, created_at) VALUES (:email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())");
+        $statement = $pdo->prepare("INSERT INTO {$config->tablePrefix}users (email, password_hash, role, is_active, created_at) VALUES (:email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())");
         $statement->execute(['email' => $email, 'password_hash' => $hash]);
         fwrite(STDOUT, "Technisches Administratorkonto angelegt. Zugangsdaten aus dem Prozess entfernen.\n");
     }

@@ -4,6 +4,7 @@ feat(v0.1.0): add secure technical foundation and login
 - add one-time technical admin bootstrap, login/logout and protected placeholder
 - add password hashing, session rotation, CSRF protection and login throttling
 - add CI coverage for migrations, authentication, HTTP access and synthetic restore
+- add one-command Docker test startup with temporary credentials and browser launch
 - document local setup, privacy scope and update/restore boundaries
 
 No school or student data is included. PHP/MySQL CI must pass before tagging v0.1.0.

@@ -1,0 +1,6 @@
+fix(installer): support temporary HTTP test setup without SSL
+
+- allow explicit insecure HTTP setup for synthetic test deployments
+- enable test-mode sessions over HTTP and warn about plaintext credentials
+- document transition to HTTPS and secure production cookies
+- no database schema update required

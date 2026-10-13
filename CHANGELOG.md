@@ -1,5 +1,37 @@
 # Änderungsprotokoll
 
+## [0.1.2] – 2026-10-13
+
+### Geändert
+- Installer kann ohne Zertifikat im ausdrücklich bestätigten HTTP-Testmodus verwendet werden.
+- HTTP-Testinstallationen erhalten `ORDI_ENV=test` und nicht sichere Session-Cookies, damit Anmeldung über HTTP technisch funktioniert.
+- Installer zeigt vor der Übertragung eine Warnung und verlangt eine ausdrückliche Bestätigung; keine echten Personen-/Schuldaten verwenden.
+- Dokumentation für spätere Umstellung auf HTTPS und produktive Secure-Cookies ergänzt.
+
+### Datenbankupdate
+- Kein SQL-Update erforderlich.
+
+### Grenze
+- HTTP überträgt DB- und Login-Passwörter unverschlüsselt. Nur separate Testdatenbank/Testkonto nutzen und vor produktivem Betrieb HTTPS aktivieren.
+
+
+## [0.1.1] – 2026-10-13
+
+### Hinzugefügt
+- Klassischer Webinstaller für PHP-/MySQL-Webhosting mit Verbindungstest, Tabellenpräfix (Standard `ordi_`) und selbst gewähltem Admin-Konto.
+- Schutz des Installers nach erfolgreicher Einrichtung; sichere lokale Konfiguration außerhalb des öffentlichen `public`-Ordners.
+- Präfixunterstützung für Installation, Migrationen, Anmeldung und Login-Begrenzung.
+- Anmeldung mit Benutzername oder E-Mail-Adresse; HTTPS war für die Web-Ersteinrichtung verpflichtend.
+- Dokumentierter Datei-Updateprozess mit SQL-Update-Skripten nur bei Schemaänderungen.
+
+### Datenbankupdate
+- Kein SQL-Update nötig: Das Schema erhält keine neuen Tabellen oder Spalten. Das Präfix betrifft die Namen der bei Neuinstallation angelegten Tabellen.
+
+### Grenzen
+- Noch kein fachliches Schulmodul und keine Freigabe für echte Schul- oder Schülerdaten.
+- PHP/Webserver-Laufzeit und MySQL konnten in dieser Arbeitsumgebung nicht ausgeführt werden.
+
+
 ## [0.1.0] – 2026-10-13
 
 ### Hinzugefügt
@@ -8,6 +40,8 @@
 - Anmeldung/Abmeldung, Argon2id sofern verfügbar (sonst PHP-Standard), generische Fehlermeldungen, Sessionwechsel, CSRF-Schutz und Login-Begrenzung.
 - Einmaliger CLI-Bootstrap für eine technische Systemadministration ohne Standardpasswort.
 - Geschützte Platzhalterseite, lokale Compose-Datenbank, CI mit Syntax-, Integrations-, Web-Smoke- und Restore-Smoke-Tests.
+- Ein-Befehl-Teststart `bash test.sh` mit kurzlebigen Containern, automatisch erzeugten Zugangsdaten und Browserstart.
+- Der Schnelltest hält die Datenbank im internen Docker-Netzwerk; nur der manuelle Host-Entwicklungsstart veröffentlicht einen lokalen DB-Port.
 - Entwicklungs-, Datenschutz-, Test- und Update-/Restore-Anleitungen.
 
 ### Grenzen

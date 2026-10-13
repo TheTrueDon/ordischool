@@ -1,0 +1,6 @@
+# Nur für den manuellen Entwicklungsstart mit PHP auf dem Host.
+# Der Docker-Schnelltest veröffentlicht den Datenbankport nicht.
+services:
+  db:
+    ports:
+      - "127.0.0.1:${ORDI_DB_PORT_HOST:-3306}:3306"

@@ -2,13 +2,11 @@ services:
   db:
     image: mysql:8.4
     environment:
-      MYSQL_DATABASE: ${ORDI_DB_NAME:?Set ORDI_DB_NAME in .env}
-      MYSQL_USER: ${ORDI_DB_USER:?Set ORDI_DB_USER in .env}
-      MYSQL_PASSWORD: ${ORDI_DB_PASSWORD:?Set ORDI_DB_PASSWORD in .env}
-      MYSQL_ROOT_PASSWORD: ${ORDI_DB_ROOT_PASSWORD:?Set ORDI_DB_ROOT_PASSWORD in .env}
+      MYSQL_DATABASE: ${ORDI_DB_NAME:?Set ORDI_DB_NAME}
+      MYSQL_USER: ${ORDI_DB_USER:?Set ORDI_DB_USER}
+      MYSQL_PASSWORD: ${ORDI_DB_PASSWORD:?Set ORDI_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${ORDI_DB_ROOT_PASSWORD:?Set ORDI_DB_ROOT_PASSWORD}
     command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci"]
-    ports:
-      - "127.0.0.1:3306:3306"
     volumes:
       - ordidb:/var/lib/mysql
     healthcheck:
@@ -16,6 +14,33 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ORDI_ENV: test
+      ORDI_APP_KEY: ${ORDI_APP_KEY:?test.sh must generate ORDI_APP_KEY}
+      ORDI_SESSION_SECURE_COOKIE: "false"
+      ORDI_DB_HOST: db
+      ORDI_DB_PORT: 3306
+      ORDI_DB_NAME: ${ORDI_DB_NAME:?Set ORDI_DB_NAME}
+      ORDI_DB_USER: ${ORDI_DB_USER:?Set ORDI_DB_USER}
+      ORDI_DB_PASSWORD: ${ORDI_DB_PASSWORD:?Set ORDI_DB_PASSWORD}
+      ORDI_BOOTSTRAP_ADMIN_EMAIL: ${ORDI_BOOTSTRAP_ADMIN_EMAIL:?test.sh must set a temporary admin email}
+      ORDI_BOOTSTRAP_ADMIN_PASSWORD: ${ORDI_BOOTSTRAP_ADMIN_PASSWORD:?test.sh must generate an admin password}
+    ports:
+      - "127.0.0.1:${ORDI_TEST_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD", "php", "bin/healthcheck.php"]
+      interval: 3s
+      timeout: 2s
+      retries: 20
+      start_period: 5s
 
 volumes:
   ordidb:

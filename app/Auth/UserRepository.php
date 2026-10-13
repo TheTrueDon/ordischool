@@ -8,13 +8,17 @@ use RuntimeException;
 
 final class UserRepository
 {
-    public function __construct(private readonly PDO $pdo)
+    public function __construct(private readonly PDO $pdo, private readonly string $prefix = '')
     {
     }
 
     public static function normalizeEmail(string $email): string
     {
-        return strtolower(trim($email));
+        $identifier = strtolower(trim($email));
+        if (!str_contains($identifier, '@') && preg_match('/\A[a-z0-9._-]{3,64}\z/', $identifier)) {
+            return $identifier . '@ordischool.invalid';
+        }
+        return $identifier;
     }
 
     public static function validEmail(string $email): bool
@@ -26,7 +30,7 @@ final class UserRepository
     public function findByEmail(string $email): ?array
     {
         $statement = $this->pdo->prepare(
-            'SELECT id, email, password_hash, role, is_active FROM users WHERE email = :email LIMIT 1'
+            "SELECT id, email, password_hash, role, is_active FROM {$this->prefix}users WHERE email = :email LIMIT 1"
         );
         $statement->execute(['email' => self::normalizeEmail($email)]);
         $user = $statement->fetch();
@@ -36,7 +40,7 @@ final class UserRepository
     public function findActiveById(int $id): ?array
     {
         $statement = $this->pdo->prepare(
-            'SELECT id, email, role FROM users WHERE id = :id AND is_active = 1 LIMIT 1'
+            "SELECT id, email, role FROM {$this->prefix}users WHERE id = :id AND is_active = 1 LIMIT 1"
         );
         $statement->execute(['id' => $id]);
         $user = $statement->fetch();
@@ -45,7 +49,7 @@ final class UserRepository
 
     public function systemAdminExists(): bool
     {
-        $statement = $this->pdo->query("SELECT 1 FROM users WHERE role = 'system_admin' LIMIT 1");
+        $statement = $this->pdo->query("SELECT 1 FROM {$this->prefix}users WHERE role = 'system_admin' LIMIT 1");
         return $statement->fetchColumn() !== false;
     }
 
@@ -60,7 +64,7 @@ final class UserRepository
         }
 
         $statement = $this->pdo->prepare(
-            "INSERT INTO users (email, password_hash, role, is_active, created_at)
+            "INSERT INTO {$this->prefix}users (email, password_hash, role, is_active, created_at)
              VALUES (:email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())"
         );
         $statement->execute([
@@ -73,7 +77,7 @@ final class UserRepository
     public function updatePasswordHash(int $id, string $passwordHash): void
     {
         $statement = $this->pdo->prepare(
-            'UPDATE users SET password_hash = :password_hash WHERE id = :id'
+            "UPDATE {$this->prefix}users SET password_hash = :password_hash WHERE id = :id"
         );
         $statement->execute(['password_hash' => $passwordHash, 'id' => $id]);
     }
@@ -81,7 +85,7 @@ final class UserRepository
     public function recordSuccessfulLogin(int $id): void
     {
         $statement = $this->pdo->prepare(
-            'UPDATE users SET last_login_at = UTC_TIMESTAMP() WHERE id = :id AND is_active = 1'
+            "UPDATE {$this->prefix}users SET last_login_at = UTC_TIMESTAMP() WHERE id = :id AND is_active = 1"
         );
         $statement->execute(['id' => $id]);
     }

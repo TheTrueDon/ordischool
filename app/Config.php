@@ -16,11 +16,14 @@ final class Config
         public readonly string $dbName,
         public readonly string $dbUser,
         public readonly string $dbPassword,
+        public readonly string $tablePrefix,
     ) {
     }
 
     public static function load(string $projectRoot): self
     {
+        self::loadGeneratedConfig($projectRoot . '/config.local.php');
+
         $explicitEnvironment = getenv('ORDI_ENV');
         if ($explicitEnvironment === false || $explicitEnvironment === 'local') {
             self::loadLocalFile($projectRoot . '/.env');
@@ -46,6 +49,10 @@ final class Config
         $dbName = self::env('ORDI_DB_NAME', '');
         $dbUser = self::env('ORDI_DB_USER', '');
         $dbPassword = self::env('ORDI_DB_PASSWORD', '');
+        $tablePrefix = self::env('ORDI_DB_PREFIX', '');
+        if (!preg_match('/\A[a-zA-Z0-9_]{0,40}\z/', $tablePrefix)) {
+            throw new RuntimeException('ORDI_DB_PREFIX darf nur aus bis zu 40 Buchstaben, Zahlen und Unterstrichen bestehen.');
+        }
 
         if ($dbPort === false || $dbPort < 1 || $dbPort > 65535) {
             throw new RuntimeException('ORDI_DB_PORT ist ungültig.');
@@ -66,6 +73,7 @@ final class Config
             $dbName,
             $dbUser,
             $dbPassword,
+            $tablePrefix,
         );
     }
 
@@ -87,6 +95,32 @@ final class Config
             throw new RuntimeException($name . ' muss true oder false sein.');
         }
         return $parsed;
+    }
+
+
+    private static function loadGeneratedConfig(string $path): void
+    {
+        if (!is_file($path) || !is_readable($path)) {
+            return;
+        }
+        $settings = require $path;
+        if (!is_array($settings)) {
+            throw new RuntimeException('Die lokale Installationskonfiguration ist ungültig.');
+        }
+        $map = [
+            'environment' => 'ORDI_ENV', 'app_key' => 'ORDI_APP_KEY',
+            'secure_cookies' => 'ORDI_SESSION_SECURE_COOKIE', 'db_host' => 'ORDI_DB_HOST',
+            'db_port' => 'ORDI_DB_PORT', 'db_name' => 'ORDI_DB_NAME',
+            'db_user' => 'ORDI_DB_USER', 'db_password' => 'ORDI_DB_PASSWORD',
+            'db_prefix' => 'ORDI_DB_PREFIX',
+        ];
+        foreach ($map as $key => $name) {
+            if (array_key_exists($key, $settings) && getenv($name) === false) {
+                $value = is_bool($settings[$key]) ? ($settings[$key] ? 'true' : 'false') : (string) $settings[$key];
+                putenv($name . '=' . $value);
+                $_ENV[$name] = $value;
+            }
+        }
     }
 
     private static function loadLocalFile(string $path): void

@@ -17,7 +17,7 @@ Alle Testdaten sind synthetisch; E-Mail-Adressen verwenden die reservierte Domai
 
 ## Tatsächlicher Laufstatus
 
-Im hier verfügbaren Arbeitscontainer sind PHP, Composer und Docker nicht installiert. Deshalb konnten PHP-Syntax, MySQL-Integration, HTTP-Smoke und Restore-Smoke hier nicht ausgeführt werden. Die CI-Workflow-Datei ist angelegt, aber ihr Ergebnis muss nach dem Einspielen in das Git-Repository geprüft werden. Bis dahin sind diese Prüfschritte **nicht als bestanden** zu werten.
+Im hier verfügbaren Arbeitscontainer sind PHP, Composer und Docker nicht installiert. Deshalb konnten PHP-Syntax, MySQL-Integration, HTTP-Smoke, Restore-Smoke und der neue Docker-Schnellstart hier nicht ausgeführt werden. Die CI-Workflow-Datei ist angelegt, aber ihr Ergebnis muss nach dem Einspielen in das Git-Repository geprüft werden. Bis dahin sind diese Prüfschritte **nicht als bestanden** zu werten.
 
 ## Bekannte Testgrenzen
 

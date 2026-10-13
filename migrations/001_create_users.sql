@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE {{prefix}}users (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     email VARCHAR(254) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
     password_hash VARCHAR(255) CHARACTER SET ascii COLLATE ascii_bin NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE users (
     created_at DATETIME NOT NULL,
     last_login_at DATETIME NULL,
     PRIMARY KEY (id),
-    UNIQUE KEY uq_users_email (email),
-    CONSTRAINT chk_users_role CHECK (role = 'system_admin'),
-    CONSTRAINT chk_users_active CHECK (is_active IN (0, 1))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+    UNIQUE KEY uq_{{prefix}}users_email (email),
+    CONSTRAINT chk_{{prefix}}users_role CHECK (role = 'system_admin'),
+    CONSTRAINT chk_{{prefix}}users_active CHECK (is_active IN (0, 1))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

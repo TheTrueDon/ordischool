@@ -33,7 +33,7 @@ final class RateLimiter
 
     public function recordSuccess(string $ip, string $email): void
     {
-        $statement = $this->pdo->prepare('DELETE FROM auth_throttle WHERE bucket_key = :bucket');
+        $statement = $this->pdo->prepare("DELETE FROM {$this->config->tablePrefix}auth_throttle WHERE bucket_key = :bucket");
         $statement->execute([
             'bucket' => $this->bucket('pair', $ip . '|' . UserRepository::normalizeEmail($email)),
         ]);
@@ -47,9 +47,9 @@ final class RateLimiter
     private function attempts(string $key): int
     {
         $statement = $this->pdo->prepare(
-            'SELECT attempts FROM auth_throttle
+            "SELECT attempts FROM {$this->config->tablePrefix}auth_throttle
              WHERE bucket_key = :bucket
-             AND window_started_at >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 15 MINUTE)'
+             AND window_started_at >= DATE_SUB(UTC_TIMESTAMP(), INTERVAL 15 MINUTE)"
         );
         $statement->execute(['bucket' => $key]);
         return (int) ($statement->fetchColumn() ?: 0);
@@ -58,11 +58,11 @@ final class RateLimiter
     private function increment(string $key): void
     {
         $statement = $this->pdo->prepare(
-            'INSERT INTO auth_throttle (bucket_key, attempts, window_started_at)
+            "INSERT INTO {$this->config->tablePrefix}auth_throttle (bucket_key, attempts, window_started_at)
              VALUES (:bucket, 1, UTC_TIMESTAMP())
              ON DUPLICATE KEY UPDATE
                attempts = IF(window_started_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 15 MINUTE), 1, LEAST(attempts + 1, 65535)),
-               window_started_at = IF(window_started_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 15 MINUTE), UTC_TIMESTAMP(), window_started_at)'
+               window_started_at = IF(window_started_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 15 MINUTE), UTC_TIMESTAMP(), window_started_at)"
         );
         $statement->execute(['bucket' => $key]);
     }
@@ -70,7 +70,7 @@ final class RateLimiter
     private function removeExpiredRows(): void
     {
         $this->pdo->exec(
-            'DELETE FROM auth_throttle WHERE window_started_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)'
+            "DELETE FROM {$this->config->tablePrefix}auth_throttle WHERE window_started_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 DAY)"
         );
     }
 }
