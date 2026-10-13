@@ -1,7 +1,7 @@
 # OrdiSchool Anforderungen
 
 **Status:** Zielanforderungen, fachlich noch weiter zu spezifizieren  
-**Version:** 0.0.4
+**Version:** 0.0.5
 **Normative Wörter:** „MUSS“ bezeichnet eine Abnahmeanforderung. „SOLL“ bezeichnet ein Ziel, dessen Abweichung begründet wird. „OFFEN“ bezeichnet eine noch nicht fachlich beschlossene Ausgestaltung.
 
 ## A. Planung
@@ -103,6 +103,9 @@
 | PRIV-012 | Daten besonderer Kategorien oder zusätzliche Freitextangaben dürfen nicht ohne bestätigte Erforderlichkeit, Rechtsgrundlage, Zweck, Zugriff und Aufbewahrungsregel als allgemeine Standardfelder aktiviert werden. | ab 0.0.4 |
 | PRIV-013 | Externe KI-, Analyse- oder Benachrichtigungsdienste erhalten standardmäßig keine Noten-, Anwesenheits-, Schülernachrichten- oder sonstigen pädagogischen Inhaltsdaten. | alle Versionen |
 | PRIV-014 | Produktiv- und Nichtproduktivumgebungen müssen getrennte Zugänge, Speicher und Protokolle verwenden; Produktivdaten dürfen nicht in Testumgebungen kopiert werden. | ab 0.1.0 |
+| UX-001 | Vor der Implementierung müssen die Kernabläufe für Planänderung, Konfliktprüfung, Vertretung, persönlichen Stundenplan, Klassenbuchhinweise und Aufgaben anhand eines klickbaren Prototyps nachvollziehbar geprüft werden. | 0.0.5 |
+| UX-002 | Der Prototyp muss klar als Demo mit synthetischen Daten und nicht freigegebenen Regel-/Raumwerten gekennzeichnet sein und darf keine personenbezogenen Daten außerhalb der lokalen Ansicht speichern oder übertragen. | 0.0.5 |
+| UX-003 | Offene Usability-Fragen und später erhobenes Feedback müssen versioniert protokolliert werden; nicht durchgeführte Tests dürfen nicht als Ergebnisse dargestellt werden. | 0.0.5 |
 | SEC-001 | Rollen und Gruppenrechte müssen bei Anzeige, Suche, Direktlinks, Anhängen, Benachrichtigungen und Export erneut geprüft werden. | ab 0.1.0 |
 | SEC-002 | Zugangsdaten und Schlüssel dürfen nicht im Repository gespeichert werden. | alle Versionen |
 | SEC-003 | Sicherheits- und Adminereignisse müssen protokolliert werden; Passwörter, Sitzungstokens und unnötige Schülernotizen dürfen nicht in Logs erscheinen. | ab 0.1.0 |
@@ -112,9 +115,9 @@
 | OPS-001 | Datenbankänderungen müssen versioniert migrierbar und mit geprüfter Sicherungs-/Wiederherstellungsstrategie verbunden sein. | ab 0.1.0 |
 | OPS-002 | Hosting und Unterauftragnehmer müssen vor Auswahl hinsichtlich Standort, Zugriffen, Backups, Löschung, Sicherheit und Vertragsbedingungen geprüft werden. | 0.0.7 / 0.16.0 |
 
-## Nicht-Ziele von v0.0.4
+## Nicht-Ziele von v0.0.5
 
-- Keine Anwendungscode- oder Datenbankimplementierung.
+- Keine produktive Anwendungscode- oder Datenbankimplementierung.
 - Keine Verwendung echter Schüler-, Noten-, Anwesenheits- oder Nachrichtendaten.
 - Keine produktiv freigegebenen oder vollständig maschinenlesbaren Thüringer Regelprofile.
 - Keine endgültige Festlegung von Hosting, Stack, Rollen oder Mehrschulbetrieb.

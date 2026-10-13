@@ -54,3 +54,11 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Thüringer Schuldatenschutzquellen einschließlich Spezialregeln und ihres Anwendungsbereichs sind eingetragen.
 - DSFA-Screening benennt Risiken, Verantwortliche und den Freigabepunkt vor Pilot/Produktivbetrieb.
 - Kein ausführbarer Code und keine echten personenbezogenen Daten sind Teil dieser Version.
+
+### Abnahme v0.0.5
+
+- Klickbarer Entwurf macht Planbearbeitung und Konfliktprüfung nachvollziehbar.
+- Ansichten für persönlichen Stundenplan, Vertretung, Klassenbuchhinweise, Aufgaben und Dashboard sind vorhanden.
+- Vorschläge und Entwürfe werden sichtbar von menschlicher Freigabe und Veröffentlichung getrennt.
+- Feedbackprotokoll und offene Usability-Fragen sind enthalten; nicht erfolgte Nutzertests werden nicht als durchgeführt dargestellt.
+- Prototyp verwendet nur synthetische Daten und keine externen Dienste oder dauerhafte Datenspeicherung.

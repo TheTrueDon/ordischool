@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f8">
+  <title>OrdiSchool – Interaktionsprototyp v0.0.5</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #172b3a;
+      --muted: #617281;
+      --line: #dce5e9;
+      --paper: #ffffff;
+      --canvas: #f4f7f8;
+      --navy: #17364a;
+      --navy2: #224c61;
+      --teal: #087f8c;
+      --teal-light: #e0f4f3;
+      --amber: #a55c0a;
+      --amber-light: #fff2d9;
+      --red: #b33a47;
+      --red-light: #fdebed;
+      --green: #247554;
+      --green-light: #e6f5ed;
+      --shadow: 0 12px 34px rgba(25, 49, 63, .07);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--canvas); color: var(--ink); min-height: 100vh; }
+    button, select, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, a:focus-visible, select:focus-visible { outline: 3px solid #55c3cb; outline-offset: 2px; }
+    .app { min-height: 100vh; display: grid; grid-template-columns: 244px minmax(0,1fr); }
+    .sidebar { background: var(--navy); color: #eaf3f6; padding: 22px 14px; display: flex; flex-direction: column; gap: 24px; }
+    .brand { display:flex; align-items:center; gap:11px; padding: 0 10px; }
+    .brand-mark { width:38px; height:38px; display:grid; place-items:center; border-radius:12px; background:#b7ece7; color:var(--navy); font-weight:900; letter-spacing:-1px; }
+    .brand-name { font-weight:760; font-size:18px; letter-spacing:-.4px; }
+    .brand-sub { color:#aac4cf; font-size:11px; margin-top:2px; }
+    .school-switch { margin:0 6px; padding:12px; border:1px solid rgba(255,255,255,.17); border-radius:12px; background:rgba(255,255,255,.06); }
+    .school-switch small { display:block; color:#a9c2cb; font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
+    .school-switch strong { display:block; margin-top:5px; font-size:13px; }
+    .nav-label { padding:0 12px; color:#8eaebc; text-transform:uppercase; letter-spacing:.1em; font-size:10px; font-weight:700; margin:0 0 7px; }
+    .nav-list { display:grid; gap:4px; }
+    .nav-item { width:100%; color:#c8d9df; border:0; border-radius:10px; background:transparent; text-align:left; padding:10px 12px; display:flex; align-items:center; gap:11px; font-size:13px; }
+    .nav-item:hover { background:rgba(255,255,255,.08); color:white; }
+    .nav-item.active { background:#e5f4f4; color:#103d4d; font-weight:700; }
+    .nav-icon { width:18px; text-align:center; font-size:15px; }
+    .nav-count { margin-left:auto; border-radius:20px; padding:2px 7px; background:#f6ce79; color:#513708; font-size:10px; font-weight:800; }
+    .side-bottom { margin-top:auto; padding:12px 10px 0; border-top:1px solid rgba(255,255,255,.14); color:#aac1cb; font-size:11px; line-height:1.55; }
+    .side-bottom strong { color:#eff8fa; }
+    main { min-width:0; }
+    .topbar { min-height:70px; padding:14px clamp(18px,3vw,38px); display:flex; align-items:center; justify-content:space-between; gap:18px; background:rgba(255,255,255,.87); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:5; backdrop-filter:blur(14px); }
+    .crumb { color:var(--muted); font-size:12px; }
+    .top-actions { display:flex; gap:10px; align-items:center; }
+    .pill { display:inline-flex; align-items:center; gap:6px; padding:6px 9px; border:1px solid var(--line); border-radius:999px; background:white; color:#49616f; font-size:11px; font-weight:700; white-space:nowrap; }
+    .demo-dot { width:7px; height:7px; border-radius:50%; background:#d69322; }
+    .user-chip { display:flex; align-items:center; gap:9px; padding-left:10px; border-left:1px solid var(--line); }
+    .avatar { width:34px; height:34px; border-radius:50%; display:grid; place-items:center; background:#dceefa; color:#1d5770; font-weight:800; font-size:12px; }
+    .user-meta strong { display:block; font-size:12px; }
+    .user-meta small { color:var(--muted); font-size:10px; }
+    .content { max-width:1540px; padding:30px clamp(18px,3vw,38px) 56px; margin:auto; }
+    .view { display:none; animation:fade .18s ease-out; }
+    .view.active { display:block; }
+    @keyframes fade { from {opacity:.4; transform:translateY(3px)} to {opacity:1; transform:none} }
+    .page-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; margin-bottom:22px; }
+    h1 { margin:0; color:#15354a; letter-spacing:-.04em; font-size:clamp(24px,3vw,34px); line-height:1.14; }
+    .lede { margin:8px 0 0; color:var(--muted); max-width:700px; font-size:13px; line-height:1.55; }
+    .heading-actions { display:flex; gap:9px; flex-wrap:wrap; justify-content:flex-end; }
+    .btn { border:1px solid var(--line); border-radius:9px; padding:9px 12px; background:white; color:#254253; font-weight:700; font-size:12px; transition:.15s ease; }
+    .btn:hover { transform:translateY(-1px); box-shadow:0 5px 14px rgba(26,52,66,.1); }
+    .btn.primary { background:var(--teal); color:white; border-color:var(--teal); }
+    .btn.primary:hover { background:#066d79; }
+    .btn.soft { background:var(--teal-light); border-color:#bde4e3; color:#08636b; }
+    .btn.danger { color:#9e2a39; border-color:#efc5ca; background:#fffafb; }
+    .btn.small { padding:7px 9px; font-size:11px; }
+    .btn:disabled { opacity:.52; cursor:not-allowed; transform:none; box-shadow:none; }
+    .grid { display:grid; gap:16px; }
+    .stats { grid-template-columns:repeat(4,minmax(0,1fr)); margin:19px 0; }
+    .card { background:var(--paper); border:1px solid #e2e9ec; border-radius:14px; box-shadow:var(--shadow); }
+    .stat { padding:16px 17px; position:relative; overflow:hidden; }
+    .stat:after { content:""; position:absolute; right:-15px; top:-25px; width:82px; height:82px; border-radius:50%; background:var(--tone,#e7f5f5); opacity:.8; }
+    .stat-label { font-size:11px; color:var(--muted); font-weight:650; position:relative; z-index:1; }
+    .stat-value { margin-top:11px; font-size:28px; line-height:1; font-weight:800; letter-spacing:-.05em; color:#18384b; position:relative; z-index:1; }
+    .stat-foot { margin-top:8px; font-size:10px; color:#748591; position:relative; z-index:1; }
+    .dashboard-grid { grid-template-columns:minmax(0,1.45fr) minmax(280px,.85fr); align-items:start; }
+    .card-head { padding:17px 19px 12px; display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+    .card-head h2 { margin:0; color:#18384b; font-size:15px; letter-spacing:-.02em; }
+    .card-head p { margin:5px 0 0; color:var(--muted); font-size:11px; }
+    .card-body { padding:0 19px 18px; }
+    .link-btn { color:var(--teal); background:transparent; border:0; font-weight:750; font-size:11px; padding:4px; white-space:nowrap; }
+    .lesson-list { display:grid; }
+    .lesson-row { display:grid; grid-template-columns:74px 4px minmax(0,1fr) auto; gap:12px; align-items:center; min-height:57px; border-top:1px solid #edf1f2; }
+    .lesson-time { font-variant-numeric:tabular-nums; color:#536877; font-weight:700; font-size:12px; }
+    .lesson-bar { align-self:stretch; border-radius:5px; background:#21a0a1; margin:10px 0; }
+    .lesson-title { color:#19394c; font-weight:750; font-size:12px; }
+    .lesson-sub { margin-top:4px; color:#7a8992; font-size:10px; }
+    .room { color:#607482; font-size:10px; white-space:nowrap; }
+    .notice-list { display:grid; gap:9px; }
+    .notice { display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:start; border:1px solid #ebeff1; border-radius:11px; padding:11px; }
+    .notice-icon { width:28px; height:28px; display:grid; place-items:center; border-radius:8px; background:var(--amber-light); color:var(--amber); font-weight:800; font-size:12px; }
+    .notice.red .notice-icon { background:var(--red-light); color:var(--red); }
+    .notice-title { font-size:11px; font-weight:780; color:#284355; }
+    .notice-sub { margin-top:4px; color:#74848e; font-size:10px; line-height:1.4; }
+    .tag { display:inline-flex; align-items:center; border-radius:99px; padding:4px 7px; background:#eef2f4; color:#526875; font-size:9px; font-weight:750; white-space:nowrap; }
+    .tag.teal { background:var(--teal-light); color:#08636b; }
+    .tag.amber { background:var(--amber-light); color:#87500c; }
+    .tag.green { background:var(--green-light); color:#216a4d; }
+    .tag.red { background:var(--red-light); color:#a63540; }
+    .split { grid-template-columns:minmax(0,1fr) 310px; align-items:start; }
+    .toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:9px; padding:12px 16px; border-bottom:1px solid #e8edef; }
+    .toolbar label { color:#667b88; font-weight:700; font-size:10px; text-transform:uppercase; letter-spacing:.06em; }
+    .select { border:1px solid var(--line); background:white; padding:8px 10px; border-radius:8px; color:#254253; font-size:12px; }
+    .week-wrap { overflow:auto; padding:0 14px 14px; }
+    .week { width:100%; min-width:730px; border-collapse:separate; border-spacing:5px; }
+    .week th { color:#7b8b94; font-size:10px; font-weight:750; text-align:left; padding:9px 8px 5px; }
+    .week th:first-child { width:66px; }
+    .week td { vertical-align:top; height:68px; padding:0; }
+    .slot-time { color:#71818b; font-size:10px; font-weight:750; padding:8px 5px!important; white-space:nowrap; }
+    .slot { height:100%; min-height:62px; width:100%; border:1px solid transparent; border-radius:9px; text-align:left; padding:8px; background:#f3f7f8; color:#345061; }
+    .slot:hover { border-color:#9acfd0; background:#e8f5f5; }
+    .slot.filled { background:#e9f5f4; border-color:#d3eae8; }
+    .slot.filled.math { background:#eaf0fb; border-color:#d9e3f7; }
+    .slot.filled.german { background:#fff4e2; border-color:#f5e4c5; }
+    .slot.filled.physics { background:#eeeafb; border-color:#dfd9f4; }
+    .slot.filled.english { background:#edf5e8; border-color:#dcebd2; }
+    .slot strong { display:block; font-size:10px; color:#173c4d; }
+    .slot small { display:block; margin-top:5px; color:#627985; font-size:9px; line-height:1.35; }
+    .slot.selected { box-shadow:0 0 0 2px var(--teal); }
+    .empty-slot { height:100%; border:1px dashed #e1e8eb; border-radius:9px; }
+    .panel { padding:17px; }
+    .panel h2 { font-size:14px; margin:0; color:#17384a; }
+    .panel-intro { color:#72838d; font-size:10px; line-height:1.5; margin:6px 0 14px; }
+    .rule-box { border:1px solid #e4ebed; border-radius:10px; padding:11px; margin:9px 0; }
+    .rule-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+    .rule-title { font-size:10px; font-weight:780; color:#344f5f; }
+    .rule-desc { margin-top:5px; font-size:10px; color:#71828c; line-height:1.45; }
+    .divider { height:1px; background:#e9eef0; margin:14px 0; }
+    .proposal { border:1px solid #c8e5e2; border-radius:10px; background:#f1fbf9; padding:12px; margin:11px 0; }
+    .proposal h3 { font-size:11px; margin:0; color:#175d5c; }
+    .proposal p { color:#587879; font-size:10px; line-height:1.5; margin:6px 0 9px; }
+    .proposal-actions { display:flex; flex-wrap:wrap; gap:7px; }
+    .alert { display:flex; gap:10px; align-items:flex-start; border-radius:10px; padding:11px 12px; font-size:11px; line-height:1.45; margin:12px 0; }
+    .alert.warning { background:#fff7e8; border:1px solid #f2dfb6; color:#76500f; }
+    .alert.info { background:#edf7fa; border:1px solid #d2e8ef; color:#325f70; }
+    .table-card { overflow:hidden; }
+    .data-table { width:100%; border-collapse:collapse; }
+    .data-table th { text-align:left; color:#71828c; font-size:9px; text-transform:uppercase; letter-spacing:.07em; padding:12px 15px; background:#f8fafb; border-bottom:1px solid #e7edef; }
+    .data-table td { padding:13px 15px; border-bottom:1px solid #edf1f2; font-size:11px; vertical-align:middle; }
+    .data-table tr:last-child td { border-bottom:0; }
+    .person { display:flex; gap:9px; align-items:center; }
+    .mini-avatar { width:27px; height:27px; display:grid; place-items:center; border-radius:50%; background:#e8eff5; color:#416176; font-weight:800; font-size:9px; }
+    .person strong { display:block; font-size:11px; color:#274456; }
+    .person small { display:block; margin-top:3px; color:#75868f; font-size:9px; }
+    .warning-card { border-left:3px solid #e3a433; }
+    .task-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .task-card { padding:16px; }
+    .task-card h3 { margin:10px 0 6px; font-size:13px; color:#204153; }
+    .task-card p { color:#71828b; font-size:11px; line-height:1.5; margin:0; }
+    .task-meta { display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+    .progress { height:6px; border-radius:8px; background:#e9eff1; overflow:hidden; margin:12px 0 5px; }
+    .progress span { display:block; height:100%; background:#3b9a91; border-radius:8px; }
+    .empty-state { padding:22px; color:#73848d; font-size:11px; text-align:center; }
+    .footer-note { color:#86959c; font-size:10px; text-align:center; margin-top:24px; }
+    .toast { position:fixed; right:24px; bottom:24px; z-index:20; padding:12px 15px; border-radius:10px; background:#17394b; color:white; box-shadow:0 12px 32px #18384b3d; font-size:12px; max-width:min(360px,calc(100vw - 32px)); opacity:0; transform:translateY(12px); pointer-events:none; transition:.2s; }
+    .toast.show { opacity:1; transform:none; }
+    .mobile-menu { display:none; border:0; border-radius:8px; background:#eaf2f4; color:#173d50; width:36px; height:36px; font-size:18px; }
+    .mobile-shade { display:none; }
+    @media (max-width:1050px) { .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .split { grid-template-columns:minmax(0,1fr) 280px; } .task-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:780px) {
+      .app { grid-template-columns:1fr; }
+      .sidebar { position:fixed; inset:0 auto 0 0; width:258px; z-index:12; transform:translateX(-105%); transition:.2s ease; box-shadow:var(--shadow); }
+      body.menu-open .sidebar { transform:none; }
+      .mobile-shade { display:block; position:fixed; inset:0; background:#0b243544; z-index:11; opacity:0; pointer-events:none; transition:.2s; }
+      body.menu-open .mobile-shade { opacity:1; pointer-events:auto; }
+      .mobile-menu { display:block; }
+      .topbar { min-height:62px; padding:11px 15px; }
+      .top-actions .pill { display:none; }
+      .user-meta { display:none; }
+      .content { padding:22px 15px 44px; }
+      .page-heading { display:block; }
+      .heading-actions { margin-top:14px; justify-content:flex-start; }
+      .dashboard-grid,.split { grid-template-columns:1fr; }
+      .stats { gap:10px; }
+      .stat { padding:13px; }
+      .stat-value { font-size:24px; }
+      .panel { order:-1; }
+      .task-grid { grid-template-columns:1fr; }
+      .data-table { min-width:700px; }
+      .table-scroll { overflow:auto; }
+    }
+    @media (max-width:430px) { .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } .lesson-row { grid-template-columns:58px 4px 1fr; } .lesson-row .room { display:none; } .heading-actions .btn { flex:1; } }
+  </style>
+</head>
+<body>
+  <div class="mobile-shade" id="mobileShade" aria-hidden="true"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="Hauptnavigation">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">O</div><div><div class="brand-name">OrdiSchool</div><div class="brand-sub">Ordinatio Scholae</div></div></div>
+      <div class="school-switch"><small>Schulinstanz</small><strong>Muster-Gymnasium ▾</strong></div>
+      <div>
+        <div class="nav-label">Arbeitsbereich</div>
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⌂</span>Dashboard</button>
+          <button class="nav-item" data-view="planung"><span class="nav-icon">▦</span>Planung</button>
+          <button class="nav-item" data-view="vertretung"><span class="nav-icon">⇄</span>Vertretungen<span class="nav-count" id="subCount">2</span></button>
+          <button class="nav-item" data-view="stundenplan"><span class="nav-icon">▤</span>Mein Stundenplan</button>
+          <button class="nav-item" data-view="klassenbuch"><span class="nav-icon">▣</span>Klassenbuch<span class="nav-count" id="warningCount">2</span></button>
+          <button class="nav-item" data-view="aufgaben"><span class="nav-icon">✓</span>Aufgaben</button>
+          <button class="nav-item" data-view="raeume"><span class="nav-icon">⌗</span>Räume</button>
+        </nav>
+      </div>
+      <div>
+        <div class="nav-label">Zusammenarbeit</div>
+        <nav class="nav-list">
+          <button class="nav-item" data-view="mitteilungen"><span class="nav-icon">◌</span>Mitteilungen</button>
+          <button class="nav-item" data-view="termine"><span class="nav-icon">▦</span>Termine</button>
+        </nav>
+      </div>
+      <div class="side-bottom"><strong>Prototyp v0.0.5</strong><br>Nur Beispieldaten · keine Verbindung zu einem Server</div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div class="top-actions"><button class="mobile-menu" id="mobileMenu" aria-label="Menü öffnen">☰</button><div class="crumb"><span id="crumb">Startseite</span> <span aria-hidden="true">/</span> <strong id="crumbCurrent">Dashboard</strong></div></div>
+        <div class="top-actions"><span class="pill"><span class="demo-dot"></span> DEMO-DATEN</span><span class="pill">Schuljahr 2026/27</span><div class="user-chip"><div class="avatar">FB</div><div class="user-meta"><strong>Frau Beispiel</strong><small>Lehrkraft · Physik</small></div></div></div>
+      </header>
+      <div class="content">
+        <section class="view active" id="view-dashboard" aria-labelledby="h-dashboard">
+          <div class="page-heading"><div><h1 id="h-dashboard">Guten Morgen, Frau Beispiel</h1><p class="lede">Dienstag, 13. Oktober 2026 · Hier sehen Sie Ihren Unterrichtstag und die wichtigsten offenen Vorgänge.</p></div><div class="heading-actions"><button class="btn" data-goto="stundenplan">Mein Tag</button><button class="btn primary" data-goto="planung">Planung öffnen</button></div></div>
+          <div class="grid stats">
+            <article class="card stat" style="--tone:#dff2ef"><div class="stat-label">Unterricht heute</div><div class="stat-value">5 <span style="font-size:14px;color:#70818b;font-weight:650">Stunden</span></div><div class="stat-foot">Nächste Stunde · 09:45 Uhr</div></article>
+            <article class="card stat" style="--tone:#fff0d6"><div class="stat-label">Planhinweise</div><div class="stat-value" id="statPlan">1</div><div class="stat-foot">1 Prüfung vor Veröffentlichung</div></article>
+            <article class="card stat" style="--tone:#fde8eb"><div class="stat-label">Klassenbuch</div><div class="stat-value" id="statWarnings">2</div><div class="stat-foot">Einträge bitte prüfen</div></article>
+            <article class="card stat" style="--tone:#e8edfa"><div class="stat-label">Aufgaben</div><div class="stat-value">3</div><div class="stat-foot">Davon 1 bald fällig</div></article>
+          </div>
+          <div class="grid dashboard-grid">
+            <article class="card">
+              <div class="card-head"><div><h2>Mein Unterricht heute</h2><p>Stundenplan inklusive veröffentlichter Änderungen</p></div><button class="link-btn" data-goto="stundenplan">Ganzer Plan →</button></div>
+              <div class="card-body lesson-list" id="todayLessons">
+                <div class="lesson-row"><div class="lesson-time">07:45–08:30</div><div class="lesson-bar"></div><div><div class="lesson-title">Physik · Klasse 9a</div><div class="lesson-sub">Elektrische Energie · Raum P204</div></div><div class="room">1. Stunde</div></div>
+                <div class="lesson-row"><div class="lesson-time">08:35–09:20</div><div class="lesson-bar" style="background:#789bd0"></div><div><div class="lesson-title">Physik · Klasse 9b</div><div class="lesson-sub">Elektrische Energie · Raum P204</div></div><div class="room">2. Stunde</div></div>
+                <div class="lesson-row"><div class="lesson-time">09:45–10:30</div><div class="lesson-bar" style="background:#d89a40"></div><div><div class="lesson-title">Astronomie · Klasse 10</div><div class="lesson-sub">Keplersche Gesetze · Raum 212</div></div><div class="room">3. Stunde</div></div>
+                <div class="lesson-row"><div class="lesson-time">11:35–12:20</div><div class="lesson-bar" style="background:#5d9c73"></div><div><div class="lesson-title">Physik · Klasse 9a</div><div class="lesson-sub">Vertretung übernommen · Raum P204</div></div><div class="room"><span class="tag teal">Vertretung</span></div></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-head"><div><h2>Das braucht Ihre Aufmerksamkeit</h2><p>Nur Vorgänge aus Ihrem Zuständigkeitsbereich</p></div></div>
+              <div class="card-body notice-list">
+                <div class="notice red"><div class="notice-icon">!</div><div><div class="notice-title">Klassenbucheintrag fehlt</div><div class="notice-sub">9b · Physik · Montag, 12.10. · 5. Stunde</div></div><button class="link-btn" data-goto="klassenbuch">Prüfen</button></div>
+                <div class="notice"><div class="notice-icon">↗</div><div><div class="notice-title">Raumkonflikt im Planentwurf</div><div class="notice-sub">Mittwoch · 3. Stunde · Vorschlag wartet auf Prüfung</div></div><button class="link-btn" data-goto="planung">Öffnen</button></div>
+                <div class="notice"><div class="notice-icon" style="background:#e9f1fa;color:#426b94">✓</div><div><div class="notice-title">Aufgabe bald fällig</div><div class="notice-sub">Versuchsprotokoll · Abgabe morgen</div></div><button class="link-btn" data-goto="aufgaben">Ansehen</button></div>
+              </div>
+            </article>
+          </div>
+          <div class="footer-note">Alle angezeigten Personen, Räume und Plandaten sind fiktive Beispieldaten.</div>
+        </section>
+
+        <section class="view" id="view-planung" aria-labelledby="h-planung">
+          <div class="page-heading"><div><h1 id="h-planung">Stunden- und Raumplanung</h1><p class="lede">Planentwurf ansehen, Konflikte prüfen und begründete Alternativen vergleichen. Änderungen werden erst nach Freigabe veröffentlicht.</p></div><div class="heading-actions"><button class="btn" id="resetPlan">Demo zurücksetzen</button><button class="btn primary" id="newPlanChange">Änderung vorschlagen</button></div></div>
+          <div class="alert info"><strong>Regelprofil · Thüringen</strong><span>Schulform, Jahrgang, Kohorte und Schuljahr bestimmen die anzuwendende Regelversion. Dieser Prototyp zeigt nur den Ablauf; Werte und Regeln sind nicht fachlich freigegeben.</span></div>
+          <div class="grid split">
+            <article class="card">
+              <div class="toolbar"><label for="classSelect">Planansicht</label><select class="select" id="classSelect"><option>Klasse 9a</option><option>Klasse 9b</option><option>Klasse 10</option></select><select class="select" id="weekSelect" aria-label="Planwoche"><option>12.–16. Oktober 2026</option><option>19.–23. Oktober 2026</option></select><span class="tag amber">Entwurf · 1 Konflikt</span></div>
+              <div class="week-wrap"><table class="week" aria-label="Wochenstundenplan Klasse 9a"><thead><tr><th>Stunde</th><th>Montag</th><th>Dienstag</th><th>Mittwoch</th><th>Donnerstag</th><th>Freitag</th></tr></thead><tbody id="weekBody"></tbody></table></div>
+              <div class="card-body"><div class="alert warning" style="margin:0"><strong>Prüfhinweis</strong><span>Mittwoch, 3. Stunde: Raum P204 ist im Entwurf doppelt belegt. Die Demo-Kapazität von P204 (28) und alle Raumangaben sind Beispielwerte, keine bestätigten Gebäudedaten.</span></div></div>
+            </article>
+            <aside class="card panel" aria-label="Prüfungen und Assistenz">
+              <h2>Planprüfung</h2><p class="panel-intro">Ausgewählter Eintrag: <strong id="selectedLesson">Mittwoch · Physik · 9a</strong></p>
+              <div class="rule-box"><div class="rule-top"><div class="rule-title">Doppelbelegung Raum</div><span class="tag red">Konflikt</span></div><div class="rule-desc">P204 ist laut Demo-Plan parallel der Klasse 9b zugeordnet.</div></div>
+              <div class="rule-box"><div class="rule-top"><div class="rule-title">Kapazität</div><span class="tag green">Demo: 27 / 28</span></div><div class="rule-desc">Der Raumwert muss später aus einer freigegebenen lokalen Quelle stammen.</div></div>
+              <div class="rule-box"><div class="rule-top"><div class="rule-title">Fachraum-Eignung</div><span class="tag amber">Prüfen</span></div><div class="rule-desc">Physik-Fachraumanforderung ist im Demo-Profil nicht verbindlich bestätigt.</div></div>
+              <div class="divider"></div>
+              <div class="proposal" id="proposalBox"><h3>Vorschlag der Planungsassistenz</h3><p>Raum P204 auf Mittwoch, 4. Stunde verlegen. Die Klasse 9a hat dort im Beispieldatensatz ein freies Zeitfenster; der Konflikt mit 9b entfällt.</p><div class="proposal-actions"><button class="btn soft small" id="acceptSuggestion">In Entwurf übernehmen</button><button class="btn small" id="anotherSuggestion">Andere Option</button></div></div>
+              <div id="draftActions" hidden><div class="alert info"><span>Änderung ist nur im lokalen Demo-Entwurf gespeichert. Betroffene Ansichten sind noch nicht veröffentlicht.</span></div><button class="btn primary" id="submitDraft">Zur Freigabe vorlegen</button></div>
+              <div id="approvalActions" hidden><div class="rule-box"><div class="rule-top"><div class="rule-title">Freigabe erforderlich</div><span class="tag amber">Schulleitung / Delegation</span></div><div class="rule-desc">Im Produkt würde jetzt eine berechtigte Person prüfen und freigeben.</div></div><button class="btn primary" id="approveDraft">Freigabe im Prototyp simulieren</button></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-vertretung" aria-labelledby="h-vertretung">
+          <div class="page-heading"><div><h1 id="h-vertretung">Vertretungen</h1><p class="lede">Vorschläge berücksichtigen Verfügbarkeit, Unterrichtsfolge und bestätigte schulische Kriterien. Eine Person entscheidet über Veröffentlichung.</p></div><div class="heading-actions"><button class="btn" id="refreshSuggestions">Vorschläge neu prüfen</button></div></div>
+          <div class="alert info"><strong>Entwurf</strong><span>Eine automatisierte Empfehlung ist kein veröffentlichter Vertretungsplan. Gründe für Abwesenheiten werden in dieser Ansicht nicht angezeigt.</span></div>
+          <article class="card table-card"><div class="card-head"><div><h2>Offene Vertretungsfälle</h2><p>Schulwoche 12.–16. Oktober · synthetische Daten</p></div><span class="tag amber" id="openSubs">2 offen</span></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Stunde / Klasse</th><th>Fach / Raum</th><th>Vorschlag</th><th>Prüfung</th><th>Aktion</th></tr></thead><tbody id="subRows"></tbody></table></div></article>
+        </section>
+
+        <section class="view" id="view-stundenplan" aria-labelledby="h-stundenplan">
+          <div class="page-heading"><div><h1 id="h-stundenplan">Mein Stundenplan</h1><p class="lede">Ihre freigegebenen Stunden, Vertretungen, Raumänderungen und Termine in einer Ansicht.</p></div><div class="heading-actions"><button class="btn">‹ Vorige Woche</button><button class="btn">Nächste Woche ›</button></div></div>
+          <div class="alert info"><strong>Persönliche Ansicht</strong><span>Es erscheinen nur Stunden und Termine, die Ihrem bestätigten Zuständigkeitsbereich zugeordnet sind.</span></div>
+          <article class="card"><div class="toolbar"><span class="tag teal">Freigegebener Plan</span><span class="tag green">Vertretung übernommen</span><span class="tag">12.–16. Oktober 2026</span></div><div class="week-wrap"><table class="week"><thead><tr><th>Stunde</th><th>Montag</th><th>Dienstag</th><th>Mittwoch</th><th>Donnerstag</th><th>Freitag</th></tr></thead><tbody id="personalWeek"></tbody></table></div></article>
+        </section>
+
+        <section class="view" id="view-klassenbuch" aria-labelledby="h-klassenbuch">
+          <div class="page-heading"><div><h1 id="h-klassenbuch">Klassenbuch-Hinweise</h1><p class="lede">Fehlende oder abweichende Einträge werden mit dem gültigen Stunden- und Vertretungsplan verglichen. Hinweise ändern keine Einträge automatisch.</p></div><div class="heading-actions"><button class="btn">Klasse auswählen ▾</button></div></div>
+          <div class="alert warning"><strong>2 offene Hinweise</strong><span>Bitte prüfen, ob ein Eintrag fehlt oder der Plan am betreffenden Tag geändert wurde.</span></div>
+          <div class="grid" id="warningCards"></div>
+        </section>
+
+        <section class="view" id="view-aufgaben" aria-labelledby="h-aufgaben">
+          <div class="page-heading"><div><h1 id="h-aufgaben">Aufgaben</h1><p class="lede">Aufgaben sind einer Klasse oder ausgewählten Lernenden zugeordnet und können mit dem Klassenbuch verknüpft werden.</p></div><div class="heading-actions"><button class="btn primary" id="newTask">+ Aufgabe erstellen</button></div></div>
+          <div class="grid task-grid" id="taskCards"></div>
+        </section>
+
+        <section class="view" id="view-raeume" aria-labelledby="h-raeume">
+          <div class="page-heading"><div><h1 id="h-raeume">Räume</h1><p class="lede">Belegungsübersicht mit Kapazität, Ausstattung und Zeitfenstern. Kapazitäten sind lokale Angaben mit Nachweis.</p></div><div class="heading-actions"><button class="btn">Raum hinzufügen</button></div></div>
+          <div class="alert warning"><strong>Demo-Werte</strong><span>Raumkapazitäten und Ausstattungsmerkmale in dieser Ansicht sind erfunden und nicht als zulässige Belegung freigegeben.</span></div>
+          <article class="card table-card"><div class="table-scroll"><table class="data-table"><thead><tr><th>Raum</th><th>Typ / Ausstattung</th><th>Demo-Kapazität</th><th>Belegt jetzt</th><th>Nachweisstatus</th></tr></thead><tbody><tr><td><strong>P204</strong></td><td>Physik · Experimentiertische</td><td>28 Personen</td><td>27 · Klasse 9a</td><td><span class="tag amber">Quelle offen</span></td></tr><tr><td><strong>212</strong></td><td>Unterrichtsraum · Beamer</td><td>30 Personen</td><td>24 · Klasse 10</td><td><span class="tag amber">Quelle offen</span></td></tr><tr><td><strong>C101</strong></td><td>Chemie · Abzug</td><td>24 Personen</td><td>22 · Klasse 9b</td><td><span class="tag amber">Quelle offen</span></td></tr><tr><td><strong>Aula</strong></td><td>Mehrzweckraum</td><td>120 Personen</td><td>frei</td><td><span class="tag amber">Quelle offen</span></td></tr></tbody></table></div></article>
+        </section>
+
+        <section class="view" id="view-mitteilungen" aria-labelledby="h-mitteilungen">
+          <div class="page-heading"><div><h1 id="h-mitteilungen">Mitteilungen</h1><p class="lede">Schul- und Gruppenmitteilungen werden nur an die freigegebene Zielgruppe verteilt.</p></div></div>
+          <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))"><article class="card task-card"><span class="tag teal">Fachschaft Physik · Lehrkräfte</span><h3>Materialraum am Donnerstag belegt</h3><p>Der Fachraum P204 ist am Donnerstag in der 5. Stunde für eine Sicherheitsprüfung reserviert.</p><div class="task-meta"><span class="tag">Heute · 08:10</span></div></article><article class="card task-card"><span class="tag amber">Schulleitung · gesamtes Kollegium</span><h3>Planfreigabe für die kommende Woche</h3><p>Bitte offene Änderungen bis Mittwoch 12:00 Uhr prüfen und an die Planungskoordination geben.</p><div class="task-meta"><span class="tag">Gestern · 14:30</span></div></article></div>
+        </section>
+
+        <section class="view" id="view-termine" aria-labelledby="h-termine">
+          <div class="page-heading"><div><h1 id="h-termine">Termine</h1><p class="lede">Termine zeigen ihre Zielgruppe und mögliche Stundenplankonflikte vor der Freigabe.</p></div><div class="heading-actions"><button class="btn primary" id="newEvent">+ Termin</button></div></div>
+          <article class="card table-card"><div class="table-scroll"><table class="data-table"><thead><tr><th>Datum / Zeit</th><th>Termin</th><th>Zielgruppe</th><th>Planwirkung</th><th>Status</th></tr></thead><tbody><tr><td>Mi, 14.10. · 13:30</td><td>Fachkonferenz Physik</td><td>Fachschaft Physik</td><td>keine Stunden betroffen</td><td><span class="tag green">Freigegeben</span></td></tr><tr><td>Fr, 16.10. · 10:00</td><td>Klassenstufenversammlung</td><td>Klasse 9</td><td>3 Stunden zur Prüfung</td><td><span class="tag amber">Entwurf</span></td></tr></tbody></table></div></article>
+        </section>
+        <div class="footer-note">OrdiSchool v0.0.5 · Frontend-Mockup · Eingaben bleiben nur bis zum Neuladen im Arbeitsspeicher</div>
+      </div>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    (() => {
+      const names = { dashboard: 'Dashboard', planung: 'Planung', vertretung: 'Vertretungen', stundenplan: 'Mein Stundenplan', klassenbuch: 'Klassenbuch', aufgaben: 'Aufgaben', raeume: 'Räume', mitteilungen: 'Mitteilungen', termine: 'Termine' };
+      const days = ['Montag','Dienstag','Mittwoch','Donnerstag','Freitag'];
+      let activeClass = 'Klasse 9a';
+      const slots = [
+        {time:'1. · 07:45', lessons:{Montag:['Physik','9a','P204','physics'],Dienstag:['Mathematik','9a','108','math'],Mittwoch:['Deutsch','9a','203','german'],Donnerstag:['Physik','9a','P204','physics'],Freitag:['Englisch','9a','106','english']}},
+        {time:'2. · 08:35', lessons:{Montag:['Mathematik','9a','108','math'],Dienstag:['Deutsch','9a','203','german'],Mittwoch:['Physik','9a','P204','physics'],Donnerstag:['Englisch','9a','106','english'],Freitag:['Biologie','9a','C101','green']}},
+        {time:'3. · 09:45', lessons:{Montag:['Englisch','9a','106','english'],Dienstag:['Physik','9a','P204','physics'],Mittwoch:['Physik','9a','P204','physics'],Donnerstag:['Mathematik','9a','108','math'],Freitag:['Deutsch','9a','203','german']}},
+        {time:'4. · 10:45', lessons:{Montag:['Deutsch','9a','203','german'],Dienstag:['Biologie','9a','C101','green'],Mittwoch:['Mathematik','9a','108','math'],Donnerstag:['Deutsch','9a','203','german'],Freitag:['—','','','']}},
+        {time:'5. · 11:35', lessons:{Montag:['Biologie','9a','C101','green'],Dienstag:['Englisch','9a','106','english'],Mittwoch:['Englisch','9a','106','english'],Donnerstag:['—','','',''],Freitag:['—','','','']}},
+        {time:'6. · 12:25', lessons:{Montag:['—','','',''],Dienstag:['—','','',''],Mittwoch:['—','','',''],Donnerstag:['—','','',''],Freitag:['—','','','']}}
+      ];
+      let draftState = 'suggestion';
+      let approvedChange = false;
+      let subs = [
+        {id:'sub1',time:'Di · 5. Stunde',group:'Klasse 9b',subject:'Physik',room:'P204',teacher:'Lehrkraft A',reason:'Freie Stunde · Fachbezug hoch',fit:'hoch',status:'Offen'},
+        {id:'sub2',time:'Do · 2. Stunde',group:'Klasse 10',subject:'Astronomie',room:'212',teacher:'Lehrkraft B',reason:'Verfügbarkeit bestätigt · Fachbezug mittel',fit:'mittel',status:'Offen'}
+      ];
+      const el = id => document.getElementById(id);
+      function toast(message) { const box=el('toast'); box.textContent=message; box.classList.add('show'); clearTimeout(window._toastTimer); window._toastTimer=setTimeout(()=>box.classList.remove('show'),3000); }
+      function showView(name) {
+        document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));
+        document.querySelectorAll('.nav-item').forEach(b=>b.classList.toggle('active',b.dataset.view===name));
+        el('crumbCurrent').textContent=names[name]||name;
+        el('crumb').textContent=name==='dashboard'?'Startseite':'Arbeitsbereich';
+        document.body.classList.remove('menu-open');
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+      document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.goto)));
+      el('mobileMenu').addEventListener('click',()=>document.body.classList.toggle('menu-open'));
+      el('mobileShade').addEventListener('click',()=>document.body.classList.remove('menu-open'));
+
+      function renderWeek(targetId,personal=false) {
+        const body=el(targetId); body.innerHTML='';
+        slots.forEach((row,ri)=>{
+          const tr=document.createElement('tr');
+          const time=document.createElement('td'); time.className='slot-time'; time.textContent=row.time; tr.append(time);
+          days.forEach(day=>{
+            const td=document.createElement('td');
+            let lesson=row.lessons[day].slice();
+            if(approvedChange && day==='Mittwoch' && ri===2) lesson=['—','','',''];
+            if(approvedChange && day==='Mittwoch' && ri===3) lesson=['Physik','9a','P204','physics'];
+            if(!personal && lesson[0]!=='—' && activeClass!=='Klasse 9a') lesson[1]=activeClass.replace('Klasse ','');
+            const hasConflict=!personal && activeClass==='Klasse 9a' && day==='Mittwoch' && ri===2 && !approvedChange;
+            if(lesson[0]==='—') { td.innerHTML='<div class="empty-slot" aria-label="Keine Stunde"></div>'; }
+            else {
+              const room=lesson[2];
+              const btn=document.createElement('button'); btn.className='slot filled '+lesson[3];
+              if(hasConflict) { btn.style.borderColor='#e8a843'; btn.setAttribute('aria-label','Konflikt: Mittwoch 3. Stunde Physik, Raum P204'); }
+              btn.innerHTML='<strong>'+lesson[0]+' · '+lesson[1]+'</strong><small>'+room+(hasConflict?' · Konflikt':'')+'</small>';
+              if(!personal) btn.addEventListener('click',()=>{document.querySelectorAll('.slot.selected').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');el('selectedLesson').textContent=day+' · '+lesson[0]+' · '+lesson[1];});
+              td.append(btn);
+            }
+            tr.append(td);
+          }); body.append(tr);
+        });
+      }
+      renderWeek('weekBody'); renderWeek('personalWeek',true);
+      el('classSelect').addEventListener('change',e=>{activeClass=e.target.value;renderWeek('weekBody');el('selectedLesson').textContent=activeClass+' · Mittwoch · 3. Stunde';toast('Demo-Ansicht für '+activeClass+' geladen. Stundenwerte bleiben Beispieldaten.');});
+      el('weekSelect').addEventListener('change',e=>toast('Woche '+e.target.value+' ausgewählt. Die Tabellenwerte bleiben Beispieldaten.'));
+      el('newPlanChange').addEventListener('click',()=>{showView('planung'); document.querySelector('.proposal').scrollIntoView({behavior:'smooth',block:'center'});toast('Wählen Sie einen Vorschlag oder klicken Sie einen Stundenblock an.');});
+      el('acceptSuggestion').addEventListener('click',()=>{draftState='draft';el('proposalBox').hidden=true;el('draftActions').hidden=false;toast('Vorschlag als unveröffentlichter Demo-Entwurf übernommen.');});
+      el('anotherSuggestion').addEventListener('click',()=>{const p=el('proposalBox').querySelector('p');p.textContent='Alternative: Physik am Mittwoch in Raum P204 belassen und die Parallelstunde der 9b nach Raum P206 verschieben. Die Ausstattung für P206 ist im Demo-Profil noch zu bestätigen.';toast('Alternative angezeigt. Raumdaten bitte fachlich prüfen.');});
+      el('submitDraft').addEventListener('click',()=>{draftState='review';el('draftActions').hidden=true;el('approvalActions').hidden=false;toast('Änderung liegt im Demo zur menschlichen Freigabe vor.');});
+      el('approveDraft').addEventListener('click',()=>{approvedChange=true;draftState='approved';renderWeek('weekBody');renderWeek('personalWeek',true);el('approvalActions').hidden=true;el('statPlan').textContent='0';toast('Freigabe simuliert. Die persönliche Stundenplanansicht wurde aktualisiert.');});
+      el('resetPlan').addEventListener('click',()=>{approvedChange=false;draftState='suggestion';el('proposalBox').hidden=false;el('draftActions').hidden=true;el('approvalActions').hidden=true;el('statPlan').textContent='1';renderWeek('weekBody');renderWeek('personalWeek',true);toast('Plan-Demo zurückgesetzt.');});
+
+      function renderSubs() {
+        el('subRows').innerHTML='';
+        subs.forEach(s=>{
+          const tr=document.createElement('tr');
+          const tag=s.fit==='hoch'?'green':'amber';
+          tr.innerHTML='<td><strong>'+s.time+'</strong><br><span style="color:#75868f">'+s.group+'</span></td><td>'+s.subject+'<br><span style="color:#75868f">Raum '+s.room+'</span></td><td><div class="person"><span class="mini-avatar">'+s.teacher.replace('Lehrkraft ','')+'</span><div><strong>'+s.teacher+'</strong><small>'+s.reason+'</small></div></div></td><td><span class="tag '+tag+'">Fachbezug '+s.fit+'</span><br><span style="display:inline-block;margin-top:5px;color:#74848e;font-size:9px">Verfügbarkeit Demo: bestätigt</span></td><td>'+(s.status==='Offen'?'<button class="btn soft small" data-sub="'+s.id+'">Vormerken</button>':'<span class="tag '+(s.status==='Veröffentlicht'?'green':'amber')+'">'+s.status+'</span>')+'</td>';
+          el('subRows').append(tr);
+        });
+        document.querySelectorAll('[data-sub]').forEach(b=>b.addEventListener('click',()=>{const s=subs.find(x=>x.id===b.dataset.sub);s.status='Vorgemerkt';renderSubs();toast('Vertretungsvorschlag vorgemerkt. Noch nicht veröffentlicht.');}));
+        const open=subs.filter(s=>s.status==='Offen').length; el('openSubs').textContent=open+' offen';el('subCount').textContent=String(open);
+      }
+      renderSubs();
+      el('refreshSuggestions').addEventListener('click',()=>toast('Konflikte und Demo-Verfügbarkeiten erneut geprüft.'));
+
+      const warnings=[
+        {id:'w1',title:'Eintrag im Klassenbuch fehlt',meta:'Klasse 9b · Physik · Mo, 12.10.2026 · 5. Stunde',detail:'Im freigegebenen Plan ist Unterricht eingetragen. Für diesen Zeitraum wurde noch kein passender Klassenbucheintrag gefunden. Prüfen Sie zunächst, ob Unterricht stattfand oder eine Planänderung vorlag.',status:'Offen'},
+        {id:'w2',title:'Zeitangabe weicht vom Plan ab',meta:'Klasse 9a · Physik · Di, 13.10.2026 · 2. Stunde',detail:'Der Eintrag beginnt laut Demo um 08:40 Uhr; der Plan weist 08:35 Uhr aus. Das kann eine Eingabeabweichung oder eine begründete Änderung sein. Das System ändert den Eintrag nicht selbst.',status:'Offen'}
+      ];
+      function renderWarnings(){el('warningCards').innerHTML='';warnings.forEach(w=>{const a=document.createElement('article');a.className='card warning-card';a.style.padding='17px';a.innerHTML='<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div><span class="tag amber">'+w.status+'</span><h2 style="font-size:14px;margin:10px 0 5px;color:#254456">'+w.title+'</h2><div style="font-size:10px;color:#73848d">'+w.meta+'</div></div><button class="btn small" data-warning="'+w.id+'">'+(w.status==='Offen'?'Hinweis prüfen':'Eintrag simulieren')+'</button></div><div style="margin-top:12px;padding-top:12px;border-top:1px solid #edf1f2;color:#687c87;font-size:11px;line-height:1.5">'+w.detail+'</div><div style="display:flex;gap:8px;margin-top:13px"><button class="btn soft small" data-done="'+w.id+'">Als geprüft markieren</button><span class="tag">Keine automatische Änderung</span></div>';el('warningCards').append(a);});document.querySelectorAll('[data-done]').forEach(b=>b.addEventListener('click',()=>{const w=warnings.find(x=>x.id===b.dataset.done);w.status='Geprüft';renderWarnings();const open=warnings.filter(x=>x.status==='Offen').length;el('warningCount').textContent=String(open);el('statWarnings').textContent=String(open);toast('Hinweis als geprüft markiert. Der Eintrag bleibt unverändert.');}));document.querySelectorAll('[data-warning]').forEach(b=>b.addEventListener('click',()=>toast('Hinweisdetails sind geöffnet. Bitte Eintrag im Schulverfahren prüfen.')));}
+      renderWarnings();
+
+      const tasks=[
+        {subject:'Physik · Klasse 9a',title:'Versuchsprotokoll: Energieübertragung',desc:'Beobachtung, Messwerte und kurze Auswertung des Experiments dokumentieren.',due:'Fällig morgen',state:'In Bearbeitung',percent:60},
+        {subject:'Astronomie · Klasse 10',title:'Kepler: Aufgaben 1–3',desc:'Rechenweg im Heft festhalten und Ergebnis mit Einheiten angeben.',due:'Fällig Fr, 16.10.',state:'Ausgegeben',percent:35},
+        {subject:'Physik · Klasse 9b',title:'Wiederholung Stromstärke und Spannung',desc:'Material für die nächste Stunde; mit Klassenbucheintrag vom Montag verknüpft.',due:'Fällig Mo, 19.10.',state:'Entwurf',percent:0}
+      ];
+      function renderTasks(){el('taskCards').innerHTML=tasks.map(t=>'<article class="card task-card"><span class="tag teal">'+t.subject+'</span><h3>'+t.title+'</h3><p>'+t.desc+'</p><div class="task-meta"><span class="tag '+(t.due.includes('morgen')?'amber':'')+'">'+t.due+'</span><span class="tag">'+t.state+'</span></div><div class="progress" aria-label="Rückmeldungen"><span style="width:'+t.percent+'%"></span></div><div style="font-size:9px;color:#7a8a93">Rückmeldungen (Demo): '+t.percent+'%</div></article>').join('');}
+      renderTasks();
+      el('newTask').addEventListener('click',()=>toast('Demo: Entwurfsformular würde Fach, Zielgruppe, Text, Termin und Anhang erfassen.'));
+      el('newEvent').addEventListener('click',()=>toast('Demo: Termin mit Zielgruppe und Konfliktprüfung würde angelegt.'));
+    })();
+  </script>
+</body>
+</html>

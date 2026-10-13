@@ -1,5 +1,18 @@
 # Änderungsprotokoll
 
+## [0.0.5] – 2026-10-13
+
+### Hinzugefügt
+- Klickbarer Frontend-Prototyp für Dashboard, Stunden-/Raumplanung, Konflikte und Assistenzvorschläge.
+- Interaktionsabläufe für Vertretung, persönlichen Stundenplan, Klassenbuchhinweise, Aufgaben, Räume, Mitteilungen und Termine.
+- Feedbackprotokoll und offene Usability-Fragen für die fachliche Durchsicht.
+- Lokale, externe Bibliotheken freie HTML-Datei mit synthetischen Daten und responsiven Ansichten.
+
+### Grenzen
+- Keine Anmeldung, Datenbank, Serververbindung oder dauerhafte Speicherung.
+- Keine echten Personen-/Schuldaten; Kapazitäten und Regeln sind unbestätigte Demo-Werte.
+- Keine echte Rollenprüfung, Veröffentlichung, Benachrichtigung, Dateiuploads oder DSFA-/DSGVO-Freigabe.
+
 ## [0.0.4] – 2026-10-13
 
 ### Hinzugefügt

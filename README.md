@@ -1,6 +1,6 @@
 # OrdiSchool
 
-**Version:** 0.0.4 – Datenschutz- und Datenflussentwurf  
+**Version:** 0.0.5 – Interaktionsprototyp  
 **Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
 **Stand:** 13. Oktober 2026
 
@@ -8,7 +8,7 @@ OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretu
 
 ## Stand dieser Version
 
-v0.0.4 ergänzt die Projektdefinition um ein vorläufiges Dateninventar, logische Datenflüsse und ein DSFA-Screening. Rechtsgrundlagen, Verantwortlichkeiten, Speicherorte, Aufbewahrung und Löschfristen bleiben für den konkreten Betrieb zu bestätigen. Es gibt weiterhin keinen ausführbaren Anwendungscode und keine Freigabe als DSGVO-konform.
+v0.0.5 ergänzt die Dokumentation um einen lokal ausführbaren Klick-Prototyp für Planung, Vertretung, persönlichen Stundenplan, Klassenbuchhinweise, Aufgaben, Räume, Mitteilungen und Termine. Die Oberfläche verwendet nur fiktive Daten und führt keine echte Datenverarbeitung durch. Sie ist weder ein Produktivsystem noch eine Datenschutz-/Sicherheitsfreigabe.
 
 ## Projektdateien
 
@@ -22,11 +22,14 @@ v0.0.4 ergänzt die Projektdefinition um ein vorläufiges Dateninventar, logisch
 - [`docs/DATENFLUSS.md`](docs/DATENFLUSS.md) – logische Flüsse, Empfänger, Anbieter und Lebenszyklus
 - [`docs/DSFA_SCREENING.md`](docs/DSFA_SCREENING.md) – vorläufige Risikofaktoren und Prüfschritte zur Datenschutz-Folgenabschätzung
 - [`docs/DATENSCHUTZ_QUELLENREGISTER.md`](docs/DATENSCHUTZ_QUELLENREGISTER.md) – DSGVO- und Thüringer Schuldatenschutzquellen
+- [`prototype/index.html`](prototype/index.html) – lokal klickbarer Frontend-Prototyp
+- [`prototype/README.md`](prototype/README.md) – Start, Demo-Abläufe und Grenzen des Prototyps
+- [`docs/FEEDBACK_OFFENE_FRAGEN.md`](docs/FEEDBACK_OFFENE_FRAGEN.md) – Feedbackprotokoll, Durchsicht-Aufgaben und Usability-Fragen
 - [`docs/VERSIONSPLAN.md`](docs/VERSIONSPLAN.md) – Entwicklungsstufen und Zuordnung der Anforderungen
 - [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
 - [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
 - [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.4.txt`](docs/COMMIT_MESSAGE_v0.0.4.txt) – vorgeschlagene Git-Commit-Nachricht
+- [`docs/COMMIT_MESSAGE_v0.0.5.txt`](docs/COMMIT_MESSAGE_v0.0.5.txt) – vorgeschlagene Git-Commit-Nachricht
 
 ## Arbeitsregeln
 
