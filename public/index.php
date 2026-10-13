@@ -114,7 +114,7 @@ if ($path === '/' || str_starts_with($path, '/admin/')) {
         exit;
     }
     $schoolRepository = new \OrdiSchool\School\SchoolRepository($pdo, $config->tablePrefix);
-    $userRoles = ($user['role'] ?? '') === 'system_admin' ? [] : $schoolRepository->rolesForUser((int) $userId);
+    $userRoles = $schoolRepository->rolesForUser((int) $userId);
     if (($user['role'] ?? '') !== 'system_admin' && $userRoles === []) {
         Session::destroy();
         header('Location: /login', true, 303);
@@ -127,14 +127,16 @@ if ($path === '/' || str_starts_with($path, '/admin/')) {
         (new \OrdiSchool\School\AdminController($pdo, $config->tablePrefix, $user))->handle($path, $method);
     }
     $token = Html::escape(Csrf::token());
-    $displayRole = ($user['role'] ?? '') === 'system_admin' ? 'Technische Administration' : implode(', ', array_unique(array_column($userRoles, 'role_key')));
-    $adminLink = ($user['role'] ?? '') === 'system_admin' || in_array('school_admin', array_column($userRoles, 'role_key'), true)
-        ? '<p><a class="button-link" href="/admin/schools">Schulverwaltung öffnen</a></p>' : '';
-    $planningLink = array_intersect(['school_admin', 'planner'], array_column($userRoles, 'role_key')) !== []
+    $displayRole = ($user['role'] ?? '') === 'system_admin' ? 'Systemadministration und Schuladministration' : implode(', ', array_unique(array_column($userRoles, 'role_key')));
+    $isSchoolAdmin = ($user['role'] ?? '') === 'system_admin' || in_array('school_admin', array_column($userRoles, 'role_key'), true);
+    $schools = $isSchoolAdmin ? $schoolRepository->schoolsForUser((int)$userId, (string)($user['role'] ?? 'member')) : [];
+    $adminLink = $isSchoolAdmin
+        ? (count($schools) === 0 ? '<p><a class="button-link" href="/admin/schools">Ersteinrichtung starten</a></p>' : '<p><a class="button-link" href="/admin/setup?school_id='.(int)$schools[0]['id'].'">Schule einrichten und verwalten</a></p><p><a href="/admin/schools">Alle Schulen</a></p>') : '';
+    $planningLink = (($user['role'] ?? '') === 'system_admin' || array_intersect(['school_admin', 'planner'], array_column($userRoles, 'role_key')) !== [])
         ? '<p><a class="button-link" href="/admin/planning">Stundenplanung öffnen</a></p>' : '';
-    $content = '<section class="card"><p class="eyebrow">OrdiSchool v0.4.1</p><h1>Willkommen, ' . Html::escape((string) ($user['username'] ?? '')) . '</h1>'
+    $content = '<section class="card"><p class="eyebrow">OrdiSchool v0.6.0</p><h1>Willkommen, ' . Html::escape((string) ($user['username'] ?? '')) . '</h1>'
         . '<p>Angemeldet mit der Rolle: ' . Html::escape($displayRole) . '.</p>'
-        . '<p class="muted">Diese Version ergänzt Schulstammdaten und Rollen um die erste Stundenplanfassung. Verwende nur synthetische Testdaten.</p>' . $adminLink . $planningLink
+        . '<p class="muted">Richte zuerst Schule, Gebäude, Räume, Fächer, Personal, Rollen, Klassen und Schüler ein. Die Stundenplanung wird nach den nötigen Stammdaten freigeschaltet. Verwende nur synthetische Testdaten.</p>' . $adminLink . $planningLink
         . '<form method="post" action="/logout"><input type="hidden" name="csrf_token" value="' . $token . '"><button class="secondary" type="submit">Abmelden</button></form></section>';
     Html::page('Dashboard', $content);
     exit;

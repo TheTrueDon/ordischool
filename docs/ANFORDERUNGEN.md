@@ -214,3 +214,13 @@
 - **PLAN-021 Fachraumpräferenz als weiches Ziel:** Ein Fach kann einen bevorzugten Raumtyp führen (z. B. Chemie → chemie, Physik/Astronomie → physik, Biologie → bio, Kunst → kunst, Musik → musik, Werken → werken). Eine nicht erfüllte oder mangels Raum nicht erfüllbare Präferenz erzeugt einen sichtbaren Hinweis. Sie verhindert weder das Speichern noch die Freigabe. Raumtypen bleiben erweiterbar und werden nicht global fest codiert.
 - **PLAN-022 Harte Belegungskontrollen:** Eine Unterrichtsstunde kann einem Raum zugewiesen werden. Gleichzeitige Raumbelegung und eine bekannte Gruppengröße oberhalb der bekannten Raumkapazität werden verhindert. Unbekannte Größen/Kapazitäten werden als nicht prüfbar kenntlich gemacht, nicht geschätzt.
 - **PLAN-023 Planprüfung:** Beim Freigeben werden Raumaktivität, Kapazität, Zeit-, Klassen- und Lehrkraftkonflikte erneut geprüft. Hinweise zu fehlenden Räumen oder abweichenden Fachraumpräferenzen bleiben nicht blockierend.
+
+## v0.5.0 – Planungsgrundlagen und Regelprüfbericht
+
+| ID | Anforderung | Status v0.5.0 |
+|---|---|---|
+| PLAN-017 | Die tägliche Planansicht und selten geänderte Planungsgrundlagen müssen getrennt sein; Stammdatenpflege ist Schuladministration vorbehalten. | umgesetzt |
+| PLAN-018 | Regelprofile müssen mindestens nach Schule, Schuljahr, Schulform/Bildungsgang, Kohorte und Version differenzierbar sein und Quelle, Fundstelle, Prüfdatum sowie prüfende Person dokumentieren. | umgesetzt |
+| PLAN-019 | Prüfberichte unterscheiden harte Konflikte, weiche Hinweise und ungeprüfte/unaufgelöste Regeln verständlich. | umgesetzt; technischer Konfliktumfang siehe Implementierungsstand |
+| PLAN-020 | Prüfstände müssen die verwendete Profilversion festhalten und nach Profiländerungen als erneute Prüfung markiert werden. | umgesetzt |
+| PLAN-021 | Eine Profilprüfung darf nicht als vollständige Prüfung geltenden Rechts oder als DSGVO-Konformitätsnachweis dargestellt werden. | umgesetzt als Produktgrenze |

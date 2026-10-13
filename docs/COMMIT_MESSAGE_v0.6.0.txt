@@ -1,0 +1,8 @@
+feat(admin): add guided school initialization and role management
+
+- grant the installing system administrator full school rights when creating a school
+- initialize a main building and school role/permission catalog
+- add personnel names, scoped multi-role assignment, permission matrix and student-class assignment
+- require class leadership and deputy before enabling timetable planning
+- add school setup checklist and gate planning until base data exists
+- add idempotent schema migration and phpMyAdmin update script

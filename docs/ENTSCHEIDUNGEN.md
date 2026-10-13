@@ -119,3 +119,6 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 | D-053 | Echte schulische Daten erst nach zuständiger Freigabe und innerhalb des genehmigten Pilotumfangs verarbeiten. | Freigabegate |
 
 
+
+| D-057 | Planungsgrundlagen wie Räume, Fächer, Schulformangebote, Klassenstammdaten und Zeitraster liegen in einem getrennten Administrationsbereich. Planer benötigen diese selten geänderten Gebäud-/Organisationsdaten nicht in ihrer täglichen Planansicht. | bestätigt durch Product Owner; UI/Autorisierung ab v0.5.0 |
+| D-058 | Regelprofile dokumentieren Quellenstand und schulinterne Prüfung. Ohne fachlich bestätigte, maschinenlesbare Regeln darf ein Prüfbericht keine automatische Rechtskonformität behaupten. | Arbeitsgrundsatz ab v0.5.0 |

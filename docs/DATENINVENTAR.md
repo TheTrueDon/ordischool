@@ -61,3 +61,7 @@ Die konkrete verantwortliche Stelle, Rechtsgrundlage, Informationspflicht, Empf�
 ## Quellenhinweise
 
 Die § 136 ThürSchulO/§ 57 ThürSchulG und DSGVO-Quellen sowie ihre Grenzen sind im [`Datenschutz-Quellenregister`](DATENSCHUTZ_QUELLENREGISTER.md) verzeichnet. § 136 enthält für staatliche allgemeinbildende Schulen konkrete Vorgaben zu Datenerhebung, Klassen-/Kursbüchern, Information, Einschränkung und Aufbewahrung. Die konsultierte Fassung nennt beispielsweise eine Einschränkung ein Jahr nach dem Ausscheiden sowie besondere Aufbewahrungsfristen für bestimmte Unterlagen. Diese Regeln sind vor Umsetzung in der aktuellen konsolidierten Fassung zu prüfen und dürfen nicht pauschal auf jede neue App-Funktion übertragen werden.
+
+### Ergänzung v0.5.0: Regelprofil und Prüfstand
+
+Regelprofile speichern schulbezogen Schuljahr, Schulform/Bildungsgang, Kohortenbezeichnung, Versionsnummer, Quellenbezeichnung/-URL/Fundstelle, Prüfdatum, Status sowie erstellende und prüfende Konten mit Zeitstempeln. Ein Planprüfstand speichert die verwendete Profilversion je im Plan verwendeter Schulform sowie prüfendes Konto/Zeitpunkt. Diese Angaben sind schulische Organisations- und Nachweisdaten; Zugriff ist auf Schuladministration beziehungsweise zur Planprüfung berechtigte Rollen begrenzt. Es werden keine Schülerdaten für die Regelprofile benötigt. Aufbewahrungs- und Löschfristen bleiben vor Produktivbetrieb mit dem Verantwortlichen festzulegen.

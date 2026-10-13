@@ -7,36 +7,49 @@ use PDO;
 
 final class TimetableRepository
 {
-    public function __construct(private readonly PDO $pdo, private readonly string $prefix)
+    public function __construct(private readonly PDO $pdo, private readonly string $prefix, private readonly string $globalRole='member')
     {
     }
 
     public function schoolsForPlanner(int $userId): array
     {
-        $stmt = $this->pdo->prepare("SELECT DISTINCT s.id, s.name FROM {$this->prefix}schools s JOIN {$this->prefix}school_memberships m ON m.school_id=s.id JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.user_id=:user_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.role_key IN ('school_admin','planner') AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) AND s.is_active=1 ORDER BY s.name");
-        $stmt->execute(['user_id' => $userId]);
-        return $stmt->fetchAll();
+        if($this->globalRole==='system_admin')return $this->pdo->query("SELECT id,name FROM {$this->prefix}schools WHERE is_active=1 ORDER BY name")->fetchAll();
+        $stmt=$this->pdo->prepare("SELECT DISTINCT s.id,s.name FROM {$this->prefix}schools s JOIN {$this->prefix}school_memberships m ON m.school_id=s.id JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id JOIN {$this->prefix}school_role_permissions rp ON rp.school_id=m.school_id AND rp.role_key=rb.role_key WHERE m.user_id=:user_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) AND rb.scope_id=0 AND rp.permission_key IN ('planning.view','planning.edit','planning.configure') AND rp.is_allowed=1 AND s.is_active=1 ORDER BY s.name");$stmt->execute(['user_id'=>$userId]);return $stmt->fetchAll();
     }
 
-    public function canPlan(int $userId, int $schoolId): bool
+    private function hasPermission(int $userId,int $schoolId,string $permission): bool
     {
-        $stmt = $this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.user_id=:user_id AND m.school_id=:school_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.role_key IN ('school_admin','planner') AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) LIMIT 1");
-        $stmt->execute(['user_id' => $userId, 'school_id' => $schoolId]);
-        return $stmt->fetchColumn() !== false;
+        if($this->globalRole==='system_admin')return true;
+        $stmt=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id JOIN {$this->prefix}school_role_permissions rp ON rp.school_id=m.school_id AND rp.role_key=rb.role_key WHERE m.user_id=:user_id AND m.school_id=:school_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) AND rb.scope_id=0 AND rp.permission_key=:permission AND rp.is_allowed=1 LIMIT 1");$stmt->execute(['user_id'=>$userId,'school_id'=>$schoolId,'permission'=>$permission]);return $stmt->fetchColumn()!==false;
     }
 
-    public function canPublish(int $userId,int $schoolId): bool
+    public function canManageSetupPath(int $userId,int $schoolId,string $path): bool
     {
-        $stmt=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.user_id=:user_id AND m.school_id=:school_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.role_key='school_admin' AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) LIMIT 1");
-        $stmt->execute(['user_id'=>$userId,'school_id'=>$schoolId]);
-        return $stmt->fetchColumn()!==false;
+        if($this->globalRole==='system_admin')return true;
+        $permissions=match($path){
+            '/admin/planning/building','/admin/planning/room'=>['buildings.manage','planning.configure'],
+            '/admin/planning/subject','/admin/planning/subject-room-preference'=>['subjects.manage','planning.configure'],
+            '/admin/planning/class','/admin/planning/class-size','/admin/planning/class-leadership'=>['classes.manage','planning.configure'],
+            default=>['planning.configure'],
+        };
+        foreach($permissions as $permission)if($this->hasPermission($userId,$schoolId,$permission))return true;return false;
     }
+    public function canPlan(int $userId,int $schoolId): bool{return $this->hasPermission($userId,$schoolId,'planning.view')||$this->hasPermission($userId,$schoolId,'planning.edit')||$this->hasPermission($userId,$schoolId,'planning.configure');}
+    public function canEdit(int $userId,int $schoolId): bool{return $this->hasPermission($userId,$schoolId,'planning.edit');}
+    public function canManageSetup(int $userId,int $schoolId): bool{return $this->hasPermission($userId,$schoolId,'planning.configure')||$this->hasPermission($userId,$schoolId,'buildings.manage')||$this->hasPermission($userId,$schoolId,'subjects.manage')||$this->hasPermission($userId,$schoolId,'classes.manage');}
+    public function canPublish(int $userId,int $schoolId): bool{return $this->hasPermission($userId,$schoolId,'planning.approve');}
 
     public function listYears(int $schoolId): array
     {
         $stmt = $this->pdo->prepare("SELECT id,label,starts_on,ends_on,status FROM {$this->prefix}school_years WHERE school_id=:school_id ORDER BY starts_on DESC");
         $stmt->execute(['school_id' => $schoolId]);
         return $stmt->fetchAll();
+    }
+
+    public function planningReadiness(int $schoolId,int $yearId): array
+    {
+        $count=function(string $sql,array $args): int{$stmt=$this->pdo->prepare($sql);$stmt->execute($args);return (int)$stmt->fetchColumn();};
+        return ['buildings'=>$count("SELECT COUNT(*) FROM {$this->prefix}school_buildings WHERE school_id=:school_id AND is_active=1",['school_id'=>$schoolId]),'rooms'=>$count("SELECT COUNT(*) FROM {$this->prefix}school_rooms WHERE school_id=:school_id AND is_active=1",['school_id'=>$schoolId]),'subjects'=>$count("SELECT COUNT(*) FROM {$this->prefix}school_subjects WHERE school_id=:school_id AND is_active=1",['school_id'=>$schoolId]),'classes'=>$count("SELECT COUNT(*) FROM {$this->prefix}school_classes WHERE school_id=:school_id AND school_year_id=:year_id AND is_active=1 AND class_leader_user_id IS NOT NULL AND deputy_class_leader_user_id IS NOT NULL",['school_id'=>$schoolId,'year_id'=>$yearId]),'teachers'=>$count("SELECT COUNT(DISTINCT m.user_id) FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=:school_id AND m.status='active' AND rb.role_key='teacher' AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE())",['school_id'=>$schoolId])];
     }
 
     public function listOfferings(int $schoolId): array
@@ -55,19 +68,25 @@ final class TimetableRepository
 
     public function listClasses(int $schoolId, int $yearId): array
     {
-        $stmt = $this->pdo->prepare("SELECT c.id,c.class_code,c.grade_level,c.group_type,c.expected_size,c.offering_id,o.offering_name FROM {$this->prefix}school_classes c JOIN {$this->prefix}school_offerings o ON o.id=c.offering_id WHERE c.school_id=:school_id AND c.school_year_id=:year_id AND c.is_active=1 ORDER BY o.offering_name,c.grade_level,c.class_code");
+        $stmt = $this->pdo->prepare("SELECT c.id,c.class_code,c.grade_level,c.group_type,c.expected_size,c.class_leader_user_id,c.deputy_class_leader_user_id,lead.username AS class_leader,deputy.username AS class_deputy,c.offering_id,o.offering_name FROM {$this->prefix}school_classes c JOIN {$this->prefix}school_offerings o ON o.id=c.offering_id LEFT JOIN {$this->prefix}users lead ON lead.id=c.class_leader_user_id LEFT JOIN {$this->prefix}users deputy ON deputy.id=c.deputy_class_leader_user_id WHERE c.school_id=:school_id AND c.school_year_id=:year_id AND c.is_active=1 ORDER BY o.offering_name,c.grade_level,c.class_code");
         $stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId]);
         return $stmt->fetchAll();
     }
 
-    public function addClass(int $schoolId, int $yearId, int $offeringId, string $code, string $grade, string $type, int $actor, ?int $expectedSize=null): void
+    public function addClass(int $schoolId,int $yearId,int $offeringId,string $code,string $grade,string $type,int $actor,?int $expectedSize=null,?int $leadTeacherId=null,?int $deputyTeacherId=null): void
     {
-        $check=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_years y JOIN {$this->prefix}school_offerings o ON o.school_id=y.school_id WHERE y.id=:year_id AND y.school_id=:school_id AND o.id=:offering_id AND o.status='active' AND o.valid_from<=y.starts_on AND (o.valid_until IS NULL OR o.valid_until>=y.ends_on)");
-        $check->execute(['year_id'=>$yearId,'school_id'=>$schoolId,'offering_id'=>$offeringId]);
-        if($check->fetchColumn()===false)throw new PlanningException('Das Schuljahr oder das dafür gültige Schulformangebot gehört nicht zu dieser Schule.');
-        $stmt=$this->pdo->prepare("INSERT INTO {$this->prefix}school_classes (school_id,school_year_id,offering_id,class_code,grade_level,group_type,expected_size,is_active,created_at) VALUES (:school_id,:year_id,:offering_id,:class_code,:grade_level,:group_type,:expected_size,1,UTC_TIMESTAMP())");
-        $stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId,'offering_id'=>$offeringId,'class_code'=>$code,'grade_level'=>$grade,'group_type'=>$type,'expected_size'=>$expectedSize]);
-        $this->audit($schoolId,$actor,'planning_class_created');
+        $check=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_years y JOIN {$this->prefix}school_offerings o ON o.school_id=y.school_id WHERE y.id=:year_id AND y.school_id=:school_id AND o.id=:offering_id AND o.status='active' AND o.valid_from<=y.starts_on AND (o.valid_until IS NULL OR o.valid_until>=y.ends_on)");$check->execute(['year_id'=>$yearId,'school_id'=>$schoolId,'offering_id'=>$offeringId]);if($check->fetchColumn()===false)throw new PlanningException('Das Schuljahr oder Schulformangebot gehört nicht zu dieser Schule.');
+        foreach([$leadTeacherId,$deputyTeacherId] as $teacherId){if($teacherId!==null){$t=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=:school_id AND m.user_id=:user_id AND m.status='active' AND rb.role_key='teacher' AND rb.scope_id IN (0,:offering_id) AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE())");$t->execute(['school_id'=>$schoolId,'user_id'=>$teacherId,'offering_id'=>$offeringId]);if($t->fetchColumn()===false)throw new PlanningException('Klassenleitung und Stellvertretung müssen aktive Lehrkräfte dieser Schulform sein.');}}
+        if($leadTeacherId!==null&&$leadTeacherId===$deputyTeacherId)throw new PlanningException('Klassenleitung und Stellvertretung müssen unterschiedliche Personen sein.');
+        $stmt=$this->pdo->prepare("INSERT INTO {$this->prefix}school_classes (school_id,school_year_id,offering_id,class_code,grade_level,group_type,expected_size,class_leader_user_id,deputy_class_leader_user_id,is_active,created_at) VALUES (:school_id,:year_id,:offering_id,:class_code,:grade_level,:group_type,:expected_size,:lead,:deputy,1,UTC_TIMESTAMP())");$stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId,'offering_id'=>$offeringId,'class_code'=>$code,'grade_level'=>$grade,'group_type'=>$type,'expected_size'=>$expectedSize,'lead'=>$leadTeacherId,'deputy'=>$deputyTeacherId]);$this->audit($schoolId,$actor,'planning_class_created');
+    }
+
+    public function setClassLeadership(int $schoolId,int $classId,int $leadTeacherId,int $deputyTeacherId,int $actor): void
+    {
+        if($leadTeacherId===$deputyTeacherId)throw new PlanningException('Klassenleitung und Stellvertretung müssen unterschiedliche Personen sein.');
+        $class=$this->pdo->prepare("SELECT offering_id FROM {$this->prefix}school_classes WHERE school_id=:school_id AND id=:id AND is_active=1");$class->execute(['school_id'=>$schoolId,'id'=>$classId]);$offeringId=$class->fetchColumn();if($offeringId===false)throw new PlanningException('Die Klasse oder der Kurs gehört nicht zu dieser Schule.');
+        foreach([$leadTeacherId,$deputyTeacherId] as $teacherId){$stmt=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=:school_id AND m.user_id=:user_id AND m.status='active' AND rb.role_key='teacher' AND rb.scope_id IN (0,:offering_id) AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE())");$stmt->execute(['school_id'=>$schoolId,'user_id'=>$teacherId,'offering_id'=>(int)$offeringId]);if($stmt->fetchColumn()===false)throw new PlanningException('Klassenleitung und Stellvertretung müssen aktive Lehrkräfte dieser Schulform sein.');}
+        $update=$this->pdo->prepare("UPDATE {$this->prefix}school_classes SET class_leader_user_id=:lead,deputy_class_leader_user_id=:deputy WHERE school_id=:school_id AND id=:id");$update->execute(['lead'=>$leadTeacherId,'deputy'=>$deputyTeacherId,'school_id'=>$schoolId,'id'=>$classId]);$this->audit($schoolId,$actor,'planning_class_leadership_changed');
     }
 
     public function setClassExpectedSize(int $schoolId,int $classId,?int $expectedSize,int $actor): void
@@ -99,16 +118,26 @@ final class TimetableRepository
         $this->audit($schoolId,$actor,'planning_subject_room_preference_changed');
     }
 
+    public function listBuildings(int $schoolId): array
+    {
+        $stmt=$this->pdo->prepare("SELECT id,building_code,building_name,is_active FROM {$this->prefix}school_buildings WHERE school_id=:school_id AND is_active=1 ORDER BY building_name");$stmt->execute(['school_id'=>$schoolId]);return $stmt->fetchAll();
+    }
+
+    public function addBuilding(int $schoolId,string $code,string $name,int $actor): void
+    {
+        $stmt=$this->pdo->prepare("INSERT INTO {$this->prefix}school_buildings (school_id,building_code,building_name,is_active,created_at) VALUES (:school_id,:code,:name,1,UTC_TIMESTAMP())");$stmt->execute(['school_id'=>$schoolId,'code'=>$code,'name'=>$name]);$this->audit($schoolId,$actor,'school_building_created');
+    }
+
     public function listRooms(int $schoolId, bool $activeOnly = true): array
     {
-        $sql = "SELECT id,room_code,room_name,room_type_key,room_type_name,capacity,is_active FROM {$this->prefix}school_rooms WHERE school_id=:school_id" . ($activeOnly ? " AND is_active=1" : "") . " ORDER BY room_name";
+        $sql = "SELECT r.id,r.room_code,r.room_name,r.room_type_key,r.room_type_name,r.capacity,r.is_active,r.building_id,b.building_name FROM {$this->prefix}school_rooms r JOIN {$this->prefix}school_buildings b ON b.school_id=r.school_id AND b.id=r.building_id WHERE r.school_id=:school_id" . ($activeOnly ? " AND is_active=1" : "") . " ORDER BY room_name";
         $stmt=$this->pdo->prepare($sql);$stmt->execute(['school_id'=>$schoolId]);return $stmt->fetchAll();
     }
 
-    public function addRoom(int $schoolId,string $code,string $name,string $typeKey,string $typeName,?int $capacity,int $actor): void
+    public function addRoom(int $schoolId,int $buildingId,string $code,string $name,string $typeKey,string $typeName,?int $capacity,int $actor): void
     {
-        $stmt=$this->pdo->prepare("INSERT INTO {$this->prefix}school_rooms (school_id,room_code,room_name,room_type_key,room_type_name,capacity,is_active,created_at) VALUES (:school_id,:code,:name,:type_key,:type_name,:capacity,1,UTC_TIMESTAMP())");
-        $stmt->execute(['school_id'=>$schoolId,'code'=>$code,'name'=>$name,'type_key'=>$typeKey,'type_name'=>$typeName,'capacity'=>$capacity]);
+        $stmt=$this->pdo->prepare("INSERT INTO {$this->prefix}school_rooms (school_id,building_id,room_code,room_name,room_type_key,room_type_name,capacity,is_active,created_at) VALUES (:school_id,:building_id,:code,:name,:type_key,:type_name,:capacity,1,UTC_TIMESTAMP())");
+        $stmt->execute(['school_id'=>$schoolId,'building_id'=>$buildingId,'code'=>$code,'name'=>$name,'type_key'=>$typeKey,'type_name'=>$typeName,'capacity'=>$capacity]);
         $this->audit($schoolId,$actor,'planning_room_created');
     }
 
@@ -139,21 +168,58 @@ final class TimetableRepository
 
     public function listTeachers(int $schoolId): array
     {
-        $stmt=$this->pdo->prepare("SELECT DISTINCT u.id,u.username FROM {$this->prefix}users u JOIN {$this->prefix}school_memberships m ON m.user_id=u.id JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=:school_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND u.is_active=1 AND rb.role_key='teacher' AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) ORDER BY u.username");
+        $stmt=$this->pdo->prepare("SELECT DISTINCT u.id,u.username,u.first_name,u.last_name FROM {$this->prefix}users u JOIN {$this->prefix}school_memberships m ON m.user_id=u.id JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=:school_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND u.is_active=1 AND rb.role_key='teacher' AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE()) ORDER BY u.last_name,u.first_name,u.username");
         $stmt->execute(['school_id'=>$schoolId]);
         return $stmt->fetchAll();
     }
 
+    public function createRuleProfile(int $schoolId,int $yearId,int $offeringId,string $cohort,string $source,?string $url,?string $reference,string $checkedOn,int $actor): int
+    {
+        $this->pdo->beginTransaction();try{$scope=$this->pdo->prepare("SELECT 1 FROM {$this->prefix}school_years y JOIN {$this->prefix}school_offerings o ON o.school_id=y.school_id WHERE y.id=:year_id AND y.school_id=:school_id AND o.id=:offering_id");$scope->execute(['year_id'=>$yearId,'school_id'=>$schoolId,'offering_id'=>$offeringId]);if($scope->fetchColumn()===false)throw new PlanningException('Schuljahr und Schulform müssen derselben Schule angehören.');
+            $yearLock=$this->pdo->prepare("SELECT id FROM {$this->prefix}school_years WHERE id=:year_id AND school_id=:school_id FOR UPDATE");$yearLock->execute(['year_id'=>$yearId,'school_id'=>$schoolId]);
+            $lock=$this->pdo->prepare("SELECT COALESCE(MAX(version_number),0)+1 FROM {$this->prefix}planning_rule_profiles WHERE school_year_id=:year_id AND offering_id=:offering_id");$lock->execute(['year_id'=>$yearId,'offering_id'=>$offeringId]);$version=(int)$lock->fetchColumn();
+            $stmt=$this->pdo->prepare("INSERT INTO {$this->prefix}planning_rule_profiles (school_id,school_year_id,offering_id,version_number,cohort_label,source_title,source_url,source_reference,source_checked_on,status,created_by,created_at) VALUES (:school_id,:year_id,:offering_id,:version,:cohort,:source,:url,:reference,:checked,'draft',:actor,UTC_TIMESTAMP())");$stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId,'offering_id'=>$offeringId,'version'=>$version,'cohort'=>$cohort,'source'=>$source,'url'=>$url,'reference'=>$reference,'checked'=>$checkedOn,'actor'=>$actor]);$id=(int)$this->pdo->lastInsertId();$this->pdo->prepare("UPDATE {$this->prefix}timetable_plans SET rules_review_required=1 WHERE school_id=:school_id AND school_year_id=:year_id")->execute(['school_id'=>$schoolId,'year_id'=>$yearId]);$this->audit($schoolId,$actor,'planning_rule_profile_created');$this->pdo->commit();return $id;
+        }catch(\Throwable $e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $e;}
+    }
+
+    public function listRuleProfiles(int $schoolId,int $yearId): array
+    {
+        $stmt=$this->pdo->prepare("SELECT p.id,p.offering_id,p.version_number,p.cohort_label,p.source_title,p.source_url,p.source_reference,p.source_checked_on,p.status,p.reviewed_at,o.offering_name,u.username AS reviewer FROM {$this->prefix}planning_rule_profiles p JOIN {$this->prefix}school_offerings o ON o.school_id=p.school_id AND o.id=p.offering_id LEFT JOIN {$this->prefix}users u ON u.id=p.reviewed_by WHERE p.school_id=:school_id AND p.school_year_id=:year_id ORDER BY o.offering_name,p.version_number DESC");$stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId]);return $stmt->fetchAll();
+    }
+
+    public function reviewRuleProfile(int $schoolId,int $profileId,int $actor): void
+    {
+        $stmt=$this->pdo->prepare("UPDATE {$this->prefix}planning_rule_profiles SET status='reviewed',reviewed_by=:actor,reviewed_at=UTC_TIMESTAMP() WHERE school_id=:school_id AND id=:id AND status='draft'");$stmt->execute(['actor'=>$actor,'school_id'=>$schoolId,'id'=>$profileId]);if($stmt->rowCount()===0)throw new PlanningException('Nur ein noch nicht geprüftes Regelprofil kann markiert werden.');$scope=$this->pdo->prepare("SELECT school_year_id FROM {$this->prefix}planning_rule_profiles WHERE school_id=:school_id AND id=:id");$scope->execute(['school_id'=>$schoolId,'id'=>$profileId]);$year=$scope->fetchColumn();$this->pdo->prepare("UPDATE {$this->prefix}timetable_plans SET rules_review_required=1 WHERE school_id=:school_id AND school_year_id=:year_id")->execute(['school_id'=>$schoolId,'year_id'=>$year]);$this->audit($schoolId,$actor,'planning_rule_profile_reviewed');
+    }
+
+    public function recheckPlanRules(int $schoolId,int $yearId,int $planId,int $actor): void
+    {
+        $plan=$this->findPlan($schoolId,$planId);if($plan===null||(int)$plan['school_year_id']!==$yearId)throw new PlanningException('Der Plan gehört nicht zu diesem Schuljahr.');$lessons=$this->listLessons($schoolId,$planId);$offerings=[];foreach($lessons as $lesson)$offerings[(int)$lesson['offering_id']]=(string)$lesson['offering_name'];if($offerings===[])throw new PlanningException('Ein leerer Plan kann nicht auf Regelprofile geprüft werden.');
+        $this->pdo->beginTransaction();try{$this->pdo->prepare("DELETE FROM {$this->prefix}timetable_plan_rule_reviews WHERE school_id=:school_id AND plan_id=:plan_id")->execute(['school_id'=>$schoolId,'plan_id'=>$planId]);$insert=$this->pdo->prepare("INSERT INTO {$this->prefix}timetable_plan_rule_reviews (school_id,plan_id,offering_id,rule_profile_id,profile_version,checked_by,checked_at) VALUES (:school_id,:plan_id,:offering_id,:profile_id,:version,:actor,UTC_TIMESTAMP())");
+            foreach($offerings as $offeringId=>$name){$stmt=$this->pdo->prepare("SELECT id,version_number FROM {$this->prefix}planning_rule_profiles WHERE school_id=:school_id AND school_year_id=:year_id AND offering_id=:offering_id AND status='reviewed' ORDER BY version_number DESC LIMIT 1");$stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId,'offering_id'=>$offeringId]);$profile=$stmt->fetch();if(!is_array($profile))throw new PlanningException('Für '.$name.' fehlt ein fachlich geprüftes Regelprofil dieses Schuljahres.');$insert->execute(['school_id'=>$schoolId,'plan_id'=>$planId,'offering_id'=>$offeringId,'profile_id'=>$profile['id'],'version'=>$profile['version_number'],'actor'=>$actor]);}
+            $this->pdo->prepare("UPDATE {$this->prefix}timetable_plans SET rules_review_required=0 WHERE school_id=:school_id AND id=:plan_id")->execute(['school_id'=>$schoolId,'plan_id'=>$planId]);$this->audit($schoolId,$actor,'timetable_rule_profiles_rechecked');$this->pdo->commit();
+        }catch(\Throwable $e){if($this->pdo->inTransaction())$this->pdo->rollBack();throw $e;}
+    }
+
+    public function ruleReport(int $schoolId,int $yearId,int $planId,array $lessons): array
+    {
+        $hard=count(TimetableConflictDetector::detect($lessons));$soft=0;$used=[];foreach($lessons as $lesson){$used[(int)$lesson['offering_id']]=(string)$lesson['offering_name'];if(($lesson['room_id']===null&&(string)($lesson['preferred_room_type_key']??'')!=='')||($lesson['room_id']!==null&&(string)($lesson['preferred_room_type_key']??'')!==''&&(string)($lesson['actual_room_type_key']??'')!==(string)$lesson['preferred_room_type_key']))$soft++;}
+        $saved=$this->pdo->prepare("SELECT r.offering_id,r.rule_profile_id,r.profile_version,p.status,p.version_number,p.cohort_label,p.source_title,p.source_url,p.source_reference,p.source_checked_on,p.reviewed_at,u.username AS reviewer FROM {$this->prefix}timetable_plan_rule_reviews r JOIN {$this->prefix}planning_rule_profiles p ON p.school_id=r.school_id AND p.id=r.rule_profile_id LEFT JOIN {$this->prefix}users u ON u.id=r.checked_by WHERE r.school_id=:school_id AND r.plan_id=:plan_id");$saved->execute(['school_id'=>$schoolId,'plan_id'=>$planId]);$rows=[];foreach($saved->fetchAll() as $row)$rows[(int)$row['offering_id']]=$row;
+        $unresolved=0;$details='<ul>';foreach($used as $offeringId=>$name){$row=$rows[$offeringId]??null;if($row!==null){$latest=$this->pdo->prepare("SELECT id,status FROM {$this->prefix}planning_rule_profiles WHERE school_id=:school_id AND school_year_id=:year_id AND offering_id=:offering_id ORDER BY version_number DESC LIMIT 1");$latest->execute(['school_id'=>$schoolId,'year_id'=>$yearId,'offering_id'=>$offeringId]);$current=$latest->fetch();if(!is_array($current)||(int)$current['id']!==(int)$row['rule_profile_id']||$current['status']!=='reviewed')$row=null;}
+            if($row===null||$row['status']!=='reviewed'||(int)$row['profile_version']!==(int)$row['version_number']){$unresolved++;$details.='<li>'.$this->escape($name).': kein aktueller Prüfstand gespeichert; Thüringer Vorgaben und Kohortenübergänge manuell prüfen.</li>';continue;}$details.='<li>'.$this->escape($name).': geprüfte Profilversion '.(int)$row['profile_version'].' für '.$this->escape((string)$row['cohort_label']).' · Quelle: '.$this->escape((string)$row['source_title']).($row['source_url']?' · <a rel="noopener noreferrer" href="'.htmlspecialchars((string)$row['source_url'],ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8').'">öffnen</a>':'').($row['source_reference']?' · '.$this->escape((string)$row['source_reference']):'').' · geprüft am '.$this->escape((string)$row['source_checked_on']).' durch '.$this->escape((string)$row['reviewer']).'</li>';}$details.='</ul><p class="muted">Dieser Bericht prüft technische Stundenplankonflikte und dokumentiert ausgewählte Quellenstände. Er bildet Thüringer Rechts- und Verwaltungsvorgaben nicht vollständig maschinenlesbar ab und ist kein Rechtskonformitätsnachweis.</p>';
+        return ['hard'=>$hard,'soft'=>$soft,'unresolved'=>$unresolved,'details'=>$details];
+    }
+
     public function listPlans(int $schoolId,int $yearId): array
     {
-        $stmt=$this->pdo->prepare("SELECT p.id,p.version_number,p.title,p.status,p.created_at,u.username AS creator FROM {$this->prefix}timetable_plans p JOIN {$this->prefix}users u ON u.id=p.created_by WHERE p.school_id=:school_id AND p.school_year_id=:year_id ORDER BY p.version_number DESC");
+        $stmt=$this->pdo->prepare("SELECT p.id,p.version_number,p.title,p.status,p.rules_review_required,p.created_at,u.username AS creator FROM {$this->prefix}timetable_plans p JOIN {$this->prefix}users u ON u.id=p.created_by WHERE p.school_id=:school_id AND p.school_year_id=:year_id ORDER BY p.version_number DESC");
         $stmt->execute(['school_id'=>$schoolId,'year_id'=>$yearId]);
         return $stmt->fetchAll();
     }
 
     public function findPlan(int $schoolId,int $planId): ?array
     {
-        $stmt=$this->pdo->prepare("SELECT id,school_id,school_year_id,version_number,title,status FROM {$this->prefix}timetable_plans WHERE school_id=:school_id AND id=:plan_id");
+        $stmt=$this->pdo->prepare("SELECT id,school_id,school_year_id,version_number,title,status,rules_review_required FROM {$this->prefix}timetable_plans WHERE school_id=:school_id AND id=:plan_id");
         $stmt->execute(['school_id'=>$schoolId,'plan_id'=>$planId]);
         $row=$stmt->fetch();
         return is_array($row)?$row:null;
@@ -194,7 +260,7 @@ final class TimetableRepository
 
     public function listLessons(int $schoolId,int $planId): array
     {
-        $stmt=$this->pdo->prepare("SELECT l.id,l.class_id,c.class_code,c.grade_level,c.expected_size,c.is_active AS class_active,o.offering_name,o.status AS offering_status,o.valid_from AS offering_valid_from,o.valid_until AS offering_valid_until,sy.starts_on AS year_starts_on,sy.ends_on AS year_ends_on,l.subject_id,s.subject_code,s.subject_name,s.preferred_room_type_key,s.preferred_room_type_name,s.is_active AS subject_active,l.teacher_user_id,u.username,EXISTS(SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=l.school_id AND m.user_id=l.teacher_user_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.role_key='teacher' AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE())) AS teacher_active,l.weekday,l.start_period,l.duration_periods,l.room_id,r.room_code,r.room_name,r.room_type_key AS actual_room_type_key,r.room_type_name AS actual_room_type_name,r.capacity AS room_capacity,r.is_active AS room_active,p.label,p.starts_at,p.ends_at,p.is_active AS period_active,EXISTS(SELECT 1 FROM {$this->prefix}timetable_periods p2 WHERE p2.school_id=l.school_id AND p2.period_number=l.start_period+1 AND p2.is_active=1) AS next_period_active FROM {$this->prefix}timetable_lessons l JOIN {$this->prefix}school_classes c ON c.id=l.class_id JOIN {$this->prefix}school_years sy ON sy.id=c.school_year_id JOIN {$this->prefix}school_offerings o ON o.id=c.offering_id JOIN {$this->prefix}school_subjects s ON s.id=l.subject_id JOIN {$this->prefix}users u ON u.id=l.teacher_user_id LEFT JOIN {$this->prefix}school_rooms r ON r.school_id=l.school_id AND r.id=l.room_id JOIN {$this->prefix}timetable_periods p ON p.school_id=l.school_id AND p.period_number=l.start_period WHERE l.school_id=:school_id AND l.plan_id=:plan_id ORDER BY l.weekday,l.start_period,o.offering_name,c.class_code");
+        $stmt=$this->pdo->prepare("SELECT l.id,l.class_id,c.class_code,c.grade_level,c.expected_size,c.is_active AS class_active,c.offering_id,o.offering_name,o.status AS offering_status,o.valid_from AS offering_valid_from,o.valid_until AS offering_valid_until,sy.starts_on AS year_starts_on,sy.ends_on AS year_ends_on,l.subject_id,s.subject_code,s.subject_name,s.preferred_room_type_key,s.preferred_room_type_name,s.is_active AS subject_active,l.teacher_user_id,u.username,EXISTS(SELECT 1 FROM {$this->prefix}school_memberships m JOIN {$this->prefix}role_bindings rb ON rb.membership_id=m.id WHERE m.school_id=l.school_id AND m.user_id=l.teacher_user_id AND m.status='active' AND m.valid_from<=CURDATE() AND (m.valid_until IS NULL OR m.valid_until>=CURDATE()) AND rb.role_key='teacher' AND rb.valid_from<=CURDATE() AND (rb.valid_until IS NULL OR rb.valid_until>=CURDATE())) AS teacher_active,l.weekday,l.start_period,l.duration_periods,l.room_id,r.room_code,r.room_name,r.room_type_key AS actual_room_type_key,r.room_type_name AS actual_room_type_name,r.capacity AS room_capacity,r.is_active AS room_active,p.label,p.starts_at,p.ends_at,p.is_active AS period_active,EXISTS(SELECT 1 FROM {$this->prefix}timetable_periods p2 WHERE p2.school_id=l.school_id AND p2.period_number=l.start_period+1 AND p2.is_active=1) AS next_period_active FROM {$this->prefix}timetable_lessons l JOIN {$this->prefix}school_classes c ON c.id=l.class_id JOIN {$this->prefix}school_years sy ON sy.id=c.school_year_id JOIN {$this->prefix}school_offerings o ON o.id=c.offering_id JOIN {$this->prefix}school_subjects s ON s.id=l.subject_id JOIN {$this->prefix}users u ON u.id=l.teacher_user_id LEFT JOIN {$this->prefix}school_rooms r ON r.school_id=l.school_id AND r.id=l.room_id JOIN {$this->prefix}timetable_periods p ON p.school_id=l.school_id AND p.period_number=l.start_period WHERE l.school_id=:school_id AND l.plan_id=:plan_id ORDER BY l.weekday,l.start_period,o.offering_name,c.class_code");
         $stmt->execute(['school_id'=>$schoolId,'plan_id'=>$planId]);
         return $stmt->fetchAll();
     }
@@ -239,7 +305,10 @@ final class TimetableRepository
         if(!$this->canPublish($actor,$schoolId))throw new PlanningException('Die Veröffentlichung erfordert eine aktive Schuladministrationsrolle an dieser Schule.');
         $plan=$this->findPlan($schoolId,$planId);
         if($plan===null || $plan['status']!=='draft')throw new PlanningException('Nur ein Entwurf kann freigegeben werden.');
+        if((int)$plan['rules_review_required']===1)throw new PlanningException('Der Regelprüfstand fehlt oder ist veraltet. Prüfe zuerst die Regelprofile im Prüfbericht.');
         $lessons=$this->listLessons($schoolId,$planId);
+        $ruleReport=$this->ruleReport($schoolId,(int)$plan['school_year_id'],$planId,$lessons);
+        if($ruleReport['unresolved']>0)throw new PlanningException('Für mindestens eine verwendete Schulform fehlt ein aktuelles, fachlich geprüftes Regelprofil.');
         if($lessons===[])throw new PlanningException('Ein leerer Stundenplan kann nicht freigegeben werden.');
         foreach($lessons as $lesson){
             $offeringOutOfDate=$lesson['offering_status']!=='active'||$lesson['offering_valid_from']>$lesson['year_starts_on']||($lesson['offering_valid_until']!==null&&$lesson['offering_valid_until']<$lesson['year_ends_on']);
@@ -273,6 +342,8 @@ final class TimetableRepository
         $parts=[];if($conflict['class_conflict']??false)$parts[]='Klasse';if($conflict['teacher_conflict']??false)$parts[]='Lehrkraft';if($conflict['room_conflict']??false)$parts[]='Raum';$reason=implode(', ',$parts);
         return 'Zeitkonflikt: '.$reason.' ist am selben Wochentag in mindestens einer Unterrichtsstunde doppelt eingeplant. Schulformübergreifende Lehrkrafteinsätze werden gemeinsam geprüft.';
     }
+
+    private function escape(string $value): string{return htmlspecialchars($value,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');}
 
     private function audit(int $schoolId,int $actor,string $event): void
     {

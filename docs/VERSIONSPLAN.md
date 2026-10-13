@@ -14,11 +14,13 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.0.8 | Bedrohungsmodell, Sicherheits-/Testfallmatrix und Freigabegates |
 | 0.0.9 | Priorisiertes Backlog, Verantwortlichkeiten, Aufwand und Releasefreigabe v0.1.0 |
 | 0.1.0 | Technisches Grundgerüst und Anmeldung |
-| 0.2.0 | Schulstammdaten und Rollen |
-| 0.3.0–0.6.0 | Stunden-, Raum-, Regel- und Vertretungsplanung mit Assistenz; ab v0.3.0 mit mehreren Schulformen/Bildungsgängen je Schule und schulformübergreifender Lehrkraft-Konfliktprüfung |
-| 0.7.0–0.11.0 | Sitzpläne, Klassenbuch, Aufgaben, Termine, Gruppen, Wiki und Nachrichten |
-| 0.12.0–0.13.0 | Notenverwaltung und notenfreie Radarspinne |
-| 0.14.0–0.15.0 | Zeugnisse, Dashboard und Integration/Administration |
+| 0.2.0 | Technische Schulstammdaten und einfache Rollen |
+| 0.3.0–0.5.0 | Stunden- und Raumplanung, Schulformübergreifende Konfliktprüfung und Regelprofile |
+| 0.6.0 | Geführte Schulinitialisierung, Gebäude/Räume, Personal, Rollen/Rechte, Klassenleitung und Schülerverwaltung |
+| 0.7.0 | Vertretungsplanung und Änderungsvorschläge für Stunden-/Vertretungspläne |
+| 0.8.0–0.12.0 | Sitzpläne, Klassenbuch, Aufgaben, Termine, Gruppen, Wiki und Nachrichten |
+| 0.13.0–0.14.0 | Notenverwaltung und notenfreie Radarspinne |
+| 0.15.0–0.16.0 | Zeugnisse, Dashboard und Integration/Administration |
 | 0.16.0–0.18.0 | Pilot, kontrollierte Beta und Release Candidate |
 | 1.0.0 | Stabile, konkret freigegebene Produktversion |
 
@@ -145,6 +147,34 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Offene Datenschutz-/Betriebsfragen bleiben Gates vor Pilot/Produktion.
 
 
+## v0.7.0 – Vertretungsplanung und Assistenz (geplant)
+
+- Vertretungsereignisse werden mit freigegebenem Stundenplan, Lehrkraftverfügbarkeit, Raumbelegung und Schulform verknüpft.
+- Vorschläge zeigen Begründung, Konflikte und Auswirkungen; Änderungen bleiben bis zur berechtigten Bestätigung unveröffentlicht.
+- Vertretung kann Unterricht, Raum und Personal ändern, ohne die ursprüngliche Stundenplanfassung zu überschreiben.
+
 ## v0.4.0 – Raumplanung (umgesetzt)
 
 Räume mit frei definierbaren Typen und optionalen Kapazitäten, optionale Gruppengrößen, Raumzuordnung an Unterrichtsstunden, harte Prüfungen auf Raumbelegung/Kapazität sowie nicht blockierende Hinweise für Fachraumpräferenzen.
+
+### Abnahme v0.6.0 – Schulinitialisierung und Administration
+
+- Das Installationskonto erhält nach Anlage der Schule automatisch schulweite Schuladministrationsrechte.
+- Die Schule startet mit Hauptgebäude, Rollen und Berechtigungskatalog; mehrere Schulformen/Bildungsgänge bleiben je Schule möglich.
+- Menü und Checkliste führen in der Reihenfolge durch Räume, Fächer, Personal/Rollen, Schuljahr, Klassen und Schüler.
+- Personal kann mehrere Rollen und Schulformbereiche erhalten; Rollenrechte werden per Checkbox-Matrix verwaltet.
+- Klassen/Kurse werden mit Klassenleitung und Stellvertretung angelegt; Schülerdaten bleiben auf notwendige Namens- und Klassenzuordnungsdaten begrenzt.
+- Planentwürfe bleiben bis zur Einrichtung der grundlegenden Räume, Fächer, Klassen und Lehrkräfte gesperrt.
+- Migration und Update-SQL von v0.5.0 sind enthalten; vor Freigabe sind MySQL-/PHP-Laufzeittests in CI erforderlich.
+- Datenschutzfreigabe bleibt offen; bis dahin synthetische Testdaten.
+
+### Abnahme v0.5.0 – Planungsgrundlagen und Regelprüfberichte
+
+- Planer sehen keine Formulare zur Pflege selten geänderter Räume, Fächer, Schulformen, Klassenstammdaten oder Unterrichtszeiten.
+- Schuladministratoren erreichen die getrennte Planungsgrundlagen-Verwaltung; nicht privilegierte Planer können die Schreibendpunkte nicht verwenden.
+- Regelprofile sind je Schule, Schuljahr, Angebot und Kohorte versioniert und enthalten Quellen-/Prüfnachweise.
+- Planberichte weisen harte Konflikte, weiche Wünsche und offene Regelprüfungen separat aus.
+- Planprüfstände speichern Profilversionen je tatsächlich verwendeter Schulform und müssen nach Profiländerung erneut geprüft werden.
+- Freigabe ohne aktuellen Regelprüfstand ist nicht möglich; Quellenprüfung wird nicht als automatische Rechtskonformität ausgegeben.
+- Update-SQL von v0.4.1 mit Standardpräfix `ordi_` ist wiederholbar; bei abweichendem Präfix werden die Tabellenpräfixe angepasst.
+- Nur synthetische Testdaten. PHP-/MySQL-Laufzeitprüfung muss über CI erfolgen und wurde in der Erstellungsumgebung nicht ausgeführt.

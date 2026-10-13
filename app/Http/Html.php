@@ -17,7 +17,7 @@ final class Html
         echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
         echo '<title>' . $safeTitle . ' – OrdiSchool</title>';
         echo '<link rel="stylesheet" href="/assets/app.css"></head><body>';
-        echo '<header class="topbar"><a class="brand" href="/">OrdiSchool</a><span>Stundenplanung v0.4.1</span></header>';
+        echo '<header class="topbar"><a class="brand" href="/">OrdiSchool</a><span>Schulverwaltung v0.6.0</span></header>';
         echo '<main class="wrap">' . $content . '</main>';
         echo '<footer>Lokale Entwicklungsfassung · keine Schul- oder Schülerdaten</footer>';
         echo '</body></html>';

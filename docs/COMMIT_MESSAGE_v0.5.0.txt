@@ -1,0 +1,9 @@
+feat(v0.5.0): versionierte Regelprofile und getrennte Planungsgrundlagen ergänzen
+
+- Stammdatenpflege aus der täglichen Planungsansicht in einen schuladministrativen Bereich verschieben
+- Zugriffe auf Räume, Fächer, Schulformen, Zeitraster und Klassenstammdaten auf Schuladministration begrenzen
+- Regelprofile nach Schuljahr, Schulform und Kohorte versionieren und fachliche Quellenprüfung dokumentieren
+- Prüfberichte für harte Konflikte, weiche Hinweise und offene Regelstände ergänzen
+- Prüfstände mit einer konkreten Profilversion verknüpfen und nach Profiländerungen zur erneuten Prüfung markieren
+- Datenbankmigration und wiederholbares Update-SQL für v0.4.1 ergänzen
+- Grenzen der Regelabbildung und Datenschutzfreigabe dokumentieren
