@@ -102,3 +102,14 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 | D-046 | Kritische/hohe Sicherheitsbefunde blockieren Release/Pilot; mittlere Befunde benötigen dokumentierte Risikoakzeptanz und Frist. | Freigabegrundsatz |
 | D-047 | Unabhängiger Penetrationstest und Restore-/Incident-Probe sind Gates vor Pilot/Produktivbetrieb. | geplant; Umfang/Prüfer/Betreiber offen |
 | D-048 | Radar, Eltern, externe E-Mail/Push, KI und Mehrschulrisiken werden bei konkreter Aktivierung neu bewertet. | weiterhin offen/nicht freigegeben |
+
+
+## Backlog- und Releasearbeitsstand v0.0.9
+
+| ID | Arbeitsentscheidung / offener Punkt | Status |
+|---|---|---|
+| D-049 | Aufwand für v0.1.0 wird als grobe Personentagsspanne mit etwa ±40% Unsicherheit geplant und nach den ersten zwei Einträgen neu bewertet. | Planungsannahme |
+| D-050 | v0.1.0 enthält keine Schüler-/Lehrkraft-Stammdaten, Pläne, Noten, Klassenbuchdaten oder produktiven Import. | Releaseumfang festgelegt |
+| D-051 | Initialer Admin ist technische Installationsrolle ohne pauschale pädagogische Inhaltsrechte. | Releaseumfang festgelegt |
+| D-052 | Fachliche, Datenschutz-/Rechts- und Betriebsfreigaben bleiben von Entwicklungsfreigaben getrennt. | Freigabegrundsatz |
+| D-053 | Echte schulische Daten erst nach zuständiger Freigabe und innerhalb des genehmigten Pilotumfangs verarbeiten. | Freigabegate |

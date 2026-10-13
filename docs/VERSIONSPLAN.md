@@ -12,7 +12,7 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.0.6 | Fachliches Datenmodell, Datenwörterbuch, Versionierung sowie erste Migrations-/Löschstrategie |
 | 0.0.7 | Zielarchitektur, Technologie-/Hostingbewertung und Anbieter-Prüfliste |
 | 0.0.8 | Bedrohungsmodell, Sicherheits-/Testfallmatrix und Freigabegates |
-| 0.0.9 | Priorisiertes Backlog und Freigabeumfang für v0.1.0 |
+| 0.0.9 | Priorisiertes Backlog, Verantwortlichkeiten, Aufwand und Releasefreigabe v0.1.0 |
 | 0.1.0 | Technisches Grundgerüst und Anmeldung |
 | 0.2.0 | Schulstammdaten und Rollen |
 | 0.3.0–0.6.0 | Stunden-, Raum-, Regel- und Vertretungsplanung mit Assistenz |
@@ -94,3 +94,13 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Testdatenstrategie schließt echte Schülerdaten in Entwicklung/CI aus.
 - OWASP ASVS 5.0.0 und NIST SSDF 1.1 sind mit Version/Quelle referenziert.
 - Tests sind als geplant und nicht durchgeführt markiert; keine Zertifizierung wird behauptet.
+
+
+### Abnahme v0.0.9
+
+- Backlog enthält Priorität, Zielversion, Akzeptanz, Abhängigkeiten, Verantwortung und Aufwandsspanne.
+- Aufwände sind grobe Planungswerte.
+- v0.1.0 beschränkt sich auf technische Basis, Datenbank/Migration, Anmeldung, initiale Adminrolle, CI und Restoretest.
+- Keine produktiven Schülerdaten oder schulischen Fachdaten sind v0.1.0-Scope.
+- Änderung, Entscheidung, Git-Commit und Releasefreigabe haben dokumentierte Abläufe.
+- Offene Datenschutz-/Betriebsfragen bleiben Gates vor Pilot/Produktion.

@@ -171,3 +171,16 @@
 | TEST-008 | Externe Sicherheitstests, Restore- und Vorfallablauf werden vor Produktivfreigabe im Zielbetrieb bewertet. | vor Pilot/Produktion |
 | TEST-009 | Sicherheitslogs enthalten nötige Ereignismetadaten, aber keine Passwörter, Tokens oder unnötigen pädagogischen Inhalte. | ab 0.0.8 |
 | TEST-010 | Nicht anwendbare Kontrollen und akzeptierte Restrisiken erhalten Begründung, Verantwortliche und Frist. | ab 0.0.8 |
+
+
+## J. Backlog, Release und Änderungssteuerung
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| REL-001 | Jede Arbeitseinheit hat ID, Priorität, Zielversion, Akzeptanzkriterien und Abhängigkeiten. | ab 0.0.9 |
+| REL-002 | Aufwand wird mit Einheit und Unsicherheit dokumentiert; frühe Schätzungen sind keine zugesagten Termine. | 0.0.9 |
+| REL-003 | Jeder Release benennt enthaltene und ausdrücklich ausgeschlossene Funktionen und Daten. | ab 0.0.9 |
+| REL-004 | Backlogänderungen dokumentieren Auswirkungen auf Anforderungen, Datenfluss, Bedrohungsmodell, Tests, Aufwand und Releasescope. | ab 0.0.9 |
+| REL-005 | Datenschutz-, Fach- und Betriebsfreigaben kommen von zuständigen Rollen und werden nicht durch technische Freigabe ersetzt. | alle Releases |
+| REL-006 | Release-Tags erfordern erfüllte Kriterien, Tests, Migrations-/Restorehinweise und dokumentierte Freigabe. | ab 0.1.0 |
+| REL-007 | Commits und Artefakte enthalten keine Secrets, realen Schülerdaten, Dumps oder vertraulichen Anhänge. | alle Releases |

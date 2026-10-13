@@ -1,6 +1,6 @@
 # OrdiSchool
 
-**Version:** 0.0.8 – Sicherheits- und Teststrategie  
+**Version:** 0.0.9 – Backlog und Releasefreigabe  
 **Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
 **Stand:** 13. Oktober 2026
 
@@ -8,10 +8,11 @@ OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretu
 
 ## Stand dieser Version
 
-v0.0.8 ergänzt ein Bedrohungsmodell, eine risikobasierte Sicherheits- und Teststrategie, Testfallmatrizen und Freigabegates. Die Tests sind geplant und wurden noch nicht gegen Produktivcode ausgeführt.
+v0.0.9 priorisiert die Umsetzung, weist Zuständigkeiten und grobe Aufwände aus und grenzt v0.1.0 als technisches Grundgerüst mit Anmeldung ab. Es werden keine echten Schülerdaten verarbeitet.
 
 ## Projektdateien
 
+- [BACKLOG_RELEASEFREIGABE.md](docs/BACKLOG_RELEASEFREIGABE.md) – priorisierte Arbeit, Aufwand, Zuständigkeiten, Releaseumfang und Änderungsverfahren
 - [SICHERHEITS_UND_TESTSTRATEGIE.md](docs/SICHERHEITS_UND_TESTSTRATEGIE.md) – Testebenen, Testfallmatrix und Release-/Pilotgates
 - [BEDROHUNGSMODELL.md](docs/BEDROHUNGSMODELL.md) – Schutzobjekte, Angreifer, Szenarien und Risikopriorisierung
 - [ARCHITEKTUR_HOSTINGENTSCHEIDUNG.md](docs/ARCHITEKTUR_HOSTINGENTSCHEIDUNG.md) – Architektur, Technologievergleich, Hosting, Datenschutzgates
@@ -34,7 +35,7 @@ v0.0.8 ergänzt ein Bedrohungsmodell, eine risikobasierte Sicherheits- und Tests
 - [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
 - [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
 - [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.8.txt`](docs/COMMIT_MESSAGE_v0.0.8.txt) – vorgeschlagene Git-Commit-Nachricht
+- [`docs/COMMIT_MESSAGE_v0.0.9.txt`](docs/COMMIT_MESSAGE_v0.0.9.txt) – vorgeschlagene Git-Commit-Nachricht
 
 ## Arbeitsregeln
 

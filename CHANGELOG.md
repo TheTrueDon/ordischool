@@ -1,5 +1,19 @@
 # Änderungsprotokoll
 
+## [0.0.9] – 2026-10-13
+
+### Hinzugefügt
+- Priorisiertes Backlog mit IDs, Zielversion, Akzeptanzkriterien, Abhängigkeiten, Verantwortlichkeiten und Aufwandsspannen.
+- Begrenzter Freigabeumfang für v0.1.0.
+- Getrennte Zuständigkeiten für Produkt, Umsetzung, Fachfreigabe, Datenschutz und Betrieb.
+- Verfahren für Backlogänderungen, Entscheidungen, Commits und Release-Tags.
+
+### Grenzen
+- Aufwände sind grobe Planungsschätzungen, keine Liefertermine.
+- v0.1.0 ist technische Basis, kein Schulfachmodul oder Pilot.
+- Keine echten Schülerdaten, Hosterwahl oder Datenschutzfreigabe.
+
+
 ## [0.0.8] – 2026-10-13
 
 ### Hinzugefügt
