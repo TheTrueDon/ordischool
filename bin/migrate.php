@@ -42,8 +42,33 @@ try {
         if ($sql === false || trim($sql) === '') {
             throw new RuntimeException('Migration ist leer oder nicht lesbar: ' . $name);
         }
+        if ($name === '003_school_scope_roles.sql') {
+            $columnCheck = $pdo->prepare(
+                'SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+                 WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table_name
+                   AND COLUMN_NAME = :column_name LIMIT 1'
+            );
+            $columnCheck->execute(['table_name' => $config->tablePrefix . 'users', 'column_name' => 'username']);
+            if ($columnCheck->fetchColumn() !== false) {
+                $sql = preg_replace(
+                    '/^[ \t]*-- ORDISCHOOL_OPTIONAL_USERNAME_ADD_BEGIN\\R.*?^[ \t]*-- ORDISCHOOL_OPTIONAL_USERNAME_ADD_END\\R?/ms',
+                    '',
+                    $sql,
+                    1,
+                    $removedBlockCount
+                );
+                if ($sql === null || $removedBlockCount !== 1) {
+                    throw new RuntimeException('Die vorhandene Benutzername-Spalte konnte nicht in die Migration übernommen werden.');
+                }
+            }
+        }
         // MySQL-DDL ist nicht transaktional. Bei Fehlern das Schema manuell prüfen.
-        $pdo->exec($sql);
+        $statements = preg_split('/;\s*(?:\r?\n|$)/', trim($sql)) ?: [];
+        foreach ($statements as $statementSql) {
+            if (trim($statementSql) !== '') {
+                $pdo->exec($statementSql);
+            }
+        }
         $statement = $pdo->prepare('INSERT INTO ' . $config->tablePrefix . 'schema_migrations (migration, applied_at) VALUES (:migration, UTC_TIMESTAMP())');
         $statement->execute(['migration' => $name]);
         fwrite(STDOUT, "Angewendet: {$name}\n");

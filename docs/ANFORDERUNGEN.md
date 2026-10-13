@@ -41,6 +41,9 @@
 | PLAN-014 | Harte Vorgaben, schulische Beschlüsse, lokal nachgewiesene Gebäude-/Raumrestriktionen und weiche Planungspräferenzen MÜSSEN getrennt behandelt und angezeigt werden. | 0.5.0 |
 | PLAN-015 | Raumkapazität und verbindliche Ausstattung MÜSSEN eine lokale Quelle, prüfende Stelle und Gültigkeit besitzen; ohne gültigen Nachweis darf die Planprüfung keine konfliktfreie Belegung behaupten. | 0.4.0–0.5.0 |
 | PLAN-016 | Jede Regeländerung MUSS erkennen lassen, welche Planversionen und Schuljahre betroffen sind; eine neue Regel darf veröffentlichte Pläne nicht stillschweigend umschreiben. | ab 0.5.0 |
+| PLAN-017 | Eine Schule MUSS mehrere gleichzeitig angebotene Schulformen/Bildungsgänge abbilden können; die Zuordnung ist je Klasse/Kurs, Jahrgang, Kohorte und Schuljahr eindeutig und zeitlich gültig. | 0.3.0 |
+| PLAN-018 | Lehrkräfte werden als Personen schulformübergreifend zu Planpositionen zugeordnet. Verfügbarkeits- und Doppelbelegungsprüfungen MÜSSEN alle ihre Einsätze in sämtlichen Schulformen der Schule gemeinsam berücksichtigen. | 0.3.0 |
+| PLAN-019 | Schulform-/Bildungsgangregeln MÜSSEN aus der konkreten Klasse/Kurs-Zuordnung und dem gültigen Kohorten-/Schuljahreskontext folgen; eine einzelne Schulart der Schule darf die Auswahl nicht bestimmen. | 0.5.0 |
 
 ## B. Sitzpläne und Klassenbuch
 
@@ -157,6 +160,8 @@
 | DATA-010 | Lösch-/Einschränkungsprozesse berücksichtigen Primärdaten, Anhänge, Exporte, Suchindizes und Sicherungen; Fristen je Klasse bestätigen. | ab 0.0.6 |
 | DATA-011 | Externe Kennungen sind von internen IDs getrennt; Personenmerkmale werden nicht in IDs kodiert. | ab 0.0.6 |
 | DATA-012 | Regeln und lokale Raumrestriktionen haben Herkunft, Gültigkeit, Prüfstatus und erforderliche Freigabe. | ab 0.0.6 |
+| DATA-013 | Eine Schule kann mehrere gültige Schulform-/Bildungsgangangebote führen; Angebote und Klassen-/Kurszuordnungen sind zeitlich gültig und historisch nachvollziehbar. | 0.3.0 |
+| DATA-014 | Eine Lehrkraft bleibt eine schulische Person mit gemeinsam prüfbarer Verfügbarkeit; schulformbezogene Einsätze sind Zuordnungen, keine getrennten Lehrkraft-Datensätze. | 0.3.0 |
 
 
 ## H. Architektur und Hosting
@@ -201,3 +206,11 @@
 | REL-005 | Datenschutz-, Fach- und Betriebsfreigaben kommen von zuständigen Rollen und werden nicht durch technische Freigabe ersetzt. | alle Releases |
 | REL-006 | Release-Tags erfordern erfüllte Kriterien, Tests, Migrations-/Restorehinweise und dokumentierte Freigabe. | ab 0.1.0 |
 | REL-007 | Commits und Artefakte enthalten keine Secrets, realen Schülerdaten, Dumps oder vertraulichen Anhänge. | alle Releases |
+
+
+## Raumplanung v0.4.0
+
+- **PLAN-020 Räume und Kapazitäten:** Schuladministration und berechtigte Planer verwalten schulbezogene Räume mit Kennung, Name, frei definierbarem Raumtyp, optionaler Kapazität und Aktivstatus. Klassen/Kurse können eine optionale erwartete Gruppengröße erhalten.
+- **PLAN-021 Fachraumpräferenz als weiches Ziel:** Ein Fach kann einen bevorzugten Raumtyp führen (z. B. Chemie → chemie, Physik/Astronomie → physik, Biologie → bio, Kunst → kunst, Musik → musik, Werken → werken). Eine nicht erfüllte oder mangels Raum nicht erfüllbare Präferenz erzeugt einen sichtbaren Hinweis. Sie verhindert weder das Speichern noch die Freigabe. Raumtypen bleiben erweiterbar und werden nicht global fest codiert.
+- **PLAN-022 Harte Belegungskontrollen:** Eine Unterrichtsstunde kann einem Raum zugewiesen werden. Gleichzeitige Raumbelegung und eine bekannte Gruppengröße oberhalb der bekannten Raumkapazität werden verhindert. Unbekannte Größen/Kapazitäten werden als nicht prüfbar kenntlich gemacht, nicht geschätzt.
+- **PLAN-023 Planprüfung:** Beim Freigeben werden Raumaktivität, Kapazität, Zeit-, Klassen- und Lehrkraftkonflikte erneut geprüft. Hinweise zu fehlenden Räumen oder abweichenden Fachraumpräferenzen bleiben nicht blockierend.

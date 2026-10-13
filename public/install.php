@@ -101,8 +101,33 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             if ($sql === false || trim($sql) === '') {
                 throw new RuntimeException('Eine Installationsmigration konnte nicht gelesen werden.');
             }
+            if ($name === '003_school_scope_roles.sql') {
+                $columnCheck = $pdo->prepare(
+                    'SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS
+                     WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = :table_name
+                       AND COLUMN_NAME = :column_name LIMIT 1'
+                );
+                $columnCheck->execute(['table_name' => $prefix . 'users', 'column_name' => 'username']);
+                if ($columnCheck->fetchColumn() !== false) {
+                    $sql = preg_replace(
+                        '/^[ \t]*-- ORDISCHOOL_OPTIONAL_USERNAME_ADD_BEGIN\\R.*?^[ \t]*-- ORDISCHOOL_OPTIONAL_USERNAME_ADD_END\\R?/ms',
+                        '',
+                        $sql,
+                        1,
+                        $removedBlockCount
+                    );
+                    if ($sql === null || $removedBlockCount !== 1) {
+                        throw new RuntimeException('Die vorhandene Benutzername-Spalte konnte nicht in die Migration übernommen werden.');
+                    }
+                }
+            }
             $sql = str_replace('{{prefix}}', $prefix, $sql);
-            $pdo->exec($sql);
+            $statements = preg_split('/;\s*(?:\r?\n|$)/', trim($sql)) ?: [];
+            foreach ($statements as $statementSql) {
+                if (trim($statementSql) !== '') {
+                    $pdo->exec($statementSql);
+                }
+            }
             $stmt = $pdo->prepare("INSERT INTO {$prefix}schema_migrations (migration, applied_at) VALUES (:migration, UTC_TIMESTAMP())");
             $stmt->execute(['migration' => $name]);
         }
@@ -123,8 +148,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             throw new RuntimeException('Die Konfigurationsdatei konnte nicht sicher gespeichert werden. Prüfe Schreibrechte des Projektordners.');
         }
         $configCreated = true;
-        $stmt = $pdo->prepare("INSERT INTO {$prefix}users (email, password_hash, role, is_active, created_at) VALUES (:email, :hash, 'system_admin', 1, UTC_TIMESTAMP())");
-        $stmt->execute(['email' => $internalEmail, 'hash' => PasswordHasher::hash($adminPassword)]);
+        $stmt = $pdo->prepare("INSERT INTO {$prefix}users (username, email, password_hash, role, is_active, created_at) VALUES (:username, :email, :hash, 'system_admin', 1, UTC_TIMESTAMP())");
+        $stmt->execute(['username' => strtolower($values['admin_username']), 'email' => $internalEmail, 'hash' => PasswordHasher::hash($adminPassword)]);
         unset($dbPassword, $adminPassword, $confirmPassword);
         session_regenerate_id(true);
         $done = true;

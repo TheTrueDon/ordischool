@@ -1,5 +1,59 @@
 # Änderungsprotokoll
 
+## [0.4.1] – 2026-10-13
+- Kontoverwaltung zeigt nach erfolgreicher Kontoanlage eine sichtbare Bestätigung.
+- Formularhinweise erläutern Benutzername- und Passwortregeln und weisen auf die Mitgliederliste hin.
+- Keine Datenbankänderung; kein SQL-Update erforderlich.
+
+
+## [0.4.0] – 2026-10-13
+
+### Hinzugefügt
+- Schulbezogene Raumverwaltung mit frei definierbaren Raumtypen und optionaler Kapazität.
+- Optional gepflegte Gruppengrößen für neue und bestehende Klassen/Kurse.
+- Fachraumpräferenzen je Fach mit nicht blockierenden Hinweisen bei Abweichung oder fehlendem Fachraum.
+- Raumzuweisung für Unterricht, inklusive harter Doppelbelegungs- und Kapazitätsprüfung sowie erneuter Prüfung bei Freigabe.
+- Wiederholbares SQL-Update von v0.3.0 auf v0.4.0.
+
+### Grenzen
+- Regelprofile für Thüringen und automatische Änderungsvorschläge bleiben Folgeschritte. Nur synthetische Testdaten; keine DSGVO- oder Produktivfreigabe.
+- PHP-/MySQL-Laufzeittests müssen in der Projekt-CI ausgeführt werden.
+
+
+## [0.3.0] – 2026-10-13
+
+### Hinzugefügt
+- Manuelle Stundenplanung mit zeitlich gültigen Schulform-/Bildungsgangangeboten, Klassen/Kursen, Fächern und Schulzeitrastern.
+- Mehrfachauswahl der Schulformen bei der Schulanlage; bestehende Schulen werden per Migration aus ihrem bisherigen Einzelfeld übernommen.
+- Planentwürfe und versionierte Freigaben einschließlich Kopie einer veröffentlichten Fassung in einen neuen Entwurf.
+- Einzel- und Doppelstunden sowie Konfliktprüfung für Klasse und Lehrkraft über alle Schulformen der Schule hinweg.
+- phpMyAdmin-Update v0.2.0 auf v0.3.0 mit Tabellenpräfix `ordi_`.
+
+### Grenzen
+- Raumplanung, Thüringer Regelengine, automatische Vorschläge und Vertretungsplanung folgen später.
+- Nur synthetische Testdaten; keine DSGVO- oder Produktivfreigabe.
+- PHP-/MySQL-Laufzeittests waren in der Erstellungsumgebung nicht ausführbar.
+
+## [0.2.0] – 2026-10-13
+
+### Hinzugefügt
+- Schulstammdaten und Schuljahre mit Statusverwaltung.
+- Schulmitgliedschaften und schulweite Rollen für Schuladministration, Planung, Lehrkräfte, Klassenleitung, Fachleitung, Sekretariat und Schüler/innen.
+- Geschützter Verwaltungsbereich mit serverseitiger Schul- und Rollenprüfung.
+- Kontoanlage mit Startpasswort, Mitgliedschaftssperre/-reaktivierung und Audit-Einträgen.
+- Migration 003 sowie phpMyAdmin-Update von v0.1.2 mit Standardpräfix ordi_.
+- Migration entfernt den alten Rollen-Constraint nur dynamisch, wenn die Serverversion ihn tatsächlich gespeichert hat; Wiederholung nach einem Teilabbruch ist abgesichert.
+- Installer und CLI-Migration prüfen die bestehende username-Spalte zusätzlich vor Ausführung der Migration und überspringen die Spaltenergänzung bei einem frühen Teilabbruch.
+
+### Geändert
+- Benutzername wird als eigenes eindeutiges Loginfeld geführt; Anmeldung über Benutzername oder E-Mail bleibt möglich.
+- Webinstaller legt die Benutzernamen-Spalte bei Neuinstallationen mit an und erstellt das Systemkonto danach.
+
+### Grenzen
+- Rollen gelten schulweit; Klassen-/Kurs-/Fachscopes sind noch nicht umgesetzt.
+- Nur synthetische Testdaten. Kein Produktiv- oder DSGVO-Freigabestatus.
+- PHP-/MySQL-Laufzeittests in der Arbeitsumgebung nicht ausgeführt; CI muss vor Release-Tag bestehen.
+
 ## [0.1.2] – 2026-10-13
 
 ### Geändert
@@ -178,3 +232,9 @@
 - Ausführbarer Anwendungscode.
 - Verbindlich ausgewählte Laufzeit, Datenbank, Hostingumgebung oder Benutzerrollen.
 - Freigegebene Thüringer Regelprofile, Notenalgorithmen, Radarspinnen-Dimensionen oder Zeugnisvorlagen.
+
+## 0.4.0
+- Räume, frei definierbare Raumtypen und optionale Kapazitäten ergänzt.
+- Raumzuweisung, Raumkollision und Kapazitätsprüfung für die Stundenplanung ergänzt.
+- Fachraumpräferenzen je Fach werden als nicht blockierende Hinweise behandelt.
+- Schulformübergreifende Stundenplanung aus v0.3.0 bleibt erhalten.

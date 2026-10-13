@@ -89,6 +89,7 @@ Status in v0.0.8: **geplant**, nicht ausgeführt. Ergebnisse werden ab Implement
 | PLAN-T05 | Vertretungsvorschlag beruht auf inzwischen freigegebenem, verändertem Plan | veralteter Entwurf erkannt; erneute Prüfung vor Freigabe | PLAN-009, FLOW-001 |
 | PLAN-T06 | Assistenz erstellt Planvorschlag | Ausgang, Ziel, Konflikte und Folgen sichtbar; keine automatische Veröffentlichung | PLAN-009, PLAN-010 |
 | PLAN-T07 | Ersatzlehrkraft/Raum wird für Stunde geändert | ursprünglicher Plan bleibt erhalten; Änderung referenziert konkrete Stunde | DATA-003, PLAN-016 |
+| PLAN-T08 | Eine Lehrkraft hat zeitgleiche Planpositionen in zwei Schulformen derselben Schule | schulformübergreifender Konflikt wird gefunden; die Prüfung darf nicht je Schulform isoliert sein | PLAN-018, DATA-014 |
 | KB-T01 | Abgleich erkennt fehlenden Eintrag oder Stundenabweichung | Hinweis an berechtigte Rolle; keine automatische Änderung/Löschung | KB-004, KB-006, FLOW-002 |
 | KB-T02 | Verspätet ohne Minuten oder widersprüchliche Anwesenheitswerte | Eingabe wird validiert und nachvollziehbar korrigiert | KB-002, DATA-003 |
 | KB-T03 | Unberechtigte Person ruft Klassenbuchnotiz ab | verweigert; Inhalt erscheint nicht in Suche, Benachrichtigung oder Logs | KB-002, IAM-003, PRIV-012 |
@@ -206,3 +207,12 @@ Je Lauf werden Test-ID, Requirement-ID(s), Build/Commit, Umgebung, Prüfer/Autom
 - Penetrationstestverfahren, Prüfer und konkreter Umfang.
 - Incident-Kontakte, Meldeweg, Supportbereitschaft, RPO/RTO und Verfügbarkeit.
 - Priorisierung im Backlog; Testautomatisierung ab v0.1.0.
+
+
+### Raumplanungstests v0.4.0
+
+- Raumüberschneidung zur gleichen Zeit wird blockiert, nicht überlappende Zeiten bleiben möglich.
+- Bekannte Gruppengröße größer als Raumkapazität wird beim Eintragen und bei Freigabe erneut erkannt.
+- Fehlende Raum-/Gruppenkapazitätsdaten lösen keinen falschen Kapazitätsfehler aus.
+- Ein Fachraumwunsch, ein fehlender Fachraum oder eine abweichende Raumart erzeugt nur einen Hinweis; Speichern und Freigeben funktionieren weiterhin.
+- Raumzuordnungen werden in einer aus einer freigegebenen Version kopierten Entwurfsfassung erhalten.

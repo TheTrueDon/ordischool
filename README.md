@@ -1,71 +1,64 @@
 # OrdiSchool
 
-**Ordinatio Scholae – technische Basis v0.1.2**
+**Ordinatio Scholae – Manuelle Stundenplanung v0.4.1**
 
-v0.1.2 enthält einen klassischen PHP-/MySQL-Webinstaller für einen eigenen Webserver. Er richtet die Datenbanktabellen, das Präfix und das erste Administratorkonto ein. Fachmodule und schulische Daten sind noch nicht enthalten; die Fassung ist ausschließlich mit synthetischen Testdaten zu verwenden.
+v0.4.1 enthält einen Kontoverwaltungs-Fix und baut auf der gemeinsamen, schulformübergreifenden Stundenplanung aus v0.3.0 auf. Räume, Kapazitäten und Fachraumwünsche lassen sich ergänzen. Eine Schule kann mehrere Schulformen oder Bildungsgänge anbieten. Klassen und Kurse werden ihrem Angebot und Schuljahr zugeordnet. Stundenpläne lassen sich als Entwurf pflegen, auf Zeitkonflikte prüfen und manuell freigeben.
 
-## Live-Test auf eigenem Webserver
+## Update einer vorhandenen v0.3.0- oder v0.4.0-Installation
 
-Voraussetzungen: PHP 8.2 oder neuer mit `pdo_mysql`, MySQL 8.x und ein Webserver mit `public` als Dokumentenstamm (Document Root). Der PHP-Prozess braucht während der Ersteinrichtung Schreibrechte im Projektordner, um `config.local.php` zu erstellen.
+1. Sichere zuerst die vollständige Datenbank und die Anwendungsdateien. MySQL-DDL ist nicht transaktional.
+2. Für v0.3.0: Wähle in phpMyAdmin die richtige Datenbank und führe `sql/update_v0.3.0_to_v0.4.0_ordi.sql` aus. Für v0.4.0 auf v0.4.1 ist kein SQL-Update nötig. Bei einem anderen Tabellenpräfix musst du im v0.3.0-Update alle Vorkommen von `ordi_` durch dein Präfix ersetzen; es ergänzt Raumverwaltung, Kapazitäten und Fachraumpräferenzen.
+3. Prüfe nach einem Update von v0.3.0, dass `ordi_schema_migrations` den Eintrag `005_room_planning.sql` enthält.
+4. Ersetze anschließend die Programmdateien durch diese Version. Behalte `config.local.php` und andere installationsspezifische Dateien bei.
+5. Melde dich an. Bei v0.4.0-Installationen bleibt das Datenbankschema unverändert.
 
-1. Projektordner auf den Webserver kopieren. Die Domain oder Subdomain so konfigurieren, dass `OrdiSchool/public` der öffentliche Dokumentenstamm ist. `app`, `migrations`, `bin`, `docs` und `config.local.php` müssen außerhalb des öffentlichen Webpfads liegen.
-2. Eine leere Datenbank und einen Datenbankbenutzer mit Rechten zum Anlegen und Ändern von Tabellen bereitstellen.
-3. `https://DEINE-DOMAIN/install.php` bei vorhandenem HTTPS oder `http://DEINE-DOMAIN/install.php` für den ausdrücklich bestätigten Testbetrieb aufrufen.
-4. DB-Host, Port, DB-Name, DB-Benutzer, DB-Passwort und Tabellenpräfix eingeben. Das Präfix ist standardmäßig `ordi_`. Danach Admin-Benutzername und ein Passwort mit mindestens 14 Zeichen festlegen.
-5. Nach erfolgreicher Installation mit dem selbst festgelegten Benutzernamen und Passwort anmelden. `config.local.php` liegt außerhalb von `public`, enthält jedoch notwendigerweise DB-Zugangsdaten. Sie darf nicht öffentlich erreichbar, in Git committet oder weitergegeben werden.
+Das Update ergänzt die Raumstammdaten und verknüpft optionale Raumzuweisungen mit Stundenplaneinträgen. Bereits vorhandene Fächer erhalten zunächst keine Fachraumpräferenz; diese kann in der Planungsverwaltung gepflegt werden.
 
-Der Installer ist nach der Einrichtung durch die vorhandene Konfigurationsdatei gesperrt. HTTP setzt die Installation in einen unsicheren Testmodus; Zugangsdaten können mitgelesen werden. Verwende dort nur eine separate Testdatenbank und synthetische Daten. Der Login funktioniert über HTTP, aber erst nach HTTPS darf die Instanz produktiv genutzt werden. Die Installation speichert keine eingegebenen Passwörter in Logs. Für den ersten Live-Test nur synthetische Daten nutzen; v0.1.2 enthält noch keine Funktionen für echte Schul- oder Schülerdaten.
+Bei einem Fehler nach begonnenem SQL-Update nicht blind erneut starten. Sichere den Zustand und prüfe Schema sowie Migrationsmarker. Das Skript ist für Wiederholung nach Teilfortschritt ausgelegt, die Wiederherstellung muss aber anhand des tatsächlichen Zustands erfolgen.
 
-## Updates
+## Neuinstallation
 
-Bei jeder neuen Version werden die Programmdateien im Projektordner ersetzt. Vorher Datenbank und Dateien sichern. Falls sich das Datenbankschema ändert, enthält das Versionspaket ein passendes SQL-Update mit dem Tabellenpräfix. Dieses vor oder nach dem Dateiaustausch genau nach der Versionsanleitung über phpMyAdmin ausführen. Ein Update setzt weder die Datenbank zurück noch ersetzt es `config.local.php`.
+1. Projektordner auf den Webserver kopieren und `public` als Dokumentenstamm konfigurieren. `app`, `migrations`, `bin`, `docs`, `sql` und `config.local.php` müssen außerhalb des öffentlichen Webpfads liegen.
+2. Eine leere MySQL-Datenbank und einen Datenbankbenutzer mit Tabellenrechten bereitstellen.
+3. `install.php` öffnen und DB-Host, DB-Name, DB-Benutzer, Passwort, Tabellenpräfix (Standard: `ordi_`) sowie Systemkonto angeben.
+4. Nach der Installation mit dem angelegten Systemkonto anmelden. Das Systemkonto hat keine pädagogischen Datenrechte.
 
-**v0.1.2 benötigt für bestehende v0.1.0-Datenbanken kein SQL-Update:** Es kommen keine neuen Datenbankspalten oder Tabellen hinzu. Das Tabellenpräfix wird bei einer Neuinstallation für die bestehenden Tabellen angewendet. Für vorhandene lokale Konfigurationen ohne `ORDI_DB_PREFIX` gilt weiterhin das leere Präfix.
+Der PHP-Prozess braucht beim Installieren Schreibrechte auf den Projektordner, um `config.local.php` anzulegen. Diese Datei enthält Zugangsdaten und darf weder öffentlich erreichbar noch in Git eingecheckt werden. HTTP ist nur für einen ausdrücklich bestätigten Test mit separater Datenbank und ausschließlich synthetischen Daten vorgesehen. Für produktiven Betrieb ist HTTPS erforderlich.
 
-Vor dem produktiven Einsatz über HTTPS die Konfiguration auf `environment = production` und `secure_cookies = true` umstellen. Die Schritte stehen in [HTTPS später aktivieren](docs/HTTPS_UMSTELLUNG_v0.1.2.md).
+## Stundenplanung ausprobieren
 
-## Lokaler Schnelltest
+1. Öffne **Schulverwaltung** und lege eine Schule an. Wähle dort alle angebotenen Schulformen/Bildungsgänge aus; Mehrfachauswahl ist möglich.
+2. Lege mindestens ein Schuljahr an.
+3. Öffne **Stundenplanung** und ergänze bei Bedarf weitere Schulformangebote, Klassen/Kurse, Fächer sowie das Stundenraster.
+4. Lege einen Stundenplanentwurf an und trage Unterrichtsstunden ein. Lehrkräfte müssen als aktive Konten mit der Rolle **Lehrkraft** an der Schule geführt sein.
+5. Die Anwendung verhindert zeitgleiche Einsätze derselben Lehrkraft über alle Schulformen hinweg sowie Doppelbelegungen einer Klasse. Für Doppelstunden muss auch die Folge-Stunde im Zeitraster existieren.
+6. Die Planungsrolle pflegt den Entwurf; eine aktive Schuladministration muss ihn bewusst freigeben. Änderungen erfolgen über eine neue Entwurfsfassung, die aus dem freigegebenen Stand kopiert werden kann.
 
-Für Entwicklung bleibt `bash test.sh` mit Docker Compose verfügbar. Das Skript startet eine temporäre Datenbank und Webanwendung auf `http://127.0.0.1:8080`; Zugangsdaten werden im Terminal angezeigt. Mit Strg+C werden Container und Datenbankvolume entfernt.
+Eine freigegebene Fassung kann nicht direkt verändert werden. Die Freigabe ersetzt die vorherige Veröffentlichung für dasselbe Schuljahr; der vorherige Plan bleibt als ersetzte Fassung erhalten.
+
+## Umfang und Grenzen v0.4.1
+
+- Mehrere Schulform-/Bildungsgangangebote je Schule; Klassen/Kurse hängen an einem Angebot und Schuljahr.
+- Schulweite Fächer, Stundenraster und Lehrkraftkonten als Planungsgrundlagen.
+- Planentwürfe, versionierte Fassungen, Einzel- und Doppelstunden, ein gemeinsames schulweites Zeitraster, Konfliktprüfung und manuelle Freigabe.
+- Eine Lehrkraft wird über Schulformen hinweg über dasselbe Benutzerkonto zugeordnet.
+- Räume haben frei definierbare Typen und optionale Kapazitäten. Bekannte Kapazitätsüberschreitungen und Doppelbelegungen blockieren; Fachraumpräferenzen erzeugen nur Hinweise.
+- Thüringer Regelprofile und ihre geprüfte Anwendung kommen in v0.5.0.
+- Vertretungsplanung und Assistenzvorschläge kommen in v0.6.0.
+- Sitzpläne, Klassenbuch, Noten und weitere Module sind noch nicht enthalten.
+
+## Datenschutz und Einsatzgrenzen
+
+Diese Entwicklungsfassung ist keine pauschale DSGVO-Konformitäts- oder Produktivfreigabe. Verwende ausschließlich synthetische Daten. Stundenplan-Zuordnungen können personenbezogene Beschäftigtendaten enthalten. Für einen realen Betrieb müssen die zuständigen Stellen insbesondere Verantwortlichkeit, Zweck und Rechtsgrundlage, Berechtigungen, Hosting, Auftragsverarbeitung, Datenlöschung, Backups und ein mögliches DSFA-Erfordernis prüfen und freigeben. Die Schulleitung behält die fachliche Freigabehoheit; das System veröffentlicht nicht automatisch.
 
 ## Tests
 
-Die CI prüft PHP-Syntax, wendet Migrationen auf eine leere MySQL-Testdatenbank zweimal an, testet Passwort-, Login-, Session- und CSRF-Grundverhalten, prüft die Weiterleitung unangemeldeter Zugriffe und führt einen synthetischen Datenbank-Backup/Restore-Smoke-Test aus.
+Die CI führt PHP-Syntaxprüfungen, Migrationen auf MySQL 8.4, Datenbanktests, Authentifizierungs-/Berechtigungsprüfungen und Web-/Restore-Smoke-Tests aus. Neue Tests decken Mehrfachangebote je Schule, schulformübergreifende Lehrkraftkonflikte, Raumkollisionen, Kapazitätsgrenzen, weiche Fachraumpräferenzen und versionierte Raumzuweisungen ab. PHP und Docker waren in der Erstellungsumgebung nicht verfügbar; diese Laufzeittests konnten hier nicht ausgeführt werden. Vor einem Release-Tag muss die CI erfolgreich durchlaufen.
 
-Für lokale Tests muss eine **separate, wegwerfbare Testdatenbank** verwendet werden. `ORDI_ENV=test` verhindert das Laden der lokalen `.env`; Werte müssen explizit gesetzt werden:
+## Release-Dateien
 
-```sh
-export ORDI_ENV=test
-export ORDI_APP_KEY="$(php bin/generate-key.php)"
-export ORDI_SESSION_SECURE_COOKIE=false
-export ORDI_DB_HOST=127.0.0.1 ORDI_DB_PORT=3306
-export ORDI_DB_NAME=ordischool_test ORDI_DB_USER=ordischool_test
-export ORDI_DB_PASSWORD='nur-fuer-diese-testdatenbank'
-php bin/migrate.php
-php bin/migrate.php
-php tests/run.php
-bash bin/restore-smoke.sh
-```
-
-Der Restore-Smoke-Test verlangt `ORDI_ENV=test` und einen Datenbanknamen mit `_test` am Ende. Er legt eine synthetische Prüftabelle an, sichert sie, löscht sie, stellt sie wieder her und entfernt sie danach. Er ist kein Produktions-Backupverfahren.
-
-## Datenschutz- und Sicherheitsgrenzen v0.1.2
-
-- Gespeichert werden nur technische Administrations-E-Mail, Passwort-Hash, Rolle, Aktivstatus und technische Zeitstempel.
-- Login-Begrenzungen speichern HMAC-pseudonymisierte IP-/E-Mail-Buckets. Roh-IP und Klartext-E-Mail werden hierfür nicht in der Throttle-Tabelle gespeichert. Abgelaufene Einträge werden bei Login-Aufrufen gelöscht; ohne weiteren Login-Aufruf bleiben sie bis zur nächsten Bereinigung erhalten. 24 Stunden ist nur der technische Löschschwellenwert, keine rechtlich geprüfte Aufbewahrungsfrist.
-- Session-Cookies sind `HttpOnly`, `SameSite=Lax` und im Produktionsprofil `Secure`; nach erfolgreicher Anmeldung wird die Session-ID erneuert. Formulare verwenden CSRF-Tokens.
-- Kein Telemetrie-, Analyse-, CDN-, E-Mail- oder sonstiger externer Dienst ist eingebunden.
-- Es gibt keine Datenschutz-Zertifizierung und keine pauschale DSGVO-Konformitätszusage. Verantwortlichkeit, Rechtsgrundlage, Information, Aufbewahrung, Hosting, Verträge und eine mögliche DSFA sind vor einem konkreten Schulbetrieb durch die zuständigen Stellen zu prüfen.
-- Ausschließlich synthetische Testdaten verwenden. Keine echten Schülerinnen-/Schüler-, Beschäftigten- oder Schuldaten in Entwicklung/CI einbringen.
-
-## Dokumentation
-
-- [Umsetzungsstand und Datenschutzinventar v0.1.2](docs/IMPLEMENTIERUNGSSTAND_v0.1.2.md)
-- [Testprotokoll v0.1.0](docs/TESTPROTOKOLL_v0.1.0.md)
-- [Update-, Backup- und Restore-Ablauf](docs/UPDATE_UND_RESTORE_v0.1.2.md)
-- [Projektanforderungen](docs/ANFORDERUNGEN.md)
 - [Versionsplan](docs/VERSIONSPLAN.md)
+- [Implementierungsstand v0.4.1](docs/IMPLEMENTIERUNGSSTAND_v0.4.0.md)
+- [SQL-Update von v0.3.0 für `ordi_`](sql/update_v0.3.0_to_v0.4.0_ordi.sql) (nur erforderlich, wenn noch v0.3.0 installiert ist)
+- [Commit-Vorschlag](docs/COMMIT_MESSAGE_v0.4.1.txt)
 - [Änderungsprotokoll](CHANGELOG.md)
-- [Commit-Vorschlag](docs/COMMIT_MESSAGE_v0.1.2.txt)
-
-Die früheren Planungs-, Rollen-, Thüringen-, Datenmodell-, Datenschutz- und Sicherheitsdokumente bleiben Teil des Projektstands; sie sind Entwurfs-/Prüfgrundlagen und keine fachliche oder rechtliche Freigabe.

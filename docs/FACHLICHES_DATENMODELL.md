@@ -12,7 +12,7 @@ Stammdaten zu Schule, Schuljahr, Personen, Klassen, Lerngruppen, Fach, Lehrkraft
 
 ## Modellierungsregeln
 
-1. Schulbezogene Daten gehören zu einer Schule (school_id), direkt oder über eine eindeutige Elternbeziehung. Mehrschulbetrieb bleibt offen. Abfragen und Rechteprüfungen berücksichtigen den Scope.
+1. Schulbezogene Daten gehören zu einer Schule (school_id), direkt oder über eine eindeutige Elternbeziehung. Mehrschulbetrieb bleibt offen. Eine einzelne Schule darf mehrere Schulformen und Bildungsgänge anbieten; Zuordnungen sind zeitlich gültig. Abfragen und Rechteprüfungen berücksichtigen den Scope.
 2. Person und Benutzerkonto sind getrennte Objekte. Authentifizierung, Passwörter und Sitzungen gehören in ein späteres IAM-Modell.
 3. Mitgliedschaften, Zuweisungen und Rollen erhalten Beginn, optionales Ende und Status. Historische Pläne werden nicht durch heutige Zuordnungen umgedeutet.
 4. Wiederkehrende Planposition, konkrete Unterrichtsstunde, Vertretungsänderung und Klassenbuchnachweis sind unterschiedliche, verknüpfte Objekte.
@@ -38,13 +38,23 @@ Stammdaten zu Schule, Schuljahr, Personen, Klassen, Lerngruppen, Fach, Lehrkraft
 
 Diagramme zeigen fachliche Beziehungen, keine Tabellenstruktur. M:N-Zuordnungen werden durch eigene Objekte mit Gültigkeit und Status aufgelöst.
 
+## Mehrere Schulformen je Schule (Planungsvorgabe ab v0.3.0)
+
+Das v0.2.0-Schema enthält in `schools.school_type` noch genau eine Schulform. Das reicht für Schulen mit mehreren Schulformen unter einem organisatorischen Dach nicht aus. Ab v0.3.0 muss die fachliche Zuordnung daher als eine Schule mit mehreren zeitlich gültigen Angeboten modelliert werden (konzeptionell etwa `school_offerings` statt einer maßgeblichen Einzelauswahl in `schools`). Klassen und Kurse verweisen im jeweiligen Schuljahr auf ihr zutreffendes Schulform-/Bildungsgangprofil.
+
+Die v0.3.0-Überleitung übernimmt den bisherigen `school_type` jeder bestehenden Schule als anfängliches Angebot. Das Update-Skript liegt unter `sql/update_v0.2.0_to_v0.3.0_ordi.sql`; es erstellt die Angebots- und Planungsgrundlagen und protokolliert Migration 004. Das Skript enthält Sicherungshinweise und kann nach Teilfortschritt wiederholt werden; MySQL-DDL bleibt nicht-transaktional und der konkrete Zustand ist im Fehlerfall zu prüfen. Die installierte v0.2.0-Datenbank wird durch diese Dokumentation nicht geändert.
+
+Lehrkräfte werden als Personen nicht pro Schulform dupliziert. Zuordnungen zu Klassen, Kursen und Planpositionen können Schulformgrenzen überschreiten. Jede Belegungsprüfung muss zur selben Person sämtliche Einsätze derselben Schule im relevanten Zeitraum gemeinsam prüfen. Etwaige Wegezeiten zwischen getrennten Gebäuden bleiben bis zur Entscheidung D-056 offen.
+
 ### Organisation und Planung
 
 ~~~mermaid
 erDiagram
     SCHULE ||--o{ SCHULJAHR : fuehrt
     SCHULE ||--o{ PERSON : verwaltet
+    SCHULE ||--o{ SCHULFORMANGEBOT : bietet
     SCHULJAHR ||--o{ KLASSE : ordnet_ein
+    SCHULFORMANGEBOT ||--o{ KLASSE : ordnet_ein
     KLASSE ||--o{ LERNGRUPPE : unterteilt
     PERSON ||--o{ MITGLIEDSCHAFT : erhaelt
     LERNGRUPPE ||--o{ MITGLIEDSCHAFT : umfasst
@@ -53,6 +63,7 @@ erDiagram
     LERNGRUPPE ||--o{ UNTERRICHTSZUWEISUNG : wird_unterrichtet
     FACH ||--o{ UNTERRICHTSZUWEISUNG : betrifft
     RAUM ||--o{ UNTERRICHTSZUWEISUNG : beherbergt
+    PERSON ||--o{ UNTERRICHTSZUWEISUNG : unterrichtet
 ~~~
 
 Eine Klasse kann Kurse und Teilungsgruppen enthalten. Mitgliedschaften ordnen Lernende zeitlich zu. Unterrichtszuweisungen verbinden Gruppe, Fach, Lehrkraft, Zeit und Raum. Einzeltermine sind datierte Ereignisse und überschreiben nicht den Wochenplan.
@@ -110,18 +121,18 @@ Legende: **M** = fachlich erforderlich, **B** = bedingt, **O** = noch offen. Int
 
 | Objekt | Zweck/Beziehungen | Erforderlich (M) | Bedingt/offen (B/O) | Datenschutz-/Lifecycle-Hinweis |
 |---|---|---|---|---|
-| Schule | Organisatorischer Anker | Bezeichnung, Status | Trägerkennung, Mandantentrennung (O) | Mehrschulbetrieb und Verantwortlichkeit offen |
+| Schule | Organisatorischer Anker; kann mehrere Schulformen/Bildungsgänge anbieten | Bezeichnung, Status | organisatorische Standorte (O) | Schulform ist kein einzelner Typ der Schule; Mehrschulbetrieb und Verantwortlichkeit offen |
 | Schuljahr | Rahmen für Klassen, Regeln, Pläne | Bezeichnung, Beginn, Ende, Status | Ferien-/Halbjahresperioden (B) | Keine Gleichsetzung mit gesetzlicher Speicherfrist |
 | Zeitraum | Halbjahr, Trimester, Abschnitt | Name, Beginn, Ende, Typ | Schulformspezifische Typen (O) | Fachperiode ist keine Rechtsfrist |
-| Schulform-/Bildungsgangprofil | Regelkontext | Profilkennung, Bezeichnung, Gültigkeit | Kohorte/Jahrgang/Übergang (B) | Verbindliche Regeln nur mit Quelle, Version, Prüfstatus, Freigabe |
+| Schulform-/Bildungsgangprofil | Regelkontext und Angebot einer Schule | Profilkennung, Bezeichnung, Gültigkeit | Kohorte/Jahrgang/Übergang (B) | Schule zu Profil über zeitlich gültige Angebotszuordnung; verbindliche Regeln nur mit Quelle, Version, Prüfstatus, Freigabe |
 | Person | Zentrale schulische Person | Personenart, Status | Name, schulische Kennung, Kontakte (B/O) | Identitätsdaten minimieren; Schüler-/Beschäftigtendaten getrennt berechtigen |
 | Konto-Verknüpfung | Person und IAM-Konto verbinden | Personbezug, Konto-Referenz, Gültigkeit, Status | Login-/IdP-Kennung (O) | Keine Passwörter oder Tokens im Fachdatenmodell |
 | Rollenbindung | Rolle mit Scope und Zeitraum | Rolle, Scope, Gültigkeit, Status | Begründung/Vertretung (B) | Rollentitel allein gibt keinen globalen Zugriff |
-| Klasse | Klassenverband im Schuljahr | Schuljahr, Bezeichnung, Jahrgang, Gültigkeit | Schulformprofil, Klassenleitung (B) | Wechsel historisch über Zeiträume darstellen |
+| Klasse | Klassenverband im Schuljahr | Schuljahr, Bezeichnung, Jahrgang, Gültigkeit | eindeutiges Schulform-/Bildungsgangprofil, Klassenleitung (B) | Profilzuordnung je Schuljahr/Kohorte eindeutig und historisch nachvollziehbar führen |
 | Lerngruppe/Kurs | Unterrichtsgruppe inkl. Teilung | Schuljahr, Bezeichnung, Typ, Gültigkeit | Herkunftsklasse, Kapazität (B/O) | Mitgliedschaft separat führen |
 | Mitgliedschaft | Person gehört Klasse/Kurs/Gruppe an | Person, Zielgruppe, Beginn, Status | Ende, Importquelle (B) | Historische Zugehörigkeit nicht überschreiben |
 | Fach | Zentrale Fachreferenz | Fachkennung, Bezeichnung, Status | Landes-/Schulkennung, Fachbereich (O) | Fachname nicht als Schlüssel verwenden |
-| Lehrkraftzuweisung | Person unterrichtet Planposition | Person, Unterrichtszuweisung, Funktion, Zeitraum | Team-/Teilungsrolle (B) | Abwesenheitsgrund nicht in Planposition speichern |
+| Lehrkraftzuweisung | Person unterrichtet Planposition, auch schulformübergreifend | Person, Unterrichtszuweisung, Funktion, Zeitraum | Team-/Teilungsrolle (B) | Person nur einmal führen; Konflikt- und Verfügbarkeitsprüfung über alle Schulformen gemeinsam; Abwesenheitsgrund nicht in Planposition speichern |
 
 ### Räume, Regeln und Planung
 
@@ -234,3 +245,8 @@ Allgemeiner Entwurfstatus: **Entwurf → in Prüfung → freigegeben/veröffentl
 - Personenbezogene Objektgruppen haben Zweck-, Zugriffs- und Lifecycle-Hinweise; Rechtsgrundlagen/Fristen bleiben offen.
 - Migration und Löschung berücksichtigen Tests, Sicherungen, Rückfallgrenzen, Anhänge und Exporte.
 - Keine Datenbank-/Hostingentscheidung und keine echte Schülerdatenverarbeitung; nur synthetische Daten.
+
+
+## Ergänzung v0.4.0: Raumzuordnung
+
+`school_rooms` speichert schulbezogene Räume mit freiem `room_type_key` und optionaler Kapazität. `school_subjects.preferred_room_type_key` ist eine weiche Fachraumpräferenz. `school_classes.expected_size` und `timetable_lessons.room_id` ermöglichen die Kapazitäts- und Belegungsprüfung. `room_id` ist nullable, damit ein Entwurf ohne Raum fortgeführt werden kann; die Oberfläche zeigt dafür einen Hinweis. Unbekannte Kapazitäten erzeugen keinen erfundenen Grenzwert.

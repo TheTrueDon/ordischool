@@ -29,10 +29,17 @@ final class UserRepository
 
     public function findByEmail(string $email): ?array
     {
-        $statement = $this->pdo->prepare(
-            "SELECT id, email, password_hash, role, is_active FROM {$this->prefix}users WHERE email = :email LIMIT 1"
-        );
-        $statement->execute(['email' => self::normalizeEmail($email)]);
+        $identifier = strtolower(trim($email));
+        if (str_contains($identifier, '@')) {
+            $statement = $this->pdo->prepare(
+                "SELECT id, username, email, password_hash, role, is_active FROM {$this->prefix}users WHERE email = :identifier LIMIT 1"
+            );
+        } else {
+            $statement = $this->pdo->prepare(
+                "SELECT id, username, email, password_hash, role, is_active FROM {$this->prefix}users WHERE username = :identifier LIMIT 1"
+            );
+        }
+        $statement->execute(['identifier' => $identifier]);
         $user = $statement->fetch();
         return is_array($user) ? $user : null;
     }
@@ -40,7 +47,7 @@ final class UserRepository
     public function findActiveById(int $id): ?array
     {
         $statement = $this->pdo->prepare(
-            "SELECT id, email, role FROM {$this->prefix}users WHERE id = :id AND is_active = 1 LIMIT 1"
+            "SELECT id, username, email, role FROM {$this->prefix}users WHERE id = :id AND is_active = 1 LIMIT 1"
         );
         $statement->execute(['id' => $id]);
         $user = $statement->fetch();
@@ -64,10 +71,11 @@ final class UserRepository
         }
 
         $statement = $this->pdo->prepare(
-            "INSERT INTO {$this->prefix}users (email, password_hash, role, is_active, created_at)
-             VALUES (:email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())"
+            "INSERT INTO {$this->prefix}users (username, email, password_hash, role, is_active, created_at)
+             VALUES (:username, :email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())"
         );
         $statement->execute([
+            'username' => strtolower(substr($email, 0, (int) strpos($email, '@'))),
             'email' => $email,
             'password_hash' => $passwordHash,
         ]);

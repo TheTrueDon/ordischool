@@ -15,12 +15,25 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.0.9 | Priorisiertes Backlog, Verantwortlichkeiten, Aufwand und Releasefreigabe v0.1.0 |
 | 0.1.0 | Technisches Grundgerüst und Anmeldung |
 | 0.2.0 | Schulstammdaten und Rollen |
-| 0.3.0–0.6.0 | Stunden-, Raum-, Regel- und Vertretungsplanung mit Assistenz |
+| 0.3.0–0.6.0 | Stunden-, Raum-, Regel- und Vertretungsplanung mit Assistenz; ab v0.3.0 mit mehreren Schulformen/Bildungsgängen je Schule und schulformübergreifender Lehrkraft-Konfliktprüfung |
 | 0.7.0–0.11.0 | Sitzpläne, Klassenbuch, Aufgaben, Termine, Gruppen, Wiki und Nachrichten |
 | 0.12.0–0.13.0 | Notenverwaltung und notenfreie Radarspinne |
 | 0.14.0–0.15.0 | Zeugnisse, Dashboard und Integration/Administration |
 | 0.16.0–0.18.0 | Pilot, kontrollierte Beta und Release Candidate |
 | 1.0.0 | Stabile, konkret freigegebene Produktversion |
+
+## Abnahme v0.2.0 – Schulstammdaten und Rollen
+
+- Versionierte Migration ergänzt Benutzername, Schulen, Schuljahre, Mitgliedschaften, schulweite Rollen und Audit-Ereignisse; Neuinstallation und Update von v0.1.2 sind abgedeckt.
+- Systemadministration kann Schulen anlegen, erhält dadurch aber keine pädagogischen Datenrechte.
+- Schuladministration ist auf aktive Mitgliedschaften der eigenen Schule begrenzt; schulweite Rollen können bei Kontoanlage zugewiesen werden.
+- Schuljahre können mit Status und Zeitraum verwaltet werden; nur ein aktuelles Schuljahr pro Schule bleibt nach dem Statuswechsel aktuell.
+- Kontozugriff und Mitgliedschaftsstatus werden serverseitig geprüft; zustandsändernde Formulare verlangen CSRF-Schutz.
+- Kontoanlage und Mitgliedschaftsänderungen werden mit Akteur und Zeitpunkt protokolliert; Passwörter und IP-Adressen kommen nicht in diese fachlichen Audit-Einträge.
+- Rollen gelten in dieser Version nur auf Schulebene; fehlende Klassen-/Kurs-/Fachscopes, Passwortwechsel und Löschworkflow sind dokumentiert.
+- Update-SQL mit dem Standardpräfix ordi_ und Hinweise für abweichende Präfixe sind enthalten.
+- Datenschutzinventar und Betriebsfreigabe sind offen; ausschließlich synthetische Testdaten. Keine pauschale DSGVO-Konformitätszusage.
+- PHP-/MySQL-Laufzeitprüfungen sind vor Release über CI auszuführen; sie wurden in dieser Arbeitsumgebung nicht ausgeführt.
 
 ## Abnahme v0.1.0 – technisches Grundgerüst und Anmeldung
 
@@ -41,6 +54,19 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - v0.x.0 liefert aufeinander aufbauende, noch veränderbare Funktionen.
 - v1.0.0 ist erst freigabefähig, wenn fachliche Abnahme, Betrieb, Sicherheit und Datenschutz für den konkreten Einsatz dokumentiert sind.
 - Jede Version erhält einen Commit mit `docs(...)`, `feat(...)`, `fix(...)` oder einem passenden Typ und Versionsbezug.
+
+### Abnahme v0.3.0 – manuelle Stundenplanung
+
+- Eine Schule kann mehrere Schulformen/Bildungsgänge anbieten; Neuinstallation und Migration übernehmen bestehende Einzelschulformen als erstes Angebot.
+- Klassen/Kurse werden je Schuljahr einem gültigen Schulformangebot zugeordnet.
+- Zeitraster, Fächer, Klassen/Kurse, Lehrkraftzuweisungen und Doppelstunden können gepflegt werden.
+- Entwürfe können angelegt, aus freigegebenen Plänen kopiert und nach erfolgreicher Konfliktprüfung freigegeben werden.
+- Doppelbelegungen von Klasse und Lehrkraft werden innerhalb des gemeinsamen Schulplans über alle Schulformen hinweg erkannt.
+- Neue Änderungen an freigegebenen Planständen erfolgen als neue Fassung; die alte Veröffentlichung wird nachvollziehbar ersetzt.
+- Rollen, Schulbereich, CSRF-Schutz, Eingabevalidierung und Audit-Ereignisse gelten auch für Planungsvorgänge.
+- Raumkapazitäten, Fachraumprioritäten, automatische Vorschläge, Thüringer Regelengine und echte Schülerdaten sind nicht Teil dieses Releases.
+- Datenbankupdate ist mit Backuphinweis und Standardpräfix `ordi_` enthalten; für andere Präfixe wird das Skript angepasst.
+- Nur synthetische Testdaten; keine DSGVO- oder Produktivfreigabe wird behauptet.
 
 ### Abnahme v0.0.2
 
@@ -117,3 +143,8 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Keine produktiven Schülerdaten oder schulischen Fachdaten sind v0.1.0-Scope.
 - Änderung, Entscheidung, Git-Commit und Releasefreigabe haben dokumentierte Abläufe.
 - Offene Datenschutz-/Betriebsfragen bleiben Gates vor Pilot/Produktion.
+
+
+## v0.4.0 – Raumplanung (umgesetzt)
+
+Räume mit frei definierbaren Typen und optionalen Kapazitäten, optionale Gruppengrößen, Raumzuordnung an Unterrichtsstunden, harte Prüfungen auf Raumbelegung/Kapazität sowie nicht blockierende Hinweise für Fachraumpräferenzen.

@@ -66,9 +66,9 @@ Bei drei bis vier fokussierten Projekttagen pro Woche entspricht dies grob fünf
 | ID | Zielversion | Prio | Liefergegenstand | Abhängigkeit / Freigabebedingung |
 |---|---|---|---|---|
 | BK-010 | 0.2.0 | P0 | Schulstammdaten, Kontenbezug, Schul-Scope und Rollen | Verantwortliche/Betreiber benannt; Datenminimierung und Rollen abgenommen |
-| BK-011 | 0.3.0 | P0 | Stundenplan-Grundmodell, Entwurf und Freigabe | Start-Schulform/Kohorte, Zeitraster und Zuständigkeiten bestätigt |
+| BK-011 | 0.3.0 | P0 | Manuelle Stundenplanung mit mehreren Schulformen/Bildungsgängen je Schule, schulformübergreifenden Lehrkräfteeinsätzen, Entwurf und Freigabe | Angebote und Kohorten sind Klassen/Kursen zeitlich zuordenbar; Lehrkraftkonflikte werden schulformübergreifend geprüft; Doppelstunden sind darstellbar; Planungsrolle erstellt Entwürfe, aktive Schuladministration gibt frei; veröffentlichte Fassungen bleiben unverändert |
 | BK-012 | 0.4.0 | P0 | Raumstamm, Kapazität, Fachraumtyp und Konfliktprüfung | lokale Raumwerte, Nachweis, Gültigkeit und Zuständigkeit bestätigt |
-| BK-013 | 0.5.0 | P0 | Regelprofile mit Quelle, Gültigkeit und Prüfablauf | aktuelle Thüringer Regeln der Start-Schulform geprüft |
+| BK-013 | 0.5.0 | P0 | Regelprofile mit Quelle, Gültigkeit und Prüfablauf | aktuelle Thüringer Regeln für die unterstützten Schulformen/Bildungsgänge geprüft; konkrete Regelwahl erfolgt aus Klasse/Kurs, Jahrgang, Kohorte und Schuljahr |
 | BK-014 | 0.6.0 | P0 | Vertretung und Assistenzvorschläge mit menschlicher Freigabe | BK-011 bis 013 und Änderungs-/Freigabeworkflow bestätigt |
 | BK-015 | 0.7.0 | P1 | Sitzplanverwaltung | Sichtbarkeit, Ausdruck/Export und Aufbewahrung geklärt |
 | BK-016 | 0.8.0 | P0 | Klassenbuch, Anwesenheit, Abgleich- und Fehlerhinweise | Pflichtfelder, Rollen, Notizumfang, Spezialregeln und Lifecycle freigegeben |
@@ -152,3 +152,8 @@ Jeder wesentliche Eintrag erhält ID, Datum, Status, Kontext, Optionen, Entschei
 - Entscheiden, ob vorhandenes Hosting nur für synthetisches Staging geprüft wird oder lokale Container genügen.
 - Schule/Träger, Betreiber, Datenschutzstelle und fachliche Abnahmevertretungen benennen, bevor BK-010 oder personenbezogene Module starten.
 - Falls Anmeldung/Session mehr Prüfung benötigt, v0.1.0 verschieben und den Sicherheitsumfang nicht zur Terminrettung reduzieren.
+
+
+### BK-012 v0.4.0 Raumverwaltung und Planprüfung
+
+Akzeptanz: Räume mit Typ/Kapazität anlegen; Gruppengröße optional erfassen; Raum einem Unterrichtseintrag zuordnen; Raumdoppelbelegung und bekannte Kapazitätsüberschreitung blockieren; Fachraumabweichung/fehlender Fachraum nur als Hinweis ausweisen; Hinweise verhindern keine Freigabe; kopierte Entwürfe bewahren Raumzuweisungen. Fachrechtliche Stundenplanregeln und automatische Änderungsvorschläge bleiben Folgeschritte.

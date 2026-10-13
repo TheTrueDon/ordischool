@@ -15,6 +15,9 @@
 | D-007 | PHP/MySQL ist nur eine zu prüfende Option, keine endgültige Architekturentscheidung. | vorläufig |
 | D-008 | Das Rollenmodell in `ROLLEN_RECHTEMATRIX.md` ist ein fachlicher Entwurf für den Projektstand; es muss pro Schule und Betriebsmodell angepasst und freigegeben werden. | vorläufig |
 | D-009 | Systemadministration erhält standardmäßig keinen fachlichen Lesezugriff auf Schüler-, Bewertungs- oder Kommunikationsinhalte. | Arbeitsgrundsatz; technische Umsetzung ab v0.1.0 zu prüfen |
+| D-054 | Eine Schule kann mehrere Schulformen und Bildungsgänge unter einem organisatorischen Dach anbieten; das Schulobjekt erhält daher keine fachlich maßgebliche Einzelauswahl der Schulform. | bestätigt durch Product Owner; Datenmodell/Umsetzung ab v0.3.0 |
+| D-055 | Eine Lehrkraft wird als Person einmal geführt und kann am selben Tag in mehreren Schulformen eingesetzt werden. Stundenplan-, Verfügbarkeits- und Konfliktprüfungen betrachten alle Einsätze gemeinsam. | bestätigt durch Product Owner; Datenmodell/Umsetzung ab v0.3.0 |
+| D-056 | Fachraumpräferenzen (z. B. Chemie im Chemieraum) sind weiche Ziele. Eine Abweichung erzeugt einen Hinweis, blockiert Planung/Freigabe aber nicht; Raumkollisionen und bekannte Kapazitätsüberschreitungen bleiben harte Konflikte. | bestätigt durch Product Owner; ab v0.4.0 |
 
 ## Vor Implementierungsbeginn zu entscheiden
 
@@ -39,6 +42,7 @@
 | D-026 | Welche Aufbewahrungs-/Einschränkungsregeln gelten zusätzlich zur einschlägigen Fassung von ThürSchulO/Schuldatenschutzrecht für Aufgaben, Nachrichten, Anhänge, Pläne und Logs? | vor Produktivbetrieb |
 | D-027 | Ist im konkreten Betriebsmodell eine vollständige DSFA nach Art. 35 DSGVO erforderlich, und wer zeichnet diese Entscheidung? | vor Pilot |
 | D-028 | Ist der 2025 dokumentierte Entwurf einer ThürSchulDSVO später in Kraft getreten oder geändert worden? | vor rechtlicher Profilfreigabe |
+| D-056 | Müssen Einsätze an getrennten Gebäuden/Standorten Wege- und Übergangszeiten berücksichtigen, und welche Zeitwerte gelten? | vor Raum-/Vertretungsassistenz; bei gemeinsamer Campuslage ggf. nicht erforderlich |
 
 ## Entscheidungsregel
 
@@ -113,3 +117,5 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 | D-051 | Initialer Admin ist technische Installationsrolle ohne pauschale pädagogische Inhaltsrechte. | Releaseumfang festgelegt |
 | D-052 | Fachliche, Datenschutz-/Rechts- und Betriebsfreigaben bleiben von Entwicklungsfreigaben getrennt. | Freigabegrundsatz |
 | D-053 | Echte schulische Daten erst nach zuständiger Freigabe und innerhalb des genehmigten Pilotumfangs verarbeiten. | Freigabegate |
+
+

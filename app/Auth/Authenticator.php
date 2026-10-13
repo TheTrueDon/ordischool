@@ -17,15 +17,18 @@ final class Authenticator
 
     public function authenticate(string $email, string $password, string $ip): ?array
     {
-        $email = UserRepository::normalizeEmail($email);
+        $identifier = strtolower(trim($email));
+        $throttleKey = UserRepository::normalizeEmail($identifier);
         $ip = filter_var($ip, FILTER_VALIDATE_IP) !== false ? $ip : 'unknown';
-        $safeEmail = strlen($email) <= 254 ? $email : substr($email, 0, 254);
+        $safeEmail = strlen($throttleKey) <= 254 ? $throttleKey : substr($throttleKey, 0, 254);
 
         if ($this->rateLimiter->isBlocked($ip, $safeEmail)) {
             return null;
         }
 
-        $user = UserRepository::validEmail($email) ? $this->users->findByEmail($email) : null;
+        $validIdentifier = UserRepository::validEmail($identifier)
+            || preg_match('/\A[a-z0-9._-]{3,64}\z/', $identifier) === 1;
+        $user = $validIdentifier ? $this->users->findByEmail($identifier) : null;
         $hash = is_array($user) ? (string) $user['password_hash'] : self::DUMMY_HASH;
         $passwordWithinLimit = strlen($password) <= PasswordHasher::maximumBytes();
         $verified = $passwordWithinLimit && PasswordHasher::verify($password, $hash);
@@ -43,6 +46,7 @@ final class Authenticator
 
         return [
             'id' => (int) $user['id'],
+            'username' => (string) $user['username'],
             'email' => (string) $user['email'],
             'role' => (string) $user['role'],
         ];

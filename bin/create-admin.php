@@ -17,9 +17,10 @@ if ($config->environment === 'production' && getenv('ORDI_ALLOW_ADMIN_BOOTSTRAP'
 }
 
 $email = strtolower(trim(OrdiSchool\Config::env('ORDI_BOOTSTRAP_ADMIN_EMAIL')));
+$username = strtolower(trim(OrdiSchool\Config::env('ORDI_BOOTSTRAP_ADMIN_USERNAME', explode('@', $email)[0] ?? '')));
 $password = OrdiSchool\Config::env('ORDI_BOOTSTRAP_ADMIN_PASSWORD');
-if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 254 || $password === '') {
-    fwrite(STDERR, "ORDI_BOOTSTRAP_ADMIN_EMAIL und ORDI_BOOTSTRAP_ADMIN_PASSWORD müssen temporär gesetzt sein.\n");
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 254 || !preg_match('/\A[a-z0-9._-]{3,64}\z/', $username) || $password === '') {
+    fwrite(STDERR, "ORDI_BOOTSTRAP_ADMIN_EMAIL, ein gültiger ORDI_BOOTSTRAP_ADMIN_USERNAME und ORDI_BOOTSTRAP_ADMIN_PASSWORD müssen temporär gesetzt sein.\n");
     exit(2);
 }
 
@@ -36,8 +37,8 @@ try {
         $exitCode = 3;
     } else {
         $hash = PasswordHasher::hash($password);
-        $statement = $pdo->prepare("INSERT INTO {$config->tablePrefix}users (email, password_hash, role, is_active, created_at) VALUES (:email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())");
-        $statement->execute(['email' => $email, 'password_hash' => $hash]);
+        $statement = $pdo->prepare("INSERT INTO {$config->tablePrefix}users (username, email, password_hash, role, is_active, created_at) VALUES (:username, :email, :password_hash, 'system_admin', 1, UTC_TIMESTAMP())");
+        $statement->execute(['username' => $username, 'email' => $email, 'password_hash' => $hash]);
         fwrite(STDOUT, "Technisches Administratorkonto angelegt. Zugangsdaten aus dem Prozess entfernen.\n");
     }
 } catch (Throwable $exception) {

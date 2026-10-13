@@ -1,0 +1,10 @@
+feat(v0.3.0): manuelle Stundenplanung für mehrere Schulformen einführen
+
+- mehrere Schulformangebote je Schule und Migration des bisherigen Einzelwerts ergänzen
+- Klassen, Kurse, Fächer, Lehrkräfte und Zeitraster für Schuljahre verknüpfen
+- Stundenplanentwürfe, Doppelstunden, Konfliktprüfung und manuelle Freigabe umsetzen
+- Lehrkraft-Doppelbelegungen schulformübergreifend prüfen
+- geschützte Planungsoberfläche mit rollen-, schul- und formularbezogener Rechteprüfung bereitstellen
+- phpMyAdmin-Update, Testfälle und Releasegrenzen dokumentieren
+
+Nur synthetische Testdaten verwenden; keine DSGVO- oder Produktivfreigabe behaupten.

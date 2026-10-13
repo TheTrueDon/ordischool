@@ -1,0 +1,10 @@
+feat(schulverwaltung): Schulstammdaten und schulweite Rollen v0.2.0
+
+- Schulen und Schuljahre mit serverseitiger Schulbereichsprüfung verwalten
+- Benutzerkonten und schulweite Rollen anlegen; Mitgliedschaften sperren und reaktivieren
+- Konto- und Mitgliedschaftsänderungen im Auditprotokoll erfassen
+- Migration 003 sowie phpMyAdmin-Update für das Standardpräfix ordi_ bereitstellen
+- alten Rollen-Constraint versionsabhängig und wiederholbar migrieren
+- Installationsablauf, Tests und Datenschutzgrenzen für v0.2.0 dokumentieren
+
+Nur synthetische Testdaten verwenden; keine DSGVO- oder Produktivfreigabe behaupten.
