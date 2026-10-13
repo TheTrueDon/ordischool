@@ -1,5 +1,27 @@
 # Änderungsprotokoll
 
+## v0.6.0
+
+- Schulinitialisierung mit automatisch erzeugtem Hauptgebäude, Rollen und vollständigen Rechten des Installationskontos ergänzt.
+- Geführte Checkliste für Gebäude/Räume, Fächer, Personal, Schuljahr, Klassen und Schüler mit Menülinks ergänzt.
+- Personalstammdaten um Vor- und Nachnamen erweitert; Mehrfachrollen und schulformbezogene Zuordnung per Checkbox-Tabelle ergänzt.
+- Rollenverwaltung mit tabellarischer Berechtigungsmatrix und anlegbaren Schulrollen ergänzt.
+- Klassen/Kurse erfordern Klassenleitung und Stellvertretung; Schüler können minimal erfasst und Klassen zugeordnet werden.
+- Stundenplananlage bleibt bis zur Anlage der erforderlichen Planungsgrundlagen gesperrt.
+- Wiederholbare Migration `007_school_setup_and_permissions.sql` und phpMyAdmin-Update von v0.5.0 ergänzt.
+- Geplante Vertretungsassistenz rückt auf v0.7.0.
+
+
+## v0.5.0
+
+- Stammdatenpflege aus der täglichen Planansicht entfernt und in `/admin/planning/settings` ausgelagert.
+- Raum-, Fach-, Schulform-, Klassen- und Zeitrasterpflege sowie Regelprofile serverseitig auf aktive Schuladministration begrenzt.
+- Versionierte Regelprofile nach Schuljahr, Schulform und Kohorte mit Quelle, Fundstelle, Prüfdatum, Prüfstatus und Prüferkonto ergänzt.
+- Regelprüfbericht unterscheidet harte Zeit-/Raum-/Klassenkonflikte, weiche Hinweise und offene Quellen-/Regelstände.
+- Prüfstände halten die verwendete Profilversion fest und werden bei Profiländerungen zur erneuten Prüfung markiert; Veröffentlichung ist ohne aktuellen Prüfstand gesperrt.
+- Datenschutz-/Rechtsgrenze dokumentiert: gespeicherte Quellenprüfung ist keine vollständige Regelengine und kein Rechtskonformitätsnachweis.
+- Wiederholbare Migration `006_planning_rule_profiles.sql` und phpMyAdmin-Update von v0.4.1 bereitgestellt.
+
 ## [0.4.1] – 2026-10-13
 - Kontoverwaltung zeigt nach erfolgreicher Kontoanlage eine sichtbare Bestätigung.
 - Formularhinweise erläutern Benutzername- und Passwortregeln und weisen auf die Mitgliederliste hin.
@@ -238,3 +260,13 @@
 - Raumzuweisung, Raumkollision und Kapazitätsprüfung für die Stundenplanung ergänzt.
 - Fachraumpräferenzen je Fach werden als nicht blockierende Hinweise behandelt.
 - Schulformübergreifende Stundenplanung aus v0.3.0 bleibt erhalten.
+
+## v0.5.0
+
+- Stammdatenpflege aus der täglichen Planansicht entfernt und in `/admin/planning/settings` ausgelagert.
+- Raum-, Fach-, Schulform-, Klassen- und Zeitrasterpflege sowie Regelprofile serverseitig auf aktive Schuladministration begrenzt.
+- Versionierte Regelprofile nach Schuljahr, Schulform und Kohorte mit Quelle, Fundstelle, Prüfdatum, Prüfstatus und Prüferkonto ergänzt.
+- Regelprüfbericht unterscheidet harte Zeit-/Raum-/Klassenkonflikte, weiche Hinweise und offene Quellen-/Regelstände.
+- Prüfstände halten die verwendete Profilversion fest und werden bei Profiländerungen zur erneuten Prüfung markiert; Veröffentlichung ist ohne aktuellen Prüfstand gesperrt.
+- Datenschutz-/Rechtsgrenze dokumentiert: gespeicherte Quellenprüfung ist keine vollständige Regelengine und kein Rechtskonformitätsnachweis.
+- Wiederholbare Migration `006_planning_rule_profiles.sql` und phpMyAdmin-Update von v0.4.1 bereitgestellt.

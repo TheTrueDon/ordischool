@@ -1,64 +1,41 @@
 # OrdiSchool
 
-**Ordinatio Scholae – Manuelle Stundenplanung v0.4.1**
+**Ordinatio Scholae – Schulinitialisierung und Administration v0.6.0**
 
-v0.4.1 enthält einen Kontoverwaltungs-Fix und baut auf der gemeinsamen, schulformübergreifenden Stundenplanung aus v0.3.0 auf. Räume, Kapazitäten und Fachraumwünsche lassen sich ergänzen. Eine Schule kann mehrere Schulformen oder Bildungsgänge anbieten. Klassen und Kurse werden ihrem Angebot und Schuljahr zugeordnet. Stundenpläne lassen sich als Entwurf pflegen, auf Zeitkonflikte prüfen und manuell freigeben.
+v0.6.0 richtet den Einstieg an der realen Schulreihenfolge aus: Nach der Installation wird zuerst eine Schule mit Schulformen/Bildungsgängen angelegt. Das Installationskonto erhält dabei die schulweite Schuladministration. Eine Checkliste führt durch Gebäude/Räume, Fächer, Personal/Rollen, Schuljahr, Klassen und Schüler. Erst nach den nötigen Planungsgrundlagen wird die Stundenplananlage freigeschaltet.
 
-## Update einer vorhandenen v0.3.0- oder v0.4.0-Installation
+## Update von v0.5.0
 
-1. Sichere zuerst die vollständige Datenbank und die Anwendungsdateien. MySQL-DDL ist nicht transaktional.
-2. Für v0.3.0: Wähle in phpMyAdmin die richtige Datenbank und führe `sql/update_v0.3.0_to_v0.4.0_ordi.sql` aus. Für v0.4.0 auf v0.4.1 ist kein SQL-Update nötig. Bei einem anderen Tabellenpräfix musst du im v0.3.0-Update alle Vorkommen von `ordi_` durch dein Präfix ersetzen; es ergänzt Raumverwaltung, Kapazitäten und Fachraumpräferenzen.
-3. Prüfe nach einem Update von v0.3.0, dass `ordi_schema_migrations` den Eintrag `005_room_planning.sql` enthält.
-4. Ersetze anschließend die Programmdateien durch diese Version. Behalte `config.local.php` und andere installationsspezifische Dateien bei.
-5. Melde dich an. Bei v0.4.0-Installationen bleibt das Datenbankschema unverändert.
+1. Erstelle vor dem Update ein vollständiges Backup der Datenbank und Anwendungsdateien.
+2. In phpMyAdmin die Datenbank auswählen und `sql/update_v0.5.0_to_v0.6.0_ordi.sql` importieren. Bei anderem Tabellenpräfix vorher alle `ordi_`-Vorkommen ersetzen.
+3. Prüfe `ordi_schema_migrations` auf `007_school_setup_and_permissions.sql`.
+4. Überschreibe die Anwendungsdateien mit v0.6.0. `config.local.php` und installationsspezifische Dateien beibehalten.
+5. Anmelden, **Schule einrichten und verwalten** öffnen und die Schritte der Checkliste abarbeiten.
 
-Das Update ergänzt die Raumstammdaten und verknüpft optionale Raumzuweisungen mit Stundenplaneinträgen. Bereits vorhandene Fächer erhalten zunächst keine Fachraumpräferenz; diese kann in der Planungsverwaltung gepflegt werden.
+Das Update-SQL ist für Wiederholung ausgelegt. Nach einem Fehler zuerst Backup, Schema und Migrationsmarker prüfen. Neuinstallationen führen Migration 007 über `public/install.php` automatisch aus.
 
-Bei einem Fehler nach begonnenem SQL-Update nicht blind erneut starten. Sichere den Zustand und prüfe Schema sowie Migrationsmarker. Das Skript ist für Wiederholung nach Teilfortschritt ausgelegt, die Wiederherstellung muss aber anhand des tatsächlichen Zustands erfolgen.
+## Schulverwaltung
 
-## Neuinstallation
-
-1. Projektordner auf den Webserver kopieren und `public` als Dokumentenstamm konfigurieren. `app`, `migrations`, `bin`, `docs`, `sql` und `config.local.php` müssen außerhalb des öffentlichen Webpfads liegen.
-2. Eine leere MySQL-Datenbank und einen Datenbankbenutzer mit Tabellenrechten bereitstellen.
-3. `install.php` öffnen und DB-Host, DB-Name, DB-Benutzer, Passwort, Tabellenpräfix (Standard: `ordi_`) sowie Systemkonto angeben.
-4. Nach der Installation mit dem angelegten Systemkonto anmelden. Das Systemkonto hat keine pädagogischen Datenrechte.
-
-Der PHP-Prozess braucht beim Installieren Schreibrechte auf den Projektordner, um `config.local.php` anzulegen. Diese Datei enthält Zugangsdaten und darf weder öffentlich erreichbar noch in Git eingecheckt werden. HTTP ist nur für einen ausdrücklich bestätigten Test mit separater Datenbank und ausschließlich synthetischen Daten vorgesehen. Für produktiven Betrieb ist HTTPS erforderlich.
-
-## Stundenplanung ausprobieren
-
-1. Öffne **Schulverwaltung** und lege eine Schule an. Wähle dort alle angebotenen Schulformen/Bildungsgänge aus; Mehrfachauswahl ist möglich.
-2. Lege mindestens ein Schuljahr an.
-3. Öffne **Stundenplanung** und ergänze bei Bedarf weitere Schulformangebote, Klassen/Kurse, Fächer sowie das Stundenraster.
-4. Lege einen Stundenplanentwurf an und trage Unterrichtsstunden ein. Lehrkräfte müssen als aktive Konten mit der Rolle **Lehrkraft** an der Schule geführt sein.
-5. Die Anwendung verhindert zeitgleiche Einsätze derselben Lehrkraft über alle Schulformen hinweg sowie Doppelbelegungen einer Klasse. Für Doppelstunden muss auch die Folge-Stunde im Zeitraster existieren.
-6. Die Planungsrolle pflegt den Entwurf; eine aktive Schuladministration muss ihn bewusst freigeben. Änderungen erfolgen über eine neue Entwurfsfassung, die aus dem freigegebenen Stand kopiert werden kann.
-
-Eine freigegebene Fassung kann nicht direkt verändert werden. Die Freigabe ersetzt die vorherige Veröffentlichung für dasselbe Schuljahr; der vorherige Plan bleibt als ersetzte Fassung erhalten.
-
-## Umfang und Grenzen v0.4.1
-
-- Mehrere Schulform-/Bildungsgangangebote je Schule; Klassen/Kurse hängen an einem Angebot und Schuljahr.
-- Schulweite Fächer, Stundenraster und Lehrkraftkonten als Planungsgrundlagen.
-- Planentwürfe, versionierte Fassungen, Einzel- und Doppelstunden, ein gemeinsames schulweites Zeitraster, Konfliktprüfung und manuelle Freigabe.
-- Eine Lehrkraft wird über Schulformen hinweg über dasselbe Benutzerkonto zugeordnet.
-- Räume haben frei definierbare Typen und optionale Kapazitäten. Bekannte Kapazitätsüberschreitungen und Doppelbelegungen blockieren; Fachraumpräferenzen erzeugen nur Hinweise.
-- Thüringer Regelprofile und ihre geprüfte Anwendung kommen in v0.5.0.
-- Vertretungsplanung und Assistenzvorschläge kommen in v0.6.0.
-- Sitzpläne, Klassenbuch, Noten und weitere Module sind noch nicht enthalten.
+- Beim Erstellen einer Schule werden ein Hauptgebäude und Standardrollen erzeugt.
+- Räume und Fächer werden im Bereich Planungsgrundlagen gepflegt, nicht in der täglichen Planansicht.
+- Personen können mehrere Rollen erhalten; Rollen können schulweit oder für Schulformen/Bildungsgänge zugewiesen werden.
+- Die Rollen- und Berechtigungsmatrix erlaubt schulindividuelle Rollen und Rechte.
+- Klassen/Kurse benötigen Klassenleitung und Stellvertretung. Schüler können ohne Benutzerkonto angelegt und einer Klasse zugeordnet werden.
+- Für die spätere Planung müssen Räume, Fächer, Schuljahr, Klasse und Lehrkräfte vorhanden sein.
 
 ## Datenschutz und Einsatzgrenzen
 
-Diese Entwicklungsfassung ist keine pauschale DSGVO-Konformitäts- oder Produktivfreigabe. Verwende ausschließlich synthetische Daten. Stundenplan-Zuordnungen können personenbezogene Beschäftigtendaten enthalten. Für einen realen Betrieb müssen die zuständigen Stellen insbesondere Verantwortlichkeit, Zweck und Rechtsgrundlage, Berechtigungen, Hosting, Auftragsverarbeitung, Datenlöschung, Backups und ein mögliches DSFA-Erfordernis prüfen und freigeben. Die Schulleitung behält die fachliche Freigabehoheit; das System veröffentlicht nicht automatisch.
+Die Version enthält datensparsame Grundfelder, serverseitige Berechtigungsprüfungen und Audit-Ereignisse, ist aber keine pauschale DSGVO-Konformitäts- oder Produktivfreigabe. Vor echtem Einsatz müssen insbesondere Zweck/Rechtsgrundlage, Verantwortlichkeit, Aufbewahrung/Löschung, Hosting, Auftragsverarbeitung, Sicherungen und ein mögliches DSFA-Erfordernis geprüft und freigegeben sein. Bis dahin nur synthetische Testdaten verwenden.
 
 ## Tests
 
-Die CI führt PHP-Syntaxprüfungen, Migrationen auf MySQL 8.4, Datenbanktests, Authentifizierungs-/Berechtigungsprüfungen und Web-/Restore-Smoke-Tests aus. Neue Tests decken Mehrfachangebote je Schule, schulformübergreifende Lehrkraftkonflikte, Raumkollisionen, Kapazitätsgrenzen, weiche Fachraumpräferenzen und versionierte Raumzuweisungen ab. PHP und Docker waren in der Erstellungsumgebung nicht verfügbar; diese Laufzeittests konnten hier nicht ausgeführt werden. Vor einem Release-Tag muss die CI erfolgreich durchlaufen.
+PHP, MySQL und Docker waren in der Erstellungsumgebung nicht verfügbar. Laufzeittests und die Ausführung der Migration gegen MySQL/MariaDB wurden daher nicht bestätigt. CI muss PHP-Syntax, Migration, Berechtigungen, Webabläufe und Restore testen.
 
 ## Release-Dateien
 
 - [Versionsplan](docs/VERSIONSPLAN.md)
-- [Implementierungsstand v0.4.1](docs/IMPLEMENTIERUNGSSTAND_v0.4.0.md)
-- [SQL-Update von v0.3.0 für `ordi_`](sql/update_v0.3.0_to_v0.4.0_ordi.sql) (nur erforderlich, wenn noch v0.3.0 installiert ist)
-- [Commit-Vorschlag](docs/COMMIT_MESSAGE_v0.4.1.txt)
+- [Implementierungsstand v0.6.0](docs/IMPLEMENTIERUNGSSTAND_v0.6.0.md)
+- [Testprotokoll v0.6.0](docs/TESTPROTOKOLL_v0.6.0.md)
+- [SQL-Update von v0.5.0](sql/update_v0.5.0_to_v0.6.0_ordi.sql)
+- [Commit-Vorschlag](docs/COMMIT_MESSAGE_v0.6.0.txt)
 - [Änderungsprotokoll](CHANGELOG.md)
