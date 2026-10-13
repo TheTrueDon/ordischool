@@ -1,7 +1,7 @@
 # OrdiSchool Anforderungen
 
 **Status:** Zielanforderungen, fachlich noch weiter zu spezifizieren  
-**Version:** 0.0.2
+**Version:** 0.0.3
 **Normative Wörter:** „MUSS“ bezeichnet eine Abnahmeanforderung. „SOLL“ bezeichnet ein Ziel, dessen Abweichung begründet wird. „OFFEN“ bezeichnet eine noch nicht fachlich beschlossene Ausgestaltung.
 
 ## A. Planung
@@ -19,6 +19,11 @@
 | PLAN-009 | Änderungsvorschläge müssen Begründung, erfüllte/verletzte Bedingungen und Folgen für betroffene Pläne zeigen. | 0.6.0 |
 | PLAN-010 | Kein kritischer Planvorschlag darf ohne Freigabe einer berechtigten Person veröffentlicht werden. | 0.6.0 |
 | PLAN-011 | Vertretungsvorschläge SOLLEN Abwesenheit, Verfügbarkeit, Fachbezug, Belastung, Raum und Folgewirkungen berücksichtigen, soweit die Daten freigegeben und definiert sind. | 0.6.0 |
+| PLAN-012 | Jedes aktive Regelprofil MUSS Quelle, Fundstelle, Fassung, Gültigkeitszeitraum, Schulart, Bildungsgang, Jahrgang und Prüfstatus ausweisen. | ab 0.5.0 |
+| PLAN-013 | Die Auswahl einer Rahmenstundentafel MUSS Übergangsbestimmungen, Kohorte und Schuljahr berücksichtigen; bei unklarer Zuordnung darf keine verbindliche automatische Prüfung erfolgen. | 0.5.0 |
+| PLAN-014 | Harte Vorgaben, schulische Beschlüsse, lokal nachgewiesene Gebäude-/Raumrestriktionen und weiche Planungspräferenzen MÜSSEN getrennt behandelt und angezeigt werden. | 0.5.0 |
+| PLAN-015 | Raumkapazität und verbindliche Ausstattung MÜSSEN eine lokale Quelle, prüfende Stelle und Gültigkeit besitzen; ohne gültigen Nachweis darf die Planprüfung keine konfliktfreie Belegung behaupten. | 0.4.0–0.5.0 |
+| PLAN-016 | Jede Regeländerung MUSS erkennen lassen, welche Planversionen und Schuljahre betroffen sind; eine neue Regel darf veröffentlichte Pläne nicht stillschweigend umschreiben. | ab 0.5.0 |
 
 ## B. Sitzpläne und Klassenbuch
 
@@ -98,10 +103,10 @@
 | OPS-001 | Datenbankänderungen müssen versioniert migrierbar und mit geprüfter Sicherungs-/Wiederherstellungsstrategie verbunden sein. | ab 0.1.0 |
 | OPS-002 | Hosting und Unterauftragnehmer müssen vor Auswahl hinsichtlich Standort, Zugriffen, Backups, Löschung, Sicherheit und Vertragsbedingungen geprüft werden. | 0.0.7 / 0.16.0 |
 
-## Nicht-Ziele von v0.0.2
+## Nicht-Ziele von v0.0.3
 
 - Keine Anwendungscode- oder Datenbankimplementierung.
 - Keine Verwendung echter Schüler-, Noten-, Anwesenheits- oder Nachrichtendaten.
-- Keine ungeprüften Rechts- oder Thüringer Regelprofile.
+- Keine produktiv freigegebenen oder vollständig maschinenlesbaren Thüringer Regelprofile.
 - Keine endgültige Festlegung von Hosting, Stack, Rollen oder Mehrschulbetrieb.
 - Keine finalen Notenalgorithmen, Radarspinnen-Dimensionen oder Zeugnisvorlagen.

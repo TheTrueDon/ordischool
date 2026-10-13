@@ -1,6 +1,6 @@
 # OrdiSchool
 
-**Version:** 0.0.2 – Rollen und Arbeitsabläufe  
+**Version:** 0.0.3 – Thüringer Regeln und Quellenregister  
 **Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
 **Stand:** 13. Oktober 2026
 
@@ -8,7 +8,7 @@ OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretu
 
 ## Stand dieser Version
 
-v0.0.2 ergänzt die Projektdefinition um ein vorläufiges Rollenmodell, eine Rechte-Matrix und fachliche Arbeitsabläufe. Damit werden Akteure, Sichtbarkeit, Freigaben und Protokollierung beschrieben. Es ist weiterhin keine ausführbare Software enthalten; die Rollen müssen vor einem konkreten Schuleinsatz bestätigt werden.
+v0.0.3 ergänzt die Projektdefinition um ein recherchiertes Thüringer Regelprofil für Planung und ein nachvollziehbares Quellenregister. Landesrecht, schulische Beschlüsse, lokale Gebäudevorgaben und Optimierungspräferenzen werden getrennt. Die Quellen und Übergangsregeln sind noch vor konkretem Einsatz fachlich zu prüfen. Es gibt weiterhin keinen ausführbaren Anwendungscode.
 
 ## Projektdateien
 
@@ -16,11 +16,13 @@ v0.0.2 ergänzt die Projektdefinition um ein vorläufiges Rollenmodell, eine Rec
 - [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md) – bestätigte Arbeitsannahmen und offene Entscheidungen
 - [`docs/ROLLEN_RECHTEMATRIX.md`](docs/ROLLEN_RECHTEMATRIX.md) – Rollen, Geltungsbereiche und Rechte
 - [`docs/ABLAEUFE.md`](docs/ABLAEUFE.md) – fachliche Abläufe mit Sichtbarkeit, Prüfung und Freigabe
+- [`docs/REGELPROFIL_THUERINGEN.md`](docs/REGELPROFIL_THUERINGEN.md) – Planungsbedingungen, Regelklassen und Umsetzungshinweise für Thüringen
+- [`docs/QUELLENREGISTER.md`](docs/QUELLENREGISTER.md) – geprüfte Quellen, Gültigkeit, Fundstellen und offene Abrufe
 - [`docs/VERSIONSPLAN.md`](docs/VERSIONSPLAN.md) – Entwicklungsstufen und Zuordnung der Anforderungen
 - [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
 - [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
 - [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.2.txt`](docs/COMMIT_MESSAGE_v0.0.2.txt) – vorgeschlagene Git-Commit-Nachricht
+- [`docs/COMMIT_MESSAGE_v0.0.3.txt`](docs/COMMIT_MESSAGE_v0.0.3.txt) – vorgeschlagene Git-Commit-Nachricht
 
 ## Arbeitsregeln
 
@@ -31,6 +33,7 @@ v0.0.2 ergänzt die Projektdefinition um ein vorläufiges Rollenmodell, eine Rec
 5. Eine Rechtsgrundlage, Löschfrist oder schulrechtliche Regel wird nicht aus der Softwarefunktion abgeleitet. Zuständige Stellen prüfen sie für den jeweiligen Einsatz.
 6. Jede Version erhält eine passende Commit-Nachricht, Änderungsnotizen und klare Abnahmekriterien.
 7. Berechtigungen gelten für Listen, Suche, Direktlinks, Anhänge, Benachrichtigungen und Exporte gleichermaßen.
+8. Regelprofile speichern Quelle, Gültigkeit, Schulform, Bildungsgang, Jahrgang und Kohorte; nicht belegte Regeln werden nicht als Landesvorgabe ausgegeben.
 
 ## Datenschutz-Hinweis
 

@@ -1,6 +1,6 @@
 # Entscheidungen und offene Punkte
 
-**Version:** 0.0.2
+**Version:** 0.0.3
 
 ## Bestätigte Arbeitsannahmen
 
@@ -24,17 +24,27 @@
 | D-011 | Wer ist je Betriebsform Verantwortlicher, wer Auftragsverarbeiter, wer bearbeitet Auskunft/Löschung? | vor v0.0.4 und vor Pilot |
 | D-012 | Hostinganbieter, Serverstandort, Unterauftragnehmer, Backup, Verschlüsselung, Supportzugriff und Vertrag. | vor Architekturfreigabe |
 | D-013 | Finale Benutzergruppen und Zugriffsrechte, einschließlich Lernenden- und möglicher Elternkonten. | vor Pilot; Baseline-Entwurf liegt in v0.0.2 vor |
-| D-014 | Welche Thüringer Rechts- und Verwaltungsvorgaben gelten für welche Schulformen, und wer prüft die Regelprofile? | v0.0.3 |
+| D-014 | Welche Thüringer Rechts- und Verwaltungsvorgaben gelten im konkreten Betrieb für welche Schulformen, und wer gibt die Regelprofile frei? | Quellen-Erstprüfung liegt in v0.0.3 vor; fachliche Aktivierung vor Regelengine |
 | D-015 | Welche Daten sind für Anwesenheit, Klassenbuchnotizen, Aufgaben, Nachrichten und Sitzpläne notwendig? | v0.0.4 |
 | D-016 | Notenarten, Gewichtungen, Rundung, Halbjahres-/Endnoten, fehlende Leistungen und Rückwirkung. | vor v0.12.0 |
 | D-017 | Radarspinnen-Dimensionen, Skalen, Beobachtungslogik, Zielgruppe, Einsicht und Zeugnisbezug. | vor v0.13.0 |
 | D-018 | Zeugnisvorlagen, Ausgabe, Freigabe und Aufbewahrung je Schulform. | vor v0.14.0 |
 | D-019 | Benachrichtigungskanäle, Datenexporte, Schnittstellen und externe Dienste. | vor jeweiligem Modul |
 | D-020 | Verbindliche Barrierefreiheits- und mobile Nutzungsziele. | vor v0.1.0 |
+| D-021 | Welche lokalen Nachweise bestimmen zulässige Raumkapazitäten, Ausstattung, Zugänglichkeit und verbindliche Nutzungsbeschränkungen? | vor Raumplanung/Regelengine |
+| D-022 | Welche Schulart, Bildungsgänge, Jahrgänge, Kurse und Übergangskohorten werden im ersten Thüringen-Profil tatsächlich unterstützt? | v0.0.5/v0.0.6 |
+| D-023 | Wie erhält OrdiSchool den jeweils gültigen Volltext schuljahresbezogener Verwaltungsvorschriften und Lehrpläne und wer bestätigt die Aktualisierung? | vor v0.5.0 |
 
 ## Entscheidungsregel
 
 Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als entschieden behandelt. Entscheidungen werden mit Datum, Begründung, betroffenen Anforderungen und verantwortlicher Freigabe ergänzt.
+
+## Erkenntnisse aus der Quellenrecherche v0.0.3
+
+- ThürSchulO und Rahmenstundentafeln bilden eine verbindliche Grundlage; § 44 weist die Festsetzung des Stundenplans der Schulleitung zu.
+- Übergänge zwischen den ab 2024 geltenden und älteren Rahmenstundentafeln erfordern eine Kohorten-/Gültigkeitsprüfung.
+- Landesweite Quellen begründen keine im Release belastbar festgestellte allgemeine Raumkapazität oder allgemeine Fachraumrangfolge. Diese Werte müssen lokal belegt und bestätigt werden.
+- Die VVOrgS 2026/27 ist als aktuelle Schuljahresvorschrift identifiziert; der Volltext wurde im Recherchezugang nicht inhaltlich verifiziert und wird daher nicht als maschinenlesbare Regel verwendet.
 
 ## In v0.0.2 vorgeschlagene Arbeitsannahmen
 

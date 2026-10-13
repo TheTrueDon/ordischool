@@ -36,3 +36,12 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Offene Rollen- und Schulentscheidungen sind als vorläufig gekennzeichnet.
 - Datenschutzanforderungen an Scope, Anhänge, Benachrichtigungen, Exporte und Protokollierung sind dokumentiert.
 - Kein ausführbarer Code und keine echten personenbezogenen Daten sind Teil dieser Version.
+
+### Abnahme v0.0.3
+
+- Thüringer Quellenregister enthält Herausgeber, Fundstelle, Zeitbezug und Verwendungsgrenze.
+- Regelprofil trennt Landesrecht, befristete Jahresvorgabe, Schulbeschluss, lokale Gebäude-/Schulbedingung und Präferenz.
+- Übergangsregeln, Schulart, Jahrgang, Kohorte und Schuljahr sind als Auswahlmerkmale vorgesehen.
+- Raumkapazität/Fachraumpriorität werden nur mit lokalem Nachweis aktiviert.
+- Ungeprüfte oder nicht abgerufene Quellentexte sind sichtbar und nicht als aktive Softwareregel ausgegeben.
+- Kein ausführbarer Code und keine echten personenbezogenen Daten sind Teil dieser Version.
