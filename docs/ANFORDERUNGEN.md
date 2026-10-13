@@ -140,3 +140,18 @@
 | DATA-010 | Lösch-/Einschränkungsprozesse berücksichtigen Primärdaten, Anhänge, Exporte, Suchindizes und Sicherungen; Fristen je Klasse bestätigen. | ab 0.0.6 |
 | DATA-011 | Externe Kennungen sind von internen IDs getrennt; Personenmerkmale werden nicht in IDs kodiert. | ab 0.0.6 |
 | DATA-012 | Regeln und lokale Raumrestriktionen haben Herkunft, Gültigkeit, Prüfstatus und erforderliche Freigabe. | ab 0.0.6 |
+
+
+## H. Architektur und Hosting
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| ARCH-001 | Die erste Anwendung soll als modularer Monolith mit fachlich abgegrenzten Modulen starten; Microservices benötigen einen konkreten begründeten Bedarf. | 0.0.7 |
+| ARCH-002 | Laufzeit und Datenbank müssen gepflegte Versionen mit dokumentiertem Updatepfad verwenden. | ab 0.0.7 |
+| ARCH-003 | Hintergrundjobs müssen begrenzt, beobachtbar und mit Fehler-/Wiederholungsverhalten ausgeführt werden; lange Planberechnungen blockieren keine unbeschränkten Webrequests. | ab 0.0.7 |
+| ARCH-004 | Dateien müssen privat außerhalb öffentlicher URLs ausgeliefert und bei jedem Download gegen die Elternberechtigung geprüft werden. | ab 0.0.7 |
+| ARCH-005 | Produktiv-, Test- und Entwicklungsumgebung sowie Geheimnisse müssen getrennt sein; keine Produktivdaten in lokalen Tests. | ab 0.0.7 |
+| ARCH-006 | Jede Schule erhält in der Startphase eine isolierte Instanz; schulbezogene Daten werden dennoch konsistent mit einem Scope verknüpft. | 0.0.7 / 0.1.0 |
+| ARCH-007 | Mehrschul-/SaaS-Betrieb darf erst nach Mandantentrennungs-, Berechtigungs-, Restore- und Datenschutzfreigabe aktiviert werden. | vor Mehrschulbetrieb |
+| ARCH-008 | Vor Produktivdaten müssen Hosting, Verantwortlichkeit, Datenregionen, Supportzugriffe, Unterauftragnehmer, Backup/Restore, Löschung und gegebenenfalls DSFA geprüft sein. | vor Pilot |
+| ARCH-009 | Deployment und Schemaänderungen müssen reproduzierbar versioniert sein und Sicherungs-/Rückfallgrenzen berücksichtigen. | ab 0.1.0 |

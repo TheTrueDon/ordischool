@@ -10,7 +10,7 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.0.4 | Datenschutz- und Datenflussentwurf |
 | 0.0.5 | Interaktionsprototyp |
 | 0.0.6 | Fachliches Datenmodell, Datenwörterbuch, Versionierung sowie erste Migrations-/Löschstrategie |
-| 0.0.7 | Architektur- und Hostingentscheidung |
+| 0.0.7 | Zielarchitektur, Technologie-/Hostingbewertung und Anbieter-Prüfliste |
 | 0.0.8 | Sicherheits- und Teststrategie |
 | 0.0.9 | Priorisiertes Backlog und Freigabeumfang für v0.1.0 |
 | 0.1.0 | Technisches Grundgerüst und Anmeldung |
@@ -73,3 +73,14 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Migration/Löschung berücksichtigt Sicherungen, Tests, Rückfallgrenzen, Anhänge und Exporte.
 - Keine Datenbank, Hostingumgebung, pauschale Rechtsgrundlage oder Aufbewahrungsfrist festgelegt.
 - Nur synthetische Daten; kein Produktivcode und keine echte Schülerdatenverarbeitung.
+
+
+### Abnahme v0.0.7
+
+- Zielarchitektur und Technologieoptionen sind mit Betriebsfolgen dokumentiert.
+- PHP/SQL-Zielversionen und Supportstände sind anhand offizieller Quellen geprüft; Kompatibilitätsbedingungen bleiben sichtbar.
+- Hostingmodelle einschließlich gemeinsamem Webspace, verwalteter VM/VPS, Managed Platform und Schul-/Trägerbetrieb sind bewertet.
+- Konkreter Anbieter bleibt bis zur Prüfung der konkreten Vertrags-/Produktunterlagen und Verantwortlichkeit offen.
+- Einzelschulbetrieb ist Startumfang; Mehrschulbetrieb setzt eigene Trennungs- und Datenschutzprüfung voraus.
+- Daten-/Dateifluss, Worker, Updates, Backups und Restore sind skizziert.
+- Produktivfreigabe setzt Verantwortlichen, AVV soweit einschlägig, Datenstandort-/Zugriffsnachweise, Restore-Test und DSFA-Prüfung voraus.

@@ -77,3 +77,17 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 | D-033 | ID-Format, Datenbanktechnologie, Zeitmodell und physische Trennung folgen in v0.0.7. | offen |
 | D-034 | Aufbewahrung, Einschränkung und Löschung sind pro Zweck/Datensatzklasse und Verantwortlichem freizugeben; dieses Modell setzt keine Fristen. | offen |
 | D-035 | Pflichtfelder sind fachliche Mindestangaben; personenbezogene Felder werden erst nach Erforderlichkeits- und Datenschutzprüfung aktiviert. | Arbeitsgrundsatz v0.0.6 |
+
+
+## Architektur-Arbeitsstand v0.0.7
+
+| ID | Arbeitsentscheidung / offener Punkt | Status |
+|---|---|---|
+| D-036 | v0.1.0 startet als modularer Monolith; Ausgliederung in Dienste erfordert messbaren Betriebs-/Sicherheitsgrund. | empfohlen/festgelegt für Start |
+| D-037 | PHP 8.5 ist Zielruntime, abhängig von Framework-/Erweiterungskompatibilität und Hostingnachweis. | vorläufige Technologieentscheidung |
+| D-038 | MySQL 8.4 LTS ist Zielstandard; MariaDB 11.4 LTS ist Alternative nach eigener Teststrecke. | vorläufige Technologieentscheidung |
+| D-039 | Start als isolierte Einzelschulinstanz; Schul-Scope wird im Datenmodell durchgängig geprüft. | vorläufig festgelegt |
+| D-040 | Konkreter Hoster, Tarif, AVV, Supportstandorte und Verantwortlicher bleiben offen und müssen vor Produktivdaten freigegeben werden. | offen |
+| D-041 | Ein vorhandener STRATO-Webspace ist für synthetische Entwicklung/Demo prüfbar; Produktiveignung ist wegen konkreter Datenbank-/Worker-/Backupbedingungen nicht festgestellt. | bedingt / Paketprüfung offen |
+| D-042 | RPO, RTO, Verfügbarkeit, Bereitschaft und technische Supportrolle bestimmt der spätere Betreiber. | offen vor Pilot |
+| D-043 | Mehrschul-/SaaS-Betrieb ist nicht Teil des ersten Release und benötigt eigene Rechts-/Sicherheits-/Architekturfreigabe. | nicht freigegeben |

@@ -1,5 +1,21 @@
 # Änderungsprotokoll
 
+## [0.0.7] – 2026-10-13
+
+### Hinzugefügt
+- Zielarchitektur als modularer Monolith mit getrennten Anwendungsmodulen und Hintergrundjobs.
+- Bewertung PHP/SQL, Hostingmodelle, Updateweg, Support und Betriebsverantwortung.
+- Vorläufiges Ziel: PHP 8.5 und MySQL 8.4 LTS, mit getesteter MariaDB-LTS-Alternative.
+- Einzelschulinstanz als Start; Voraussetzungen für spätere Mehrschulfähigkeit.
+- Datenschutz- und Sicherheitsgates vor Produktivdaten sowie Hosting-Prüfliste.
+- Offizielle technische/providerbezogene Quellen mit Abrufstand.
+
+### Grenzen
+- Kein konkreter Hostinganbieter, Tarif oder Verantwortlicher wurde ausgewählt.
+- Kein Hostingvertrag/AVV, VVT, DSFA oder Produktivbetrieb freigegeben.
+- Keine echten personenbezogenen Daten.
+
+
 ## [0.0.6] – 2026-10-13
 
 ### Hinzugefügt

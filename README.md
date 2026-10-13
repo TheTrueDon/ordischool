@@ -1,6 +1,6 @@
 # OrdiSchool
 
-**Version:** 0.0.6 – Fachliches Datenmodell  
+**Version:** 0.0.7 – Architektur- und Hostingentscheidung  
 **Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
 **Stand:** 13. Oktober 2026
 
@@ -8,10 +8,12 @@ OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretu
 
 ## Stand dieser Version
 
-v0.0.6 ergänzt ein technologieunabhängiges Datenmodell, Datenwörterbuch und erste Versionierungs-, Migrations- und Löschleitlinien. Der Prototyp aus v0.0.5 bleibt enthalten. Das Modell ist keine Datenbankimplementierung oder Datenschutzfreigabe.
+v0.0.7 ergänzt die Zielarchitektur, Technologie- und Hostingbewertung sowie eine Prüfliste für konkrete Anbieter. Die Hostingempfehlung ist vorläufig; Produktivanbieter, Verantwortlichkeit und Datenschutzfreigaben sind offen.
 
 ## Projektdateien
 
+- [ARCHITEKTUR_HOSTINGENTSCHEIDUNG.md](docs/ARCHITEKTUR_HOSTINGENTSCHEIDUNG.md) – Architektur, Technologievergleich, Hosting, Datenschutzgates
+- [HOSTING_PRUEFLISTE.md](docs/HOSTING_PRUEFLISTE.md) – Checkliste für konkrete Anbieter und Tarife
 - [FACHLICHES_DATENMODELL.md](docs/FACHLICHES_DATENMODELL.md) – Entitäten, Beziehungen, Datenwörterbuch, Versionierung und Lifecycle
 - [ANFORDERUNGEN.md](docs/ANFORDERUNGEN.md) – funktionale und nicht-funktionale Anforderungen mit IDs
 - [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md) – bestätigte Arbeitsannahmen und offene Entscheidungen
@@ -30,7 +32,7 @@ v0.0.6 ergänzt ein technologieunabhängiges Datenmodell, Datenwörterbuch und e
 - [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
 - [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
 - [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.6.txt`](docs/COMMIT_MESSAGE_v0.0.6.txt) – vorgeschlagene Git-Commit-Nachricht
+- [`docs/COMMIT_MESSAGE_v0.0.7.txt`](docs/COMMIT_MESSAGE_v0.0.7.txt) – vorgeschlagene Git-Commit-Nachricht
 
 ## Arbeitsregeln
 
