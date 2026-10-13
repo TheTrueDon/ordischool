@@ -1,5 +1,20 @@
 # Änderungsprotokoll
 
+## [0.0.6] – 2026-10-13
+
+### Hinzugefügt
+- Technologieunabhängiges fachliches Datenmodell mit ER-Übersichten und Datenwörterbuch.
+- Zentrale Stammdaten und zeitliche Zuordnungen für Schule, Schuljahr, Personen, Klassen, Lerngruppen, Fach, Raum und Zeitraster.
+- Trennung von Planversion, Unterrichtsereignis, Vertretung und Klassenbuchnachweis.
+- Versionierungs- und Freigabeprinzipien für Pläne, Regeln, Bewertungsverfahren, Sitzpläne und Zeugnisse.
+- Erste Migrations-, Aufbewahrungs-, Einschränkungs- und Löschleitlinien mit Anhängen/Backups.
+
+### Grenzen
+- Keine Datenbank-, Hosting- oder Stackentscheidung und keine ausführbaren Migrationen.
+- Keine endgültigen Rechtsgrundlagen, Fristen, Notenformeln oder Radar-Dimensionen.
+- Keine produktive Datenverarbeitung oder echten Personen-/Schuldaten.
+
+
 ## [0.0.5] – 2026-10-13
 
 ### Hinzugefügt

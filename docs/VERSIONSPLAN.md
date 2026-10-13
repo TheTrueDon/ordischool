@@ -9,7 +9,7 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 | 0.0.3 | Thüringer Regeln und Planungsbedingungen mit Quellenregister |
 | 0.0.4 | Datenschutz- und Datenflussentwurf |
 | 0.0.5 | Interaktionsprototyp |
-| 0.0.6 | Fachliches Datenmodell |
+| 0.0.6 | Fachliches Datenmodell, Datenwörterbuch, Versionierung sowie erste Migrations-/Löschstrategie |
 | 0.0.7 | Architektur- und Hostingentscheidung |
 | 0.0.8 | Sicherheits- und Teststrategie |
 | 0.0.9 | Priorisiertes Backlog und Freigabeumfang für v0.1.0 |
@@ -62,3 +62,14 @@ Der vollständige Umfang und die Abnahmekriterien stehen im beiliegenden Projekt
 - Vorschläge und Entwürfe werden sichtbar von menschlicher Freigabe und Veröffentlichung getrennt.
 - Feedbackprotokoll und offene Usability-Fragen sind enthalten; nicht erfolgte Nutzertests werden nicht als durchgeführt dargestellt.
 - Prototyp verwendet nur synthetische Daten und keine externen Dienste oder dauerhafte Datenspeicherung.
+
+
+### Abnahme v0.0.6
+
+- Objekte und Beziehungen sind in FACHLICHES_DATENMODELL.md beschrieben.
+- Stammdatenquellen sind eindeutig; Planung, Unterrichtsereignis, Vertretung und Klassenbuchnachweis sind getrennt.
+- Versionierungs- und Freigabeprinzipien sind dokumentiert.
+- Datenwörterbuch benennt Pflichtfelder, bedingte Felder und Datenschutz-/Lifecycle-Hinweise.
+- Migration/Löschung berücksichtigt Sicherungen, Tests, Rückfallgrenzen, Anhänge und Exporte.
+- Keine Datenbank, Hostingumgebung, pauschale Rechtsgrundlage oder Aufbewahrungsfrist festgelegt.
+- Nur synthetische Daten; kein Produktivcode und keine echte Schülerdatenverarbeitung.

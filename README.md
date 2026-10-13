@@ -1,6 +1,6 @@
 # OrdiSchool
 
-**Version:** 0.0.5 – Interaktionsprototyp  
+**Version:** 0.0.6 – Fachliches Datenmodell  
 **Projektname:** Ordinatio Scholae (kurz: OrdiSchool)  
 **Stand:** 13. Oktober 2026
 
@@ -8,11 +8,12 @@ OrdiSchool soll eine integrierte Schulsoftware für Stunden-, Raum- und Vertretu
 
 ## Stand dieser Version
 
-v0.0.5 ergänzt die Dokumentation um einen lokal ausführbaren Klick-Prototyp für Planung, Vertretung, persönlichen Stundenplan, Klassenbuchhinweise, Aufgaben, Räume, Mitteilungen und Termine. Die Oberfläche verwendet nur fiktive Daten und führt keine echte Datenverarbeitung durch. Sie ist weder ein Produktivsystem noch eine Datenschutz-/Sicherheitsfreigabe.
+v0.0.6 ergänzt ein technologieunabhängiges Datenmodell, Datenwörterbuch und erste Versionierungs-, Migrations- und Löschleitlinien. Der Prototyp aus v0.0.5 bleibt enthalten. Das Modell ist keine Datenbankimplementierung oder Datenschutzfreigabe.
 
 ## Projektdateien
 
-- [`docs/ANFORDERUNGEN.md`](docs/ANFORDERUNGEN.md) – funktionale und nicht-funktionale Anforderungen mit IDs
+- [FACHLICHES_DATENMODELL.md](docs/FACHLICHES_DATENMODELL.md) – Entitäten, Beziehungen, Datenwörterbuch, Versionierung und Lifecycle
+- [ANFORDERUNGEN.md](docs/ANFORDERUNGEN.md) – funktionale und nicht-funktionale Anforderungen mit IDs
 - [`docs/ENTSCHEIDUNGEN.md`](docs/ENTSCHEIDUNGEN.md) – bestätigte Arbeitsannahmen und offene Entscheidungen
 - [`docs/ROLLEN_RECHTEMATRIX.md`](docs/ROLLEN_RECHTEMATRIX.md) – Rollen, Geltungsbereiche und Rechte
 - [`docs/ABLAEUFE.md`](docs/ABLAEUFE.md) – fachliche Abläufe mit Sichtbarkeit, Prüfung und Freigabe
@@ -29,7 +30,7 @@ v0.0.5 ergänzt die Dokumentation um einen lokal ausführbaren Klick-Prototyp f�
 - [`docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx`](docs/OrdiSchool_Projektplanung_v0.0.1_bis_v1.0.0.docx) – ausführlicher Projektplan und Datenschutzfahrplan
 - [`CHANGELOG.md`](CHANGELOG.md) – Änderungen je Version
 - [`VERSION`](VERSION) – aktuelle Projektversion
-- [`docs/COMMIT_MESSAGE_v0.0.5.txt`](docs/COMMIT_MESSAGE_v0.0.5.txt) – vorgeschlagene Git-Commit-Nachricht
+- [`docs/COMMIT_MESSAGE_v0.0.6.txt`](docs/COMMIT_MESSAGE_v0.0.6.txt) – vorgeschlagene Git-Commit-Nachricht
 
 ## Arbeitsregeln
 

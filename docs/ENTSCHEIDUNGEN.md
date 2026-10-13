@@ -64,3 +64,16 @@ Keine offene Datenschutz-, Hosting- oder Rechtsfrage wird stillschweigend als en
 - Es gibt kein standardmäßiges „Admin darf alles“. Technischer Betrieb und pädagogischer Zugriff sind getrennt.
 - Freigaben und Korrekturen an veröffentlichten Planungen, Bewertungen und Zeugnissen bleiben nachvollziehbar.
 - Elternkonten werden nicht als aktive Standardrolle angenommen. Ob und wie sie eingesetzt werden, ist vor einer Implementierung zu klären.
+
+
+## Datenmodell-Arbeitsstand v0.0.6
+
+| ID | Arbeitsannahme / offener Punkt | Status |
+|---|---|---|
+| D-029 | Stammdaten werden zentral geführt; Module referenzieren gemeinsame interne Kennungen. | Arbeitsgrundsatz v0.0.6 |
+| D-030 | Person und Benutzerkonto sind getrennt; Authentifizierung gehört in spätere IAM-/Architekturentscheidung. | Arbeitsgrundsatz v0.0.6 |
+| D-031 | Planung, Unterrichtsereignis, Vertretung und Klassenbuchnachweis sind getrennt und verknüpft. | Arbeitsgrundsatz v0.0.6 |
+| D-032 | Veröffentlichte Pläne, Regelprofile und Bewertungsverfahren sind versioniert; Änderung erzeugt neuen Stand. | Arbeitsgrundsatz v0.0.6 |
+| D-033 | ID-Format, Datenbanktechnologie, Zeitmodell und physische Trennung folgen in v0.0.7. | offen |
+| D-034 | Aufbewahrung, Einschränkung und Löschung sind pro Zweck/Datensatzklasse und Verantwortlichem freizugeben; dieses Modell setzt keine Fristen. | offen |
+| D-035 | Pflichtfelder sind fachliche Mindestangaben; personenbezogene Felder werden erst nach Erforderlichkeits- und Datenschutzprüfung aktiviert. | Arbeitsgrundsatz v0.0.6 |

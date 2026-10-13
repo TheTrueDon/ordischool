@@ -122,3 +122,21 @@
 - Keine produktiv freigegebenen oder vollständig maschinenlesbaren Thüringer Regelprofile.
 - Keine endgültige Festlegung von Hosting, Stack, Rollen oder Mehrschulbetrieb.
 - Keine finalen Notenalgorithmen, Radarspinnen-Dimensionen oder Zeugnisvorlagen.
+
+
+## G. Fachliches Datenmodell
+
+| ID | Anforderung | Zielversion |
+|---|---|---:|
+| DATA-001 | Zentrale Stammdaten für Schule, Schuljahr, Personen, Klassen/Lerngruppen, Fach, Lehrkräfte, Räume und Zeitraster werden referenziert; Parallelbestände sind zu vermeiden. | 0.0.6 |
+| DATA-002 | Zeitlich gültige Mitgliedschaften, Zuständigkeiten und Rollenbindungen bilden Scope und Zeitraum ab. | 0.0.6 / 0.2.0 |
+| DATA-003 | Planposition, Unterrichtsereignis, Vertretung und Klassenbuchnachweis sind unterscheidbare verknüpfte Objekte. | 0.0.6 |
+| DATA-004 | Veröffentlichte Plan-, Regel- und Bewertungsverfahrensstände sind mit Version, Gültigkeit, Herkunft, Status und Freigabe abbildbar. | 0.0.6 |
+| DATA-005 | Änderungen an Regeln/Verfahren verändern veröffentlichte Pläne und freigegebene Ergebnisse nicht still rückwirkend. | ab 0.0.6 |
+| DATA-006 | Personenbezogene Objektgruppen sind Zweck, Zugriffsscope, Empfängern und Lifecycle-Entscheid zuordenbar. | ab 0.0.6 |
+| DATA-007 | Beziehungen/Exporte ersetzen keine Berechtigungsprüfung; derselbe Scope gilt an allen Zugriffspfaden. | ab 0.0.6 |
+| DATA-008 | Anhänge sind einem Elternobjekt zugeordnet und privat; Zugriff/Löschung berücksichtigen dessen Berechtigungen. | 0.0.6 / 0.9.0 |
+| DATA-009 | Schemaänderungen sind versioniert migrierbar und dokumentieren Voraussetzungen, Integritätsprüfung, Sicherung und Rückfallgrenzen. | ab 0.1.0 |
+| DATA-010 | Lösch-/Einschränkungsprozesse berücksichtigen Primärdaten, Anhänge, Exporte, Suchindizes und Sicherungen; Fristen je Klasse bestätigen. | ab 0.0.6 |
+| DATA-011 | Externe Kennungen sind von internen IDs getrennt; Personenmerkmale werden nicht in IDs kodiert. | ab 0.0.6 |
+| DATA-012 | Regeln und lokale Raumrestriktionen haben Herkunft, Gültigkeit, Prüfstatus und erforderliche Freigabe. | ab 0.0.6 |
